@@ -16,7 +16,6 @@ from .config import Config  # Validation and confirmation use the same horizon a
 from .execution import collect_episodes, summaries  # Shared rollout code preserves causal pairing.
 from .storage import save_json  # Incremental results survive an interrupted search.
 
-STRENGTHS = (-.5, -.2, -.1, -.05, .05, .1, .2, .5)  # Zero is collected once as the shared paired baseline.
 ANALYSIS_ID = hashlib.sha256((Path(__file__).with_name("analysis.py").read_text(encoding="utf-8") + Path(__file__).read_text(encoding="utf-8")).encode("utf-8")).hexdigest()  # Freeze normalized source identity at import so later edits cannot relabel an active process.
 
 
@@ -34,7 +33,7 @@ def calibrate(model, model_key: str, run_dir: Path, vectors: dict, seeds: list[i
     results = list(previous or [])  # Bias comparators may be added after vector calibration.
     for name, vector in vectors.items():  # Controls are fitted and scaled before this phase.
         behavior = name.split("_")[0]  # Vector IDs deliberately begin with the measured behavior.
-        for alpha in STRENGTHS:  # Both signs receive the same validation opportunity.
+        for alpha in config.strengths:  # Every candidate and control receives the same prespecified signed grid.
             if any(row["vector"] == name and row["alpha"] == alpha for row in results):  # Resume completed comparisons only.
                 continue  # Saved effects already reference the same immutable protocol.
             bias = None if action_biases is None else action_biases.get(name)  # Action controls use the same rollout engine.
@@ -70,8 +69,11 @@ def select_conditions(rows: list[dict], behaviors: list[str]) -> list[dict]:
     return [row for row in selected if row["behavior"] in candidate_behaviors]  # Avoid spending confirmation data on rejected searches.
 
 
-def derive_action_biases(model, episodes: list[dict], selected: list[dict], vectors: dict, warmup: int) -> dict:
+def derive_action_biases(model, episodes: list[dict], selected: list[dict], vectors: dict, warmup: int,
+                         reference_strength: float = .5) -> dict:
     """Local: average action displacement; global: test whether a constant action offset explains usefulness."""
+    if not np.isfinite(reference_strength) or reference_strength <= 0:  # The normalization is a positive grid magnitude, not the selected vector's sign.
+        raise ValueError("reference_strength must be finite and positive")  # Reject invalid units before accessing fitting observations or the model.
     observations = np.concatenate([episode["observations"][warmup::10] for episode in episodes])  # Fit observations only; subsampling bounds temporary memory.
     baseline, _ = model.predict(observations, deterministic=True)  # SB3 retains its actual preprocessing and action scaling.
     biases = {}  # Each shortlisted behavior gets one constant fitted action direction.
@@ -81,7 +83,7 @@ def derive_action_biases(model, episodes: list[dict], selected: list[dict], vect
         direction = torch.as_tensor(vectors[row["vector"]], dtype=torch.float32)  # Match CPU actor activation dtype.
         with Trace(model.actor.latent_pi[1], retain_output=False, edit_output=lambda output: output + row["alpha"] * direction):  # Reuse the same first-ReLU addition.
             treated, _ = model.predict(observations, deterministic=True)  # Batch evaluation never changes simulator state.
-        biases[f"{row['behavior']}_bias"] = np.mean(treated - baseline, axis=0).astype(np.float32) / .5  # Alpha=.5 reproduces the fitted mean displacement; the same signed grid explores smaller offsets.
+        biases[f"{row['behavior']}_bias"] = np.mean(treated - baseline, axis=0).astype(np.float32) / reference_strength  # At the largest configured magnitude, the comparator reproduces the fitted mean displacement up to sign.
     return biases  # These vectors live in action space and are clearly labeled as such.
 
 

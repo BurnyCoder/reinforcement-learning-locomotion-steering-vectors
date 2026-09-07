@@ -1,0 +1,17 @@
+# Experiment 004: smaller height-derived interventions for speed control
+
+Registered on 2026-09-07 at 23:53 UTC, before collecting this experiment's validation episodes.
+
+**Question.** Can the unchanged height-derived vector from `hc-running-002` slow the frozen HalfCheetah policy by at least 5% at smaller intervention strengths while retaining competent forward movement?
+
+**Evidence and hypothesis.** In experiment 003, every primary setting in the original coarse grid failed its episode-level physical-quality gate on fresh validation episodes. Even +0.05 caused two additional physical failures among ten episodes. This rejects the coarse intervention, including the apparent clean slowdown seen in 002. The narrower hypothesis is that an interval below +0.05 provides a smaller sustained slowdown before the instability appears. Both signs are retained as controls of sign and dose. This is an adaptive follow-up, not confirmation of either previous experiment.
+
+**Fixed treatment and fitting evidence.** Reuse the exact `height`, three `height_random*`, and `height_shuffled` arrays from experiment 002; alias them to the speed outcome without refitting. Preserve their original 64 fitting episodes (101000–101063), activation scale, checkpoint revision, first actor ReLU site, and diagnostic metadata. Report height and action effort alongside the target speed. The vector's extraction label does not identify an internal semantic concept.
+
+**Validation specification.** Test zero and the complete signed grid ±0.01, ±0.02, ±0.025, ±0.03, ±0.035, ±0.04 on ten fresh paired episodes, 310000–310009. Give each imported control the same grid. Preserve the existing 1,000-step horizon, 100-step identical unsteered prefix, deterministic evaluation, frozen weights, simulator-state hash check, episode-level failures, quality thresholds, and selection rule. If shortlisted, derive the constant action-bias comparator on source fitting observations; scale it so the largest positive grid strength reproduces the candidate's average action displacement, then give it the same signed grid.
+
+**Fresh evidence.** Lock the selected vector, strength, sign, and controls before confirmation (320000–320029). Replicate without retuning on 330000–330029. If both pass, evaluate the validation-calibrated speed target on application episodes 340000–340009. These reset identities do not overlap experiments 001–003. Retain all failed conditions and all consumed episodes. Do not relax the usefulness or quality rules after seeing these outcomes.
+
+**Decision after this attempt.** If smaller classic additions still fail, use the prepared continuous-action policy-gradient steering adaptation or examine the already verified Ant policy for lateral/turning behavior. The changed method or environment requires its own recorded hypothesis and fresh evidence; an unchanged failing sweep will not be repeated.
+
+**Sources and reuse.** This experiment keeps the existing [Baukit intervention](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py) and the signed-addition design of [contrastive activation addition](https://arxiv.org/abs/2312.06681). The finer numerical grid and physical-quality acceptance rules are project pilot decisions motivated by the preserved results of experiment 003, not claims that these papers validate locomotion control. Common calibration, comparison, and immutable-artifact phases are reused without duplicating simulator code.

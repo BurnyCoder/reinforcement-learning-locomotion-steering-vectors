@@ -82,9 +82,10 @@ def test_shared_phases_preserve_frozen_controls_and_stop_boundaries(tmp_path, mo
         calls.append("action_control" if action_biases is not None else "vectors")  # Distinguish the two uses of the same reusable phase.
         return [candidate] if action_biases is None else [candidate, dict(candidate, vector="speed_bias")]  # Preserve the candidate and calibrated comparator together.
 
-    def derive(model, episodes, selected, vectors, warmup):
+    def derive(model, episodes, selected, vectors, warmup, *, reference_strength):
         """Local: inspect the action-control inputs; global: restrict comparator fitting to the provided fitting set."""
         assert episodes is fitting  # The shared wrapper must not substitute validation or confirmation observations.
+        assert reference_strength == .02  # A finer activation grid must retain the full fitted action displacement at its largest magnitude.
         calls.append("fit_action_control")  # Derivation must precede the final selection file.
         return {"speed_bias": np.ones(2)}  # A different dimension keeps action and activation spaces distinct.
 
@@ -99,7 +100,7 @@ def test_shared_phases_preserve_frozen_controls_and_stop_boundaries(tmp_path, mo
     monkeypatch.setattr(phases, "derive_action_biases", derive)  # Verify fitting data routing at the actual helper boundary.
     monkeypatch.setattr(phases, "evaluate", evaluate)  # Keep all stop points observable and deterministic.
     result = phases.run_evaluation_phases(None, "halfcheetah", tmp_path, {"speed": np.ones(3)}, ["speed"],
-        {"validation": [1], "confirmation": [2], "replication": [3]}, Config(), {}, lambda: fitting, stop_after=stop_after)  # Exercise the single common continuation used by both wrappers.
+        {"validation": [1], "confirmation": [2], "replication": [3]}, Config(strength_grid="-.02,-.01,.01,.02"), {}, lambda: fitting, stop_after=stop_after)  # Exercise the single common continuation used by both wrappers.
     assert result["status"] == expected  # The externally visible phase state is preserved.
     assert calls == ["vectors", "fit_action_control", "action_control"] + ([] if stop_after == "calibrate" else ["confirmation"]) + (["replication"] if stop_after is None else [])  # No later evidence is consumed across an inspection boundary.
     if stop_after is None:
