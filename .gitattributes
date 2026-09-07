@@ -1,0 +1,11 @@
+# Sources: https://git-scm.com/docs/gitattributes ; preserve scientific binary artifacts exactly.
+* text=auto
+*.py text eol=lf
+*.md text eol=lf
+*.json text eol=lf
+*.toml text eol=lf
+*.lock text eol=lf
+*.pdf binary
+*.npz binary
+*.png binary
+*.mp4 binary
