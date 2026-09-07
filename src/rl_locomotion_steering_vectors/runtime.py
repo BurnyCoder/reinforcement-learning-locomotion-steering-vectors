@@ -80,7 +80,7 @@ def prepare_model(model_key: str, root: Path) -> tuple[Any, dict[str, Any]]:
     if checksum != spec["sha256"]:  # Local: compare authoritative bytes; global: prevent corrupt checkpoint execution.
         raise ValueError(f"Checkpoint SHA256 mismatch: expected {spec['sha256']}, got {checksum}")  # Local: expose the mismatch; global: stop provenance failure.
     loader = TQC if spec["algorithm"] == "TQC" else SAC  # Local: select official deserializer; global: preserve algorithm semantics.
-    model = loader.load(path, device="cpu")  # Local: load without an attached training environment; global: make inference CPU-reproducible.
+    model = loader.load(path, device="cpu", buffer_size=1)  # Local: SB3 load kwargs override unused replay capacity before setup (https://stable-baselines3.readthedocs.io/en/v2.4.1/_modules/stable_baselines3/common/base_class.html#BaseAlgorithm.load); global: preserve policy inference while avoiding training-sized buffers in every worker.
     model.policy.set_training_mode(False)  # Local: disable training-specific behavior; global: hold policy computation fixed.
     model.policy.requires_grad_(False)  # Local: freeze every parameter; global: exclude policy learning from steering experiments.
     actor_layer(model)  # Local: assert the intervention layout; global: fail before collecting incompatible activations.

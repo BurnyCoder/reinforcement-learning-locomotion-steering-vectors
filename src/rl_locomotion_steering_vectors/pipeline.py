@@ -8,6 +8,7 @@ import logging  # Emit decisions at each scientific boundary.
 from pathlib import Path  # Resolve one self-contained run directory.
 
 import torch  # Set the measured CPU inference configuration once.
+import numpy as np  # Compare saved intervention contents exactly before cache reuse.
 
 from .analysis import fit_vectors  # Extraction remains independent of orchestration.
 from .config import Config  # Explicit settings become part of the immutable manifest.
@@ -21,7 +22,7 @@ def prepare(model_key: str, run_dir: Path, config: Config) -> tuple:
     """Local: verify model and immutable protocol; global: establish provenance before evidence."""
     torch.set_num_threads(config.torch_threads)  # Avoid excessive threads for tiny MLP batches.
     model, provenance = prepare_model(model_key, Path.cwd())  # Check exact revision/hash, spaces, and frozen architecture.
-    splits = {name: list(range(start, start + getattr(config, f"{name}_episodes"))) for name, start in
+    splits = {name: list(range(config.seed_offset + start, config.seed_offset + start + getattr(config, f"{name}_episodes"))) for name, start in
               (("diagnostic", 0), ("fit", 1000), ("validation", 10000), ("confirmation", 20000), ("replication", 30000))}  # Whole episodes stay in one phase.
     all_seeds = [seed for group in splits.values() for seed in group]  # Guard future configuration expansions.
     if len(all_seeds) != len(set(all_seeds)):  # Excessively large counts could overlap nominal ranges.
@@ -54,7 +55,11 @@ def run_pipeline(model_key: str, run_dir: Path, config: Config, stop_after: str 
         return result  # Permit a human-visible diagnostic checkpoint through the public CLI.
     fitting = collect_episodes(model, model_key, run_dir, "fit", seeds["fit"], config, capture=True, stochastic=True)  # Independent stochastic data supplies activation contrasts.
     behaviors = ["speed", "effort", "height"] if model_key == "halfcheetah" else ["lateral", "turning"]  # Register environment-appropriate candidates.
-    vectors, extraction = fit_vectors(fitting, behaviors, seed=0)  # Fit candidates and controls using fitting episodes only.
+    vectors, extraction = fit_vectors(fitting, behaviors, seed=0, warmup=config.warmup, minimum_speed_fraction=config.fit_min_speed_fraction)  # Fit candidates and controls using fitting episodes only.
+    if (run_dir / "vectors.npz").exists():  # Never overwrite directions beneath existing condition names.
+        saved_vectors = load_arrays(run_dir / "vectors.npz")  # Read the previously fitted numerical identity.
+        if saved_vectors.keys() != vectors.keys() or any(not np.array_equal(saved_vectors[name], vectors[name]) for name in vectors):  # A changed extractor may produce scientifically different treatments.
+            raise ValueError("Fitted vectors changed; preserve this run and start a new experiment")  # Refuse mixed old-evaluation/new-vector reports.
     save_arrays(run_dir / "vectors.npz", vectors)  # Store scaled directions as non-executable arrays.
     save_json(run_dir / "vector_diagnostics.json", extraction)  # Preserve raw vectors, scale, groups, and numerical gates.
     result.update(extraction=extraction, status="fitted" if vectors else "no_eligible_vectors")  # A null extraction remains an explicit research result.
