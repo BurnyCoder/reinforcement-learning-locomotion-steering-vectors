@@ -150,3 +150,75 @@ def test_raw_evaluation_uses_post_onset_measurements_and_preserves_prefix_failur
         item.update(length=100, terminated=True, truncated=False)  # Preserve genuine failure metadata.
     failed = paired_effect(baseline, treated, "speed")  # Do not silently remove unsteerable reset episodes.
     assert failed["n_pairs"] == 3 and not failed["gate"]  # Prefix-only failures remain counted and invalidate useful-control claims.
+
+
+def test_scalar_runtime_failure_flag_survives_paired_analysis():
+    """Local: preserve summarized failure metadata. Global: scalar reduction cannot erase failed trials."""
+    baseline = [summary(i) for i in range(30)]  # Healthy baseline summaries define the comparison denominator.
+    treated = [summary(i, speed=2.3, failure=float(i < 2)) for i in range(30)]  # Runtime summaries expose failure instead of terminated.
+    for item in baseline + treated:
+        item.pop("terminated")  # Match the actual runtime summary interface exactly.
+    result = paired_effect(baseline, treated, "speed")  # Two failures exceed the five-percentage-point allowance.
+    assert result["quality_deltas"]["failure"] == pytest.approx(2 / 30)  # Failure information survives the second reduction.
+    assert not result["gate"]  # An apparent speed increase must not hide failed episodes.
+
+
+def test_custom_warmup_reaches_fitting_and_raw_evaluation():
+    """Local: honor the configured onset. Global: fitting and evaluation share one temporal protocol."""
+    episodes = [episode(i, [0, 2], [[0, 0], [i, 2]]) for i in range(16)]  # Only the final window remains after a 200-step warmup.
+    vectors, diagnostic = fit_vectors(episodes, ["speed"], warmup=200)  # A changed onset removes the former low-speed contrast.
+    assert not vectors and diagnostic["windows"]["warmup"] == 200  # Hardcoded startup would incorrectly return a vector.
+    assert diagnostic["windows"]["total_windows"] == 16  # Exactly one eligible full window remains per episode.
+    baseline = [episode(i, [2, 4]) for i in range(3)]  # Custom evaluation onset also changes the baseline mean.
+    treated = [episode(i, [2.2, 4.2]) for i in range(3)]  # Keep a known additive treatment effect.
+    result = paired_effect(baseline, treated, "speed", warmup=150)  # Both raw outcomes must use the explicit intervention onset.
+    assert result["baseline_mean"] == pytest.approx(10 / 3)  # Last 150 steps contain fifty steps at2 and one hundred at4.
+
+
+def test_raw_prefix_failure_uses_zero_outcomes_like_runtime_summary():
+    """Local: standardize unavailable post-onset outcomes. Global: raw and summarized paths agree."""
+    baseline = [summary(i) for i in range(3)]  # Scalar healthy baselines have a full post-onset period.
+    treated = [episode(i, [2]) for i in range(3)]  # Start with complete array-shaped episodes.
+    for item in treated:
+        for name, value in list(item.items()):
+            if isinstance(value, np.ndarray):
+                item[name] = np.ones_like(value[:50])  # Nonzero startup measurements must not stand in for unavailable intervention outcomes.
+        item.update(length=50, terminated=True, truncated=False)  # The run fails before the onset.
+    result = paired_effect(baseline, treated, "speed")  # Keep the episodes while applying the documented zero-outcome convention.
+    assert result["treated_mean"] == 0 and result["treated_means"]["failure"] == 1  # Match runtime.summarise_episode exactly.
+
+
+def test_speed_floor_excludes_stationary_outliers_without_rewriting_original_fit():
+    """Local: remove stationary fitting artifacts. Global: test the explicitly revised locomotion hypothesis."""
+    episodes = [episode(i, [0.01, 2, 3], [[100, 0], [0, 0], [0, 2]]) for i in range(16)]  # Stationary post-flip activations dominate one coordinate despite passing existing health flags.
+    original, original_diagnostics = fit_vectors(episodes, ["speed"])  # The default must preserve the original experiment's exact extraction.
+    disabled, _ = fit_vectors(episodes, ["speed"], minimum_speed_fraction=0)  # Explicit zero is the compatibility setting.
+    for name in original:
+        np.testing.assert_array_equal(original[name], disabled[name])  # Default and zero produce identical vectors and controls.
+    filtered, diagnostics = fit_vectors(episodes, ["speed"], minimum_speed_fraction=0.5)  # New experiments may require at least half the typical fitting speed.
+    np.testing.assert_allclose(diagnostics["vectors"]["speed"]["raw_vector"], [0, 2])  # The retained contrast now describes two moving behaviors.
+    assert abs(original_diagnostics["vectors"]["speed"]["raw_vector"][0]) > 50  # The fixture genuinely exposes the diagnosed domination problem.
+    assert "speed" in filtered and diagnostics["windows"]["excluded_slow_windows"] == 16  # Every stationary window is excluded and accounted for.
+    assert diagnostics["windows"]["healthy_median_speed"] == 2  # Only the supplied fitting distribution defines typical movement.
+    assert diagnostics["windows"]["minimum_speed_floor"] == 1  # The absolute floor is reported in physical m/s.
+
+
+def test_speed_floor_reference_uses_only_finite_healthy_windows_and_strict_boundary():
+    """Local: separate exclusion reasons. Global: invalid or unhealthy data cannot set the locomotion floor."""
+    moving = episode(1, [1, 2, 3])  # These are the only finite healthy reference windows.
+    unhealthy = episode(2, [1000] * 5)  # Extreme failed behavior must not raise the reference median.
+    unhealthy["bad_contact"][100:] = 1  # Mark every extreme window unhealthy through an existing criterion.
+    nonfinite = episode(3, [1000] * 5)  # Nonfinite activations also exclude an otherwise valid speed descriptor.
+    nonfinite["activations"][100:] = np.nan  # Preserve these rows for explicit nonfinite accounting.
+    table = window_table([moving, unhealthy, nonfinite], minimum_speed_fraction=0.5)  # Fit the additional eligibility threshold only from credible movement data.
+    assert table["stats"]["healthy_median_speed"] == 2 and table["stats"]["minimum_speed_floor"] == 1  # Excluded extremes cannot contaminate the threshold.
+    np.testing.assert_array_equal(table["eligible"][:3], [False, True, True])  # The planned rule is speed strictly greater than the floor.
+    assert table["stats"]["excluded_slow_windows"] == 1  # Count only newly excluded finite healthy windows as slow.
+    assert table["stats"]["excluded_unhealthy"] == 5 and table["stats"]["excluded_nonfinite"] == 5  # Existing exclusion reasons remain mutually interpretable.
+
+
+@pytest.mark.parametrize("fraction", [-0.1, float("nan"), float("inf")])
+def test_speed_floor_rejects_invalid_fraction(fraction):
+    """Local: validate the additional fitting parameter. Global: prevent malformed eligibility specifications."""
+    with pytest.raises(ValueError, match="minimum_speed_fraction"):
+        window_table([episode(1, [2])], minimum_speed_fraction=fraction)  # Only finite nonnegative fractions define an auditable speed floor.

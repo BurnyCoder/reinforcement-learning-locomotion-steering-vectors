@@ -51,9 +51,22 @@ def load_arrays(path: Path) -> dict[str, np.ndarray]:
 
 def check_manifest(saved: dict, expected: dict) -> None:
     """Local: compare protocol keys; global: reject scientifically invalid resumption."""
-    for key in ("model_key", "config", "seed_splits"):  # Time and machine paths may legitimately differ.
+    for key in ("model_key", "config", "seed_splits", "software"):  # Time and machine paths may legitimately differ.
+        if key not in saved and key not in expected:  # Small pure-test manifests need no installed package inventory.
+            continue  # Production manifests always include their measured versions.
         if saved[key] != expected[key]:  # Reusing episodes is valid only for the same experiment.
             raise ValueError(f"Run manifest {key} differs; use a new run directory")  # Preserve prior evidence.
+
+
+def ensure_identity(path: Path, identity: dict) -> None:
+    """Local: freeze cache identity; global: never combine different interventions under one name."""
+    if path.exists():  # Completed and partial conditions use the same provenance contract.
+        if load_json(path) != identity:  # Array contents and runtime settings must remain identical.
+            raise ValueError(f"Condition identity changed: {path}; use a new run directory")  # Preserve all previous scientific evidence.
+    else:
+        if path.parent.exists() and any(path.parent.glob("*.npz")):  # Unidentified legacy arrays need an explicit external audit.
+            raise ValueError(f"Episode cache has no identity: {path}")  # Do not silently associate old trials with current code.
+        save_json(path, identity)  # Establish provenance before collecting the first episode.
 
 
 def start_logging(run_dir: Path) -> None:
