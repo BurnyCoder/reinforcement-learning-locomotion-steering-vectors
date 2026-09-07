@@ -10,6 +10,7 @@ import torch  # Replay uses the same controlled CPU thread count.
 
 from .config import Config, read_config  # Replays use saved settings; new runs resolve .env.
 from .pipeline import run_pipeline  # The thin phase wrapper owns experiment ordering.
+from .execution import use_pool  # Share isolated workers across all scientific phases.
 from .runtime import prepare_model, run_episode, summarise_episode  # Reuse authentic inference for videos.
 from .storage import load_arrays, load_json, save_arrays, start_logging  # Safe numerical artifacts and realtime logs.
 
@@ -38,7 +39,10 @@ def main() -> None:
     logging.info("command=%s", vars(args))  # Record only supported nonsensitive command arguments.
     try:
         if args.command == "run":
-            result = run_pipeline(args.model, run_dir, read_config(), args.stop_after)  # Carry the requested phases to completion.
+            from .parallel import RolloutPool  # Load process orchestration only for numerical runs.
+            config = read_config()  # Resolve settings once before workers and manifests are initialized.
+            with RolloutPool(args.model, Path.cwd(), workers=config.rollout_workers) as pool, use_pool(pool):  # Reuse frozen worker policies while guaranteeing shutdown on failure.
+                result = run_pipeline(args.model, run_dir, config, args.stop_after)  # Carry the requested phases to completion.
             logging.info("run completed status=%s", result["status"])  # Distinguish valid null results from a discovery.
         elif args.command == "replay":
             manifest = load_json(run_dir / "manifest.json")  # Use the original experiment's identity.

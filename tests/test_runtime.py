@@ -5,6 +5,7 @@ https://stable-baselines3.readthedocs.io/en/v2.4.1/modules/sac.html.
 """
 
 from types import SimpleNamespace  # Local: construct minimal contact fixtures; global: isolate measurement logic.
+from pathlib import Path  # Local: locate project-owned checkpoint caches; global: keep inference tests inside this workspace.
 
 import gymnasium as gym  # Local: create the real simulator; global: test the same environment used in research.
 import numpy as np  # Local: express expected physics; global: retain exact array comparisons.
@@ -13,7 +14,7 @@ from stable_baselines3 import SAC  # Local: build an untrained actor; global: ve
 
 from rl_locomotion_steering_vectors.runtime import (  # Local: import the runtime contract; global: test public behavior.
     METRIC_NAMES, ActivationIntervention, bad_ground_contact, quaternion_yaw,
-    run_episode, state_hash, summarise_episode, wrapped_angle_difference,
+    run_episode, state_hash, summarise_episode, wrapped_angle_difference, prepare_model,
 )
 
 
@@ -104,3 +105,12 @@ def test_summary_retains_early_failures_instead_of_dropping_them():
     assert summary["failure"] == 1.0  # Local: retain the failed episode; global: prevent survivor bias.
     assert summary["x_velocity"] == 0.0  # Local: use the documented empty-window value; global: avoid fabricated successful movement.
     assert summary["return"] == 2.0  # Local: retain original rewards; global: preserve the actual complete episode return.
+
+
+def test_prepared_checkpoint_allocates_only_a_minimal_inference_buffer():
+    """Local: prevent replay capacity restoration for frozen inference. Global: keep replicated worker memory bounded without altering policy weights."""
+    model, metadata = prepare_model("halfcheetah", Path.cwd())  # Local: exercise the production pinned loader; global: test real SB3 deserialization rather than a mocked keyword.
+    assert model.buffer_size == model.replay_buffer.buffer_size == 1  # Local: require the inference-only override before allocation; global: avoid copying the training buffer capacity into each worker.
+    array_bytes = sum(value.nbytes for value in vars(model.replay_buffer).values() if isinstance(value, np.ndarray))  # Local: measure allocated replay arrays; global: verify the memory claim directly.
+    assert array_bytes < 4096  # Local: allow one entry per saved vector environment; global: detect regressions from a few kilobytes to hundreds of megabytes.
+    assert metadata["parameter_sha256"] == "91fc57f64cc0bd3b2f35a89f11c1936a2c1f55ff30cd5b116b9fa1fea757acca"  # Local: compare the previously verified pinned policy hash; global: prove the loader override preserves weights and buffers.

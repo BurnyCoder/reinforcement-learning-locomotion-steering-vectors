@@ -37,7 +37,7 @@ def calibrate(model, model_key: str, run_dir: Path, vectors: dict, seeds: list[i
             episodes = collect_episodes(model, model_key, run_dir, "validation", seeds, config,
                                         condition=condition_name(name, alpha), vector=vector if bias is None else None,
                                         alpha=alpha, action_bias=None if bias is None else alpha * bias)  # Runtime applies a constant action offset after warmup.
-            effect = paired_effect(baseline, summaries(episodes, config), behavior, seed=710)  # Bootstrap whole paired episodes.
+            effect = paired_effect(baseline, summaries(episodes, config), behavior, seed=710, warmup=config.warmup)  # Bootstrap whole paired episodes.
             row = {"vector": name, "behavior": behavior, "alpha": alpha, "effect": effect}  # Save signed measured effects, not only pass/fail.
             results.append(row)  # No unsuccessful conditions are discarded.
             save_json(run_dir / "validation.json", results)  # Persist after every grid point.
@@ -92,7 +92,7 @@ def evaluate(model, model_key: str, run_dir: Path, phase: str, selected: list[di
         episodes = collect_episodes(model, model_key, run_dir, phase, seeds, config,
                                     condition=condition_name(name, alpha), vector=vectors.get(name) if bias is None else None,
                                     alpha=alpha, action_bias=None if bias is None else alpha * bias)  # Equal onset, horizon, and simulator settings.
-        effect = paired_effect(baseline, summaries(episodes, config), row["behavior"], seed=720 if phase == "confirmation" else 730)  # Independent deterministic bootstrap streams.
+        effect = paired_effect(baseline, summaries(episodes, config), row["behavior"], seed=720 if phase == "confirmation" else 730, warmup=config.warmup)  # Independent deterministic bootstrap streams.
         results.append(dict(row, effect=effect))  # Preserve the original selected direction beside the measured direction.
         save_json(run_dir / f"{phase}.json", results)  # Resume episodes even if report generation later fails.
         logging.info("%s %s", phase, results[-1])  # Log the complete estimate and every gate.

@@ -15,14 +15,19 @@ QUALITY = ("inversion", "bad_contact")  # Fractions detect physically disruptive
 EXTRAS = ("planar_speed", "saturation", "reward")  # Retain useful non-target outcomes for interpretation.
 
 
-def window_table(episodes: list[dict], warmup: int = 100, window: int = 100) -> dict:
+def window_table(episodes: list[dict], warmup: int = 100, window: int = 100, *, minimum_speed_fraction: float = 0.0) -> dict:
     """Local: summarize full windows and mark exclusions. Global: preserve episode identity.
 
 The returned arrays include ineligible windows for auditing; fitting must use
 ``eligible``. Only complete post-warmup windows enter the table or its RMS scale.
+An optional speed floor is a project pilot heuristic, not a standard CAA rule.
+It uses only fitting-window data and NumPy's median implementation:
+https://numpy.org/doc/1.26/reference/generated/numpy.median.html.
 """
     if warmup < 0 or window < 1:
         raise ValueError("warmup must be nonnegative and window must be positive")  # Reject ill-defined temporal partitions.
+    if not np.isfinite(minimum_speed_fraction) or minimum_speed_fraction < 0:
+        raise ValueError("minimum_speed_fraction must be finite and nonnegative")  # Zero preserves the original protocol; malformed floors cannot change eligibility silently.
     names = {**METRICS, **{name: name for name in QUALITY}}  # Use one measurement map for every fitting window.
     rows = []  # Accumulate a small table rather than copying complete trajectories.
     seen = set()  # Reset identity is the independent sampling unit.
@@ -57,8 +62,15 @@ The returned arrays include ineligible windows for auditing; fitting must use
     keys = list(names) + ["episode", "start", "eligible", "finite"]  # Scalar columns remain directly indexable arrays.
     table = {key: np.asarray([row[key] for row in rows], dtype=bool if key in {"eligible", "finite"} else int if key in {"episode", "start"} else float) for key in keys}  # Explicit dtypes make empty tables reliable.
     table["activations"] = np.asarray([row["activations"] for row in rows]).reshape(-1, width) if width else np.empty((0, 0))  # Keep two-dimensional activation shape.
-    eligible = table["eligible"]  # Reuse the final mask when reporting exclusions.
-    table["stats"] = {"episodes": len(episodes), "total_windows": len(rows), "eligible_windows": int(eligible.sum()), "eligible_episodes": len(np.unique(table["episode"][eligible])), "excluded_nonfinite": int((~table["finite"]).sum()), "excluded_unhealthy": int((table["finite"] & ~eligible).sum()), "discarded_tail_steps": tail_steps, "warmup": warmup, "window": window}  # Serializable accounting accompanies the table.
+    healthy = table["eligible"].copy()  # Preserve the original finite-and-healthy mask so exclusion reasons remain separate.
+    median_speed = float(np.median(table["speed"][healthy])) if healthy.any() else None  # Only supplied finite healthy fitting windows establish typical speed.
+    floor = float(minimum_speed_fraction * median_speed) if minimum_speed_fraction > 0 and median_speed is not None else None  # Explicit zero disables the new heuristic exactly.
+    table["excluded_slow"] = healthy & (table["speed"] <= floor) if floor is not None else np.zeros(len(rows), dtype=bool)  # Strictly greater speed is required only when the optional floor exists.
+    table["eligible"] = healthy & ~table["excluded_slow"]  # Exclude stationary outliers from both contrast extraction and RMS normalization.
+    eligible = table["eligible"]  # Reuse the final mask when reporting retained windows and episodes.
+    reason = "disabled: minimum_speed_fraction=0" if minimum_speed_fraction == 0 else "no finite healthy fitting windows to set a floor" if median_speed is None else "project pilot heuristic: exclude finite healthy fitting windows at or below fraction times their median speed"  # State the actual decision without attributing this heuristic to a paper.
+    table["stats"] = {"episodes": len(episodes), "total_windows": len(rows), "eligible_windows": int(eligible.sum()), "eligible_episodes": len(np.unique(table["episode"][eligible])), "excluded_nonfinite": int((~table["finite"]).sum()), "excluded_unhealthy": int((table["finite"] & ~healthy).sum()), "discarded_tail_steps": tail_steps, "warmup": warmup, "window": window}  # Existing exclusion counts retain their original meanings.
+    table["stats"].update(minimum_speed_fraction=float(minimum_speed_fraction), minimum_speed_floor=floor, healthy_median_speed=median_speed, excluded_slow_windows=int(table["excluded_slow"].sum()), speed_filter_reason=reason)  # Record the fitted absolute floor, chosen fraction, and additional exclusions for reproducibility.
     return table  # The caller can plot all windows while fitting only eligible data.
 
 
@@ -134,7 +146,7 @@ def _split_half_cosine(table: dict, behavior: str, rng: np.random.Generator) -> 
     return float(np.clip(np.dot(*directions) / (np.linalg.norm(directions[0]) * np.linalg.norm(directions[1])), -1, 1))  # Bound floating-point roundoff to the cosine domain.
 
 
-def fit_vectors(episodes: list[dict], behaviors: list[str], seed: int = 0) -> tuple[dict[str, np.ndarray], dict]:
+def fit_vectors(episodes: list[dict], behaviors: list[str], seed: int = 0, *, warmup: int = 100, minimum_speed_fraction: float = 0.0) -> tuple[dict[str, np.ndarray], dict]:
     """Local: fit contrasts and matched controls. Global: persist interpretable steering artifacts.
 
 RMS uses every timestep in eligible full windows, balancing episodes equally.
@@ -143,9 +155,9 @@ negative controls, not a formal exchangeability test for correlated windows.
 """
     if any(behavior not in METRICS for behavior in behaviors):
         raise ValueError(f"unknown behavior; expected one of {list(METRICS)}")  # Fail visibly on an experiment specification typo.
-    table = window_table(episodes)  # Apply the shared startup, completeness, and health rules once.
+    table = window_table(episodes, warmup=warmup, minimum_speed_fraction=minimum_speed_fraction)  # Apply the configured onset and fitting-only locomotion eligibility rule once.
     scale = _activation_rms(episodes, table)  # Use timestep variability, not only the variance of window means.
-    diagnostics = {"windows": table["stats"], "activation_rms": scale, "rms_convention": "episode-balanced eligible timestep RMS about episode-balanced mean; full 100-step windows after 100-step warmup", "seed": seed, "behaviors": {}, "vectors": {}}  # Metadata contains all scaling and exclusion decisions.
+    diagnostics = {"windows": table["stats"], "activation_rms": scale, "rms_convention": f"episode-balanced eligible timestep RMS about episode-balanced mean; full 100-step windows after {warmup}-step warmup", "seed": seed, "behaviors": {}, "vectors": {}}  # Metadata contains all scaling and exclusion decisions.
     vectors = {}  # Only supported finite directions are returned for rollout intervention.
     eligible = {name: value[table["eligible"]] for name, value in table.items() if isinstance(value, np.ndarray)}  # Excluded windows remain in diagnostics but cannot affect extraction.
     for behavior in dict.fromkeys(behaviors):
@@ -182,19 +194,23 @@ negative controls, not a formal exchangeability test for correlated windows.
 def _summary(item: dict, warmup: int = 100) -> dict:
     """Local: reduce a rollout to one outcome. Global: keep failed episodes in inference."""
     result = {}  # One observation per reset avoids timestep pseudoreplication.
+    prefix_only = int(item.get("length", warmup + 1)) <= warmup  # Match runtime's convention for absent post-onset evidence.
     mapping = {**METRICS, **{name: name for name in QUALITY + EXTRAS}}  # Alias raw simulator measurements to stable report names.
     for name, source in mapping.items():
         value = np.asarray(item[source] if source in item else item[name], dtype=float)  # Accept complete rollouts or runtime scalar summaries.
-        selected = value[warmup:] if value.ndim and len(value) > warmup else value  # Retain prefix-only failures instead of dropping their episode.
+        selected = value[warmup:] if value.ndim and len(value) > warmup else value  # Reduce raw arrays while leaving runtime scalar summaries intact.
         if not selected.size or not np.isfinite(selected).all():
             raise ValueError(f"nonfinite or empty evaluation metric: {name}")  # Invalid artifacts cannot become an apparent effect.
-        result[name] = float(selected.mean())  # Successful raw episodes use only the post-intervention period.
-    result["failure"] = float(bool(item.get("terminated", False)))  # Natural task termination remains part of the quality outcome.
-    result["prefix_only"] = float(int(item.get("length", warmup + 1)) <= warmup)  # Such episodes cannot demonstrate sustained steering.
+        result[name] = 0.0 if prefix_only else float(selected.mean())  # Absent post-onset outcomes are zero, matching runtime.summarise_episode without dropping the reset.
+    failure = float(item.get("failure", bool(item.get("terminated", False))))  # Preserve the runtime summary's explicit failure flag when termination metadata has been reduced away.
+    if not np.isfinite(failure) or not 0 <= failure <= 1:
+        raise ValueError("evaluation failure must be a finite fraction between zero and one")  # Invalid failure metadata cannot silently pass the quality gate.
+    result["failure"] = max(failure, float(prefix_only), float(bool(item.get("terminated", False))))  # Neither a supplied flag nor raw terminal evidence may be erased.
+    result["prefix_only"] = float(prefix_only)  # Such episodes cannot demonstrate sustained steering.
     return result  # Every supplied reset contributes exactly once to the paired analysis.
 
 
-def paired_effect(baseline: list[dict], treated: list[dict], behavior: str, seed: int = 0) -> dict:
+def paired_effect(baseline: list[dict], treated: list[dict], behavior: str, seed: int = 0, *, warmup: int = 100) -> dict:
     """Local: paired bootstrap and pilot gates. Global: quantify useful causal effects.
 
 Confidence intervals are descriptive percentile intervals from 2,000 resampled
@@ -203,6 +219,8 @@ account for adaptive searches, and obtain independent replication.
 """
     if behavior not in METRICS:
         raise ValueError(f"unknown behavior: {behavior}")  # Do not infer an unintended target from vector naming.
+    if warmup < 0:
+        raise ValueError("warmup must be nonnegative")  # Evaluation cannot start before the recorded rollout.
     left = {int(item["seed"]): item for item in baseline}  # Canonical reset maps permit harmless input reordering.
     right = {int(item["seed"]): item for item in treated}  # Pairing is keyed by reset identity rather than list position.
     if len(left) != len(baseline) or len(right) != len(treated) or set(left) != set(right) or len(left) < 2:
@@ -210,8 +228,8 @@ account for adaptive searches, and obtain independent replication.
     seeds = sorted(left)  # Stable ordering also makes bootstrap results reproducible.
     if any("onset_hash" not in left[key] or "onset_hash" not in right[key] or str(left[key]["onset_hash"]) != str(right[key]["onset_hash"]) for key in seeds):
         raise ValueError("paired episodes have missing or unequal intervention-onset states")  # Causal comparisons must begin at the same physical state.
-    baseline_rows = [_summary(left[key]) for key in seeds]  # Summarize every baseline episode, including failures.
-    treated_rows = [_summary(right[key]) for key in seeds]  # Summarize the matching treatment episodes without exclusions.
+    baseline_rows = [_summary(left[key], warmup) for key in seeds]  # Summarize every baseline episode at the configured onset, including failures.
+    treated_rows = [_summary(right[key], warmup) for key in seeds]  # Summarize matching treatment episodes with the same onset and no exclusions.
     before = {name: float(np.mean([row[name] for row in baseline_rows])) for name in baseline_rows[0]}  # Equal reset weights define reported population means.
     after = {name: float(np.mean([row[name] for row in treated_rows])) for name in treated_rows[0]}  # Use the exact same metric set for treatment.
     differences = np.asarray([changed[behavior] - original[behavior] for original, changed in zip(baseline_rows, treated_rows)])  # Pairing removes shared reset variability.

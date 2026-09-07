@@ -13,6 +13,7 @@ from dotenv import load_dotenv  # Reuse the established .env parser.
 class Config:
     """Local: pilot defaults; global: immutable fitting and evaluation specification."""
     torch_threads: int = 1  # Small MLP inference avoids thread startup overhead.
+    rollout_workers: int = 4  # Isolated CPU processes amortize checkpoint loading across conditions.
     max_steps: int = 1000  # Match the upstream Gymnasium time limit.
     warmup: int = 100  # Steering begins after an identical unsteered prefix.
     diagnostic_episodes: int = 16  # Inspect natural variation before fitting.
@@ -20,6 +21,8 @@ class Config:
     validation_episodes: int = 10  # Select intervention strength outside fitting data.
     confirmation_episodes: int = 30  # Held-out pairs estimate the selected causal effect.
     replication_episodes: int = 30  # A second fresh rollout sample tests replication.
+    seed_offset: int = 0  # New hypotheses can reserve entirely fresh episode partitions.
+    fit_min_speed_fraction: float = .5  # A fitting-only median-relative floor excludes stationary recovery histories.
 
     def as_dict(self) -> dict:
         """Local: expose serializable fields; global: record every configurable choice."""
@@ -30,9 +33,11 @@ def read_config() -> Config:
     """Local: parse positive integer settings; global: keep experiments reproducible."""
     load_dotenv(Path.cwd() / ".env", override=False)  # Explicit process settings take precedence.
     defaults = Config().as_dict()  # One definition determines both defaults and supported keys.
-    values = {key: int(os.getenv(f"STEERING_{key.upper()}", default)) for key, default in defaults.items()}  # Never enumerate secret environment variables.
-    if any(value <= 0 for value in values.values()):  # Empty phases are not valid evidence.
+    values = {key: type(default)(os.getenv(f"STEERING_{key.upper()}", default)) for key, default in defaults.items()}  # Preserve typed scalar settings without enumerating secrets.
+    if any(value <= 0 for key, value in values.items() if key not in ("seed_offset", "fit_min_speed_fraction")):  # Empty phases are not valid evidence.
         raise ValueError("All STEERING settings must be positive integers")  # Stop before artifacts are mixed.
+    if values["seed_offset"] < 0 or not 0 <= values["fit_min_speed_fraction"] < 1:  # A floor must preserve a meaningful upper half of fitting motion.
+        raise ValueError("seed_offset must be nonnegative and fit_min_speed_fraction must be in [0,1)")  # Explicit configuration errors are safer than silent filtering.
     if values["max_steps"] <= values["warmup"]:  # At least one steered transition is required.
         raise ValueError("max_steps must exceed warmup")  # Avoid meaningless zero-duration comparisons.
     return Config(**values)  # Freeze the resolved protocol for this invocation.
