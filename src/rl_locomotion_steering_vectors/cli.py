@@ -16,7 +16,7 @@ from .storage import load_arrays, load_json, save_arrays, start_logging  # Safe 
 
 
 def main() -> None:
-    """Local: dispatch run/replay/report; global: expose the complete reproducible workflow."""
+    """Local: dispatch experiment and artifact commands; global: expose the complete reproducible workflow."""
     parser = argparse.ArgumentParser(description="Causal activation steering of frozen RL locomotion policies")  # Help describes the actual research scope.
     commands = parser.add_subparsers(dest="command", required=True)  # Require an explicit user operation.
     run = commands.add_parser("run", help="Run or resume diagnosis, extraction, calibration, and held-out evaluation")  # One command executes numerical phases.
@@ -34,6 +34,8 @@ def main() -> None:
     replay.add_argument("--alpha", type=float, required=True)  # Always make strength explicit for visual evidence.
     replay.add_argument("--seed", type=int, default=40000)  # Demonstration seeds are outside statistical selection/evaluation splits.
     replay.add_argument("--off-at", type=int)  # Turn steering off later to demonstrate policy-function recovery.
+    application = commands.add_parser("demonstrate", help="Test a replicated speed intervention against its calibrated target on fresh episodes")  # A concrete application follows held-out causal replication.
+    application.add_argument("--run-dir", type=Path, required=True)  # Restore the frozen run specification rather than recalibrating.
     report = commands.add_parser("report", help="Regenerate Markdown, plots, and PDF from saved results")  # No simulation is needed to rebuild reports.
     report.add_argument("--run-dir", type=Path, required=True)  # Reporting reads one experiment bundle.
     args = parser.parse_args()  # The standard parser handles validation and usage errors.
@@ -72,6 +74,14 @@ def main() -> None:
                                   video_path=run_dir / "videos" / f"{name}.mp4")  # Stream frames while recording actual physics.
             save_arrays(run_dir / "videos" / f"{name}.npz", episode)  # Video has an auditable numerical companion.
             logging.info("replay metrics=%s", summarise_episode(episode, config.warmup))  # Make demonstration quality visible.
+        elif args.command == "demonstrate":
+            from .demonstration import demonstrate  # Keep application decisions and media outside the CLI wrapper.
+            from .parallel import RolloutPool  # Reuse the tested isolated numerical collection path.
+            manifest = load_json(run_dir / "manifest.json")  # Select the original policy and execution configuration.
+            config = Config(**manifest["config"])  # Current .env values cannot alter a replicated intervention.
+            with RolloutPool(manifest["model_key"], Path.cwd(), workers=config.rollout_workers) as pool, use_pool(pool):  # Close workers even if numerical or media verification fails.
+                result = demonstrate(run_dir)  # Freeze the target before collecting any new application episodes.
+            logging.info("demonstration completed gate=%s", result["gate"])  # Report actual acceptance rather than assuming a successful application.
         else:
             from .reporting import write_report  # Load plotting/PDF dependencies only for reporting.
             logging.info("report=%s", write_report(run_dir))  # Render from saved evidence without refitting.
