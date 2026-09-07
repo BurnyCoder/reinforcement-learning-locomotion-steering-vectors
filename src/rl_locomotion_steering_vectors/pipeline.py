@@ -8,22 +8,25 @@ import logging  # Emit decisions at each scientific boundary.
 from pathlib import Path  # Resolve one self-contained run directory.
 
 import torch  # Set the measured CPU inference configuration once.
-import numpy as np  # Compare saved intervention contents exactly before cache reuse.
 
 from .analysis import fit_vectors  # Extraction remains independent of orchestration.
 from .config import Config  # Explicit settings become part of the immutable manifest.
 from .execution import collect_episodes, diagnose  # Reuse collection for diagnostic and fitting data.
-from .experiment import ANALYSIS_ID, calibrate, derive_action_biases, evaluate, select_conditions, successful_candidates  # Separate numerical evaluation from phase ordering.
+from .phases import run_evaluation_phases, save_fixed_vectors  # Fitted and imported treatments share cache guards and the complete evidence sequence.
 from .runtime import prepare_model  # Verify upstream weights and runtime compatibility first.
-from .storage import check_manifest, load_arrays, load_json, save_arrays, save_json, utc_now  # Atomic artifacts make every completed phase resumable.
+from .storage import check_manifest, load_json, save_json, utc_now  # Atomic artifacts make every completed phase resumable.
 
 
-def prepare(model_key: str, run_dir: Path, config: Config) -> tuple:
+def prepare(model_key: str, run_dir: Path, config: Config, source_manifest: dict | None = None) -> tuple:
     """Local: verify model and immutable protocol; global: establish provenance before evidence."""
     torch.set_num_threads(config.torch_threads)  # Avoid excessive threads for tiny MLP batches.
     model, provenance = prepare_model(model_key, Path.cwd())  # Check exact revision/hash, spaces, and frozen architecture.
     splits = {name: list(range(config.seed_offset + start, config.seed_offset + start + getattr(config, f"{name}_episodes"))) for name, start in
               (("diagnostic", 0), ("fit", 1000), ("validation", 10000), ("confirmation", 20000), ("replication", 30000))}  # Whole episodes stay in one phase.
+    if source_manifest is not None:  # A registered follow-up can reuse existing fitting evidence without refitting a chosen vector.
+        if source_manifest["provenance"]["sha256"] != provenance["sha256"] or any(source_manifest["config"][key] != config.as_dict()[key] for key in ("warmup", "max_steps")):  # Imported evidence must describe the same actor and measurement schedule.
+            raise ValueError("Imported fitting policy or rollout schedule differs")  # Reject incompatible activation and action-bias fitting data.
+        splits.update({phase: source_manifest["seed_splits"][phase] for phase in ("diagnostic", "fit")})  # Keep original fitting identities rather than pretend to collect new data.
     all_seeds = [seed for group in splits.values() for seed in group]  # Guard future configuration expansions.
     if len(all_seeds) != len(set(all_seeds)):  # Excessively large counts could overlap nominal ranges.
         raise ValueError("Configured seed splits overlap; specify a new protocol")  # Stop rather than allow leakage.
@@ -56,43 +59,11 @@ def run_pipeline(model_key: str, run_dir: Path, config: Config, stop_after: str 
     fitting = collect_episodes(model, model_key, run_dir, "fit", seeds["fit"], config, capture=True, stochastic=True)  # Independent stochastic data supplies activation contrasts.
     behaviors = ["speed", "effort", "height"] if model_key == "halfcheetah" else ["lateral", "turning"]  # Register environment-appropriate candidates.
     vectors, extraction = fit_vectors(fitting, behaviors, seed=0, warmup=config.warmup, minimum_speed_fraction=config.fit_min_speed_fraction)  # Fit candidates and controls using fitting episodes only.
-    if (run_dir / "vectors.npz").exists():  # Never overwrite directions beneath existing condition names.
-        saved_vectors = load_arrays(run_dir / "vectors.npz")  # Read the previously fitted numerical identity.
-        if saved_vectors.keys() != vectors.keys() or any(not np.array_equal(saved_vectors[name], vectors[name]) for name in vectors):  # A changed extractor may produce scientifically different treatments.
-            raise ValueError("Fitted vectors changed; preserve this run and start a new experiment")  # Refuse mixed old-evaluation/new-vector reports.
-    save_arrays(run_dir / "vectors.npz", vectors)  # Store scaled directions as non-executable arrays.
+    save_fixed_vectors(run_dir, vectors)  # Preserve exact treatment identity before accepting cached comparisons.
     save_json(run_dir / "vector_diagnostics.json", extraction)  # Preserve raw vectors, scale, groups, and numerical gates.
     result.update(extraction=extraction, status="fitted" if vectors else "no_eligible_vectors")  # A null extraction remains an explicit research result.
     save_json(run_dir / "results.json", result)  # Keep every phase's outcome even when escalation is required.
     if stop_after == "extract" or not vectors:
         return result  # Do not invent contrasts when the fitting criteria fail.
-    previous = load_json(run_dir / "validation.json") if (run_dir / "validation.json").exists() else []  # Resume the fixed strength grid.
-    validation = calibrate(model, model_key, run_dir, vectors, seeds["validation"], config, previous=previous)  # Give every direction the same validation opportunities.
-    selected = select_conditions(validation, behaviors)  # Choose useful candidate signs/strengths outside confirmation data.
-    if selected and not (run_dir / "selection.json").exists():  # Derive action controls before the final selection is frozen.
-        biases = derive_action_biases(model, fitting, selected, vectors, config.warmup)  # Fit a constant action-displacement comparator.
-        save_arrays(run_dir / "action_biases.npz", biases)  # Clearly separate action-space offsets from activation vectors.
-        validation = calibrate(model, model_key, run_dir, biases, seeds["validation"], config, action_biases=biases, previous=validation)  # Calibrate action controls on the same validation seeds.
-        selected = select_conditions(validation, behaviors)  # Include the calibrated comparator in the frozen selection.
-        save_json(run_dir / "selection.json", {"created_utc": utc_now(), "conditions": selected, "analysis_sha256": ANALYSIS_ID, "rule": "useful gate; smallest strength within 5% of best absolute effect"})  # Timestamp choices and metric implementation before confirmation begins.
-    elif (run_dir / "selection.json").exists():
-        selection = load_json(run_dir / "selection.json")  # Never tune a previously confirmed selection again.
-        if selection.get("analysis_sha256") != ANALYSIS_ID:  # A different metric implementation cannot inherit a frozen hypothesis silently.
-            raise ValueError("Selected analysis changed; preserve this attempt and register a new experiment")  # Retain previously examined held-out evidence.
-        selected = selection["conditions"]  # Reuse the exact original signs, strengths, and controls.
-    result.update(validation=validation, selected=selected, status="validated" if selected else "no_validation_candidate")  # Retain the full grid and selected controls.
-    save_json(run_dir / "results.json", result)  # Report selection without consulting held-out data.
-    if stop_after == "calibrate" or not selected:
-        return result  # A failed grid motivates a separately registered hypothesis.
-    biases = load_arrays(run_dir / "action_biases.npz") if (run_dir / "action_biases.npz").exists() else {}  # Reuse frozen action controls.
-    confirmation = evaluate(model, model_key, run_dir, "confirmation", selected, vectors, seeds["confirmation"], config, biases)  # Test frozen hypotheses on thirty new pairs.
-    confirmed = successful_candidates(selected, confirmation)  # Enforce the validation-selected direction and all gates.
-    result.update(confirmation=confirmation, status="confirmed" if confirmed else "confirmation_failed")  # Failed attempts remain in the experiment record.
-    save_json(run_dir / "results.json", result)  # Save before independent replication.
-    if stop_after == "confirm" or not confirmed:
-        return result  # Do not retune on failed confirmation episodes.
-    replication = evaluate(model, model_key, run_dir, "replication", selected, vectors, seeds["replication"], config, biases)  # Independently repeat every frozen condition.
-    replicated = successful_candidates(confirmed, replication)  # Require the same useful effect twice.
-    result.update(replication=replication, replicated=replicated, status="replicated" if replicated else "replication_failed")  # Successful rollouts are not yet a practical demonstration.
-    save_json(run_dir / "results.json", result)  # Preserve the complete evidence before report generation.
-    return result  # CLI reporting is separate so numerical work survives rendering failures.
+    return run_evaluation_phases(model, model_key, run_dir, vectors, behaviors, seeds, config, result,
+                                 lambda: fitting, stop_after=stop_after)  # Reuse the common calibration-to-replication protocol and its inspection boundaries.

@@ -30,6 +30,9 @@ locomotion-steering = "rl_locomotion_steering_vectors.cli:main"
 [dependency-groups]
 dev = ["pytest>=8,<9"]
 
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
 [tool.uv.sources]
 torch = { index = "pytorch-cpu" }
 torchvision = { index = "pytorch-cpu" }
