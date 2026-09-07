@@ -119,9 +119,9 @@ def _decision_text(manifest, results):
     lines = []  # Local: accumulate decisions only when recorded; global: avoid inventing an experiment narrative.
     for item in manifest.get("decisions", []):  # Local: retain manifest ordering; global: preserve the actual hypothesis sequence.
         if isinstance(item, dict):  # Local: handle structured decision metadata; global: include timestamps and evidence paths.
-            description = item.get("decision", "Decision text not recorded.")  # Local: read the original rationale; global: avoid interpreting metadata as a new claim.
+            description = item.get("decision") or item.get("hypothesis") or item.get("question", "Decision text not recorded.")  # Local: support recorded hypothesis-style entries; global: avoid losing valid scientific rationale when field names differ.
             description = "Outcome decision recorded above." if description == results.get("decision") else description  # Local: refer back to duplicate outcome prose; global: prevent repetitive reports.
-            lines.append(f"{item.get('time_utc', 'Time not recorded')}: {description} Evidence: {item.get('evidence', 'not recorded')}.")  # Local: associate decision with evidence; global: preserve review chronology.
+            lines.append(f"{item.get('time_utc', 'Time not recorded')}: {description} Evidence: {item.get('evidence', item.get('source', 'not recorded'))}.")  # Local: associate decision with evidence or source metadata; global: preserve review chronology.
         else:  # Local: tolerate older plain-text decisions; global: keep existing run records reportable.
             lines.append(str(item))  # Local: copy the saved narrative; global: avoid silently dropping historical decisions.
     return "\n".join(lines)  # Local: expose narrative or an empty string; global: omit an unsupported chronology section.
