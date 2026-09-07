@@ -1,0 +1,45 @@
+[project]
+name = "rl-locomotion-steering-vectors"
+version = "0.1.0"
+description = "Reproducible causal activation steering experiments in frozen RL locomotion policies"
+readme = "README.md"
+authors = [
+    { name = "BurnyCoder", email = "happymancz@email.cz" }
+]
+requires-python = ">=3.12,<3.13"
+dependencies = [
+    "numpy==1.26.4",
+    "torch==2.5.1",
+    "torchvision==0.20.1",
+    "stable-baselines3==2.4.1",
+    "sb3-contrib==2.4.0",
+    "gymnasium[mujoco]==1.0.0",
+    "mujoco==3.1.5",
+    "cloudpickle==3.1.0",
+    "baukit",
+    "python-dotenv>=1.0,<2",
+    "huggingface-hub>=0.34,<2",
+    "imageio[ffmpeg]>=2.37,<3",
+    "matplotlib>=3.9,<4",
+    "reportlab>=4.2,<5",
+]
+
+[project.scripts]
+locomotion-steering = "rl_locomotion_steering_vectors.cli:main"
+
+[dependency-groups]
+dev = ["pytest>=8,<9"]
+
+[tool.uv.sources]
+torch = { index = "pytorch-cpu" }
+torchvision = { index = "pytorch-cpu" }
+baukit = { git = "https://github.com/davidbau/baukit.git", rev = "9d51abd51ebf29769aecc38c4cbef459b731a36e" }
+
+[[tool.uv.index]]
+name = "pytorch-cpu"
+url = "https://download.pytorch.org/whl/cpu"
+explicit = true
+
+[build-system]
+requires = ["uv_build>=0.12.3,<0.13.0"]
+build-backend = "uv_build"

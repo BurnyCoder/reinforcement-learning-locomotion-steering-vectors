@@ -1,0 +1,10 @@
+# Generated environments, caches, credentials, and large arrays stay local.
+.venv/
+.cache/
+.env
+__pycache__/
+.pytest_cache/
+*.egg-info/
+artifacts/
+runs/
+*.pyc
