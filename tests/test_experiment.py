@@ -2,7 +2,9 @@
 
 Source: https://docs.pytest.org/en/stable/how-to/assert.html
 """
-from rl_locomotion_steering_vectors.experiment import select_conditions, successful_candidates
+import pytest  # Explicit provenance failures prevent incompatible result reuse.
+from rl_locomotion_steering_vectors.config import Config  # Supply normal protocol settings to the calibration boundary.
+from rl_locomotion_steering_vectors.experiment import select_conditions, successful_candidates, calibrate
 
 
 def row(name, alpha, effect, gate=True):
@@ -24,3 +26,10 @@ def test_reversed_confirmation_is_not_success():
     selected = [{"vector": "speed", "behavior": "speed", "alpha": .1, "direction": 1, "role": "candidate"}]
     confirmed = [dict(selected[0], effect={"gate": True, "direction": -1})]  # Magnitude alone is insufficient.
     assert successful_candidates(selected, confirmed) == []  # Reject post-hoc reinterpretation.
+
+
+def test_changed_analysis_cannot_reuse_saved_validation(tmp_path):
+    """Local: reject stale derived results; global: keep metric corrections auditable."""
+    previous = [dict(row("speed", .1, .2), analysis_sha256="old-code")]  # Simulate a different failure definition.
+    with pytest.raises(ValueError, match="analysis"):
+        calibrate(None, "halfcheetah", tmp_path, {}, [1, 2], Config(), previous=previous)  # Stop before loading or collecting episodes.

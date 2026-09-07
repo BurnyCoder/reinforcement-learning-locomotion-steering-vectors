@@ -192,7 +192,13 @@ negative controls, not a formal exchangeability test for correlated windows.
 
 
 def _summary(item: dict, warmup: int = 100) -> dict:
-    """Local: reduce a rollout to one outcome. Global: keep failed episodes in inference."""
+    """Local: reduce a rollout to one outcome. Global: keep failed episodes in inference.
+
+Physical failure means post-onset inversion or forbidden contact exceeds five
+percent within this episode. This is an explicit project pilot definition;
+HalfCheetah itself never terminates for falling, as documented at
+https://gymnasium.farama.org/environments/mujoco/half_cheetah/#episode-end.
+"""
     result = {}  # One observation per reset avoids timestep pseudoreplication.
     prefix_only = int(item.get("length", warmup + 1)) <= warmup  # Match runtime's convention for absent post-onset evidence.
     mapping = {**METRICS, **{name: name for name in QUALITY + EXTRAS}}  # Alias raw simulator measurements to stable report names.
@@ -205,7 +211,8 @@ def _summary(item: dict, warmup: int = 100) -> dict:
     failure = float(item.get("failure", bool(item.get("terminated", False))))  # Preserve the runtime summary's explicit failure flag when termination metadata has been reduced away.
     if not np.isfinite(failure) or not 0 <= failure <= 1:
         raise ValueError("evaluation failure must be a finite fraction between zero and one")  # Invalid failure metadata cannot silently pass the quality gate.
-    result["failure"] = max(failure, float(prefix_only), float(bool(item.get("terminated", False))))  # Neither a supplied flag nor raw terminal evidence may be erased.
+    physical_failure = float(any(result[name] > 0.05 for name in QUALITY))  # Classify each episode before averaging so isolated collapses cannot hide in pooled contact fractions.
+    result["failure"] = max(failure, float(prefix_only), float(bool(item.get("terminated", False))), physical_failure)  # Combine explicit termination and the declared physical pilot criterion without erasing either source of failure.
     result["prefix_only"] = float(prefix_only)  # Such episodes cannot demonstrate sustained steering.
     return result  # Every supplied reset contributes exactly once to the paired analysis.
 

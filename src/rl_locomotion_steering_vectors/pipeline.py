@@ -13,7 +13,7 @@ import numpy as np  # Compare saved intervention contents exactly before cache r
 from .analysis import fit_vectors  # Extraction remains independent of orchestration.
 from .config import Config  # Explicit settings become part of the immutable manifest.
 from .execution import collect_episodes, diagnose  # Reuse collection for diagnostic and fitting data.
-from .experiment import calibrate, derive_action_biases, evaluate, select_conditions, successful_candidates  # Separate numerical evaluation from phase ordering.
+from .experiment import ANALYSIS_ID, calibrate, derive_action_biases, evaluate, select_conditions, successful_candidates  # Separate numerical evaluation from phase ordering.
 from .runtime import prepare_model  # Verify upstream weights and runtime compatibility first.
 from .storage import check_manifest, load_arrays, load_json, save_arrays, save_json, utc_now  # Atomic artifacts make every completed phase resumable.
 
@@ -74,9 +74,12 @@ def run_pipeline(model_key: str, run_dir: Path, config: Config, stop_after: str 
         save_arrays(run_dir / "action_biases.npz", biases)  # Clearly separate action-space offsets from activation vectors.
         validation = calibrate(model, model_key, run_dir, biases, seeds["validation"], config, action_biases=biases, previous=validation)  # Calibrate action controls on the same validation seeds.
         selected = select_conditions(validation, behaviors)  # Include the calibrated comparator in the frozen selection.
-        save_json(run_dir / "selection.json", {"created_utc": utc_now(), "conditions": selected, "rule": "useful gate; smallest strength within 5% of best absolute effect"})  # Timestamp choices before confirmation begins.
+        save_json(run_dir / "selection.json", {"created_utc": utc_now(), "conditions": selected, "analysis_sha256": ANALYSIS_ID, "rule": "useful gate; smallest strength within 5% of best absolute effect"})  # Timestamp choices and metric implementation before confirmation begins.
     elif (run_dir / "selection.json").exists():
-        selected = load_json(run_dir / "selection.json")["conditions"]  # Never tune a previously confirmed selection again.
+        selection = load_json(run_dir / "selection.json")  # Never tune a previously confirmed selection again.
+        if selection.get("analysis_sha256") != ANALYSIS_ID:  # A different metric implementation cannot inherit a frozen hypothesis silently.
+            raise ValueError("Selected analysis changed; preserve this attempt and register a new experiment")  # Retain previously examined held-out evidence.
+        selected = selection["conditions"]  # Reuse the exact original signs, strengths, and controls.
     result.update(validation=validation, selected=selected, status="validated" if selected else "no_validation_candidate")  # Retain the full grid and selected controls.
     save_json(run_dir / "results.json", result)  # Report selection without consulting held-out data.
     if stop_after == "calibrate" or not selected:

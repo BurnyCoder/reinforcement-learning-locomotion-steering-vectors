@@ -222,3 +222,29 @@ def test_speed_floor_rejects_invalid_fraction(fraction):
     """Local: validate the additional fitting parameter. Global: prevent malformed eligibility specifications."""
     with pytest.raises(ValueError, match="minimum_speed_fraction"):
         window_table([episode(1, [2])], minimum_speed_fraction=fraction)  # Only finite nonnegative fractions define an auditable speed floor.
+
+
+@pytest.mark.parametrize("metric", ["bad_contact", "inversion"])
+def test_one_collapsed_episode_cannot_hide_behind_pooled_health_fraction(metric):
+    """Local: classify physical failure per episode. Global: one collapse in ten must not count as competent control."""
+    baseline = [summary(i) for i in range(10)]  # All baseline resets retain healthy locomotion.
+    treated = [summary(i, speed=2.3, **{metric: 0.45 if i == 0 else 0.0}) for i in range(10)]  # One episode spends 45 percent of its post-onset trajectory collapsed.
+    result = paired_effect(baseline, treated, "speed")  # Pooling fractions alone would incorrectly permit this condition.
+    assert result["quality_deltas"][metric] == pytest.approx(0.045)  # Preserve the genuine pooled timestep-fraction measurement.
+    assert result["quality_deltas"]["failure"] == pytest.approx(0.1)  # Episode incidence separately captures the one-in-ten collapse.
+    assert result["effect_size_pass"] and result["ci_excludes_zero"]  # The fixture isolates failure handling from the apparent useful speed effect.
+    assert not result["quality_pass"] and not result["gate"]  # Ten-percent physical failure exceeds the five-percentage-point allowance.
+
+
+def test_physical_episode_failure_uses_post_onset_strict_five_percent_threshold():
+    """Local: apply the declared pilot boundary. Global: count physical failures consistently without changing raw trajectories."""
+    baseline = [episode(i, [2] * 9) for i in range(10)]  # Each rollout provides exactly 900 post-onset samples.
+    treated = [episode(i, [2.3] * 9) for i in range(10)]  # Sustained speed effects otherwise satisfy the usefulness criterion.
+    for item in treated:
+        item["bad_contact"][:100] = 1  # Startup contacts must not become post-intervention physical failures.
+        item["bad_contact"][100:145] = 1  # Exactly45 of900 post-onset contacts equal the allowed five percent.
+    boundary = paired_effect(baseline, treated, "speed")  # The operational definition uses strictly greater than five percent.
+    assert boundary["treated_means"]["failure"] == 0 and boundary["gate"]  # Neither prefix contacts nor exact-boundary fractions count as failures.
+    treated[0]["bad_contact"][145] = 1  # One additional contact crosses the per-episode boundary.
+    crossed = paired_effect(baseline, treated, "speed")  # Recompute analysis without changing simulator termination metadata.
+    assert crossed["treated_means"]["failure"] == pytest.approx(0.1) and not crossed["gate"]  # Raw array evaluation shares the scalar-summary failure definition.
