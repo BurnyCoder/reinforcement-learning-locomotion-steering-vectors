@@ -4,6 +4,7 @@ Sources: https://arxiv.org/abs/2312.06681 (signed activation additions)
 https://numpy.org/doc/1.26/reference/generated/numpy.mean.html
 """
 import logging  # Record each completed condition and its full effect estimate.
+import hashlib  # Identify the exact derived-analysis implementation behind saved comparisons.
 from pathlib import Path  # Each experiment keeps its own numerical artifacts.
 
 import numpy as np  # Arrays represent interventions without executable serialization.
@@ -16,6 +17,7 @@ from .execution import collect_episodes, summaries  # Shared rollout code preser
 from .storage import save_json  # Incremental results survive an interrupted search.
 
 STRENGTHS = (-.5, -.2, -.1, -.05, .05, .1, .2, .5)  # Zero is collected once as the shared paired baseline.
+ANALYSIS_ID = hashlib.sha256((Path(__file__).with_name("analysis.py").read_text(encoding="utf-8") + Path(__file__).read_text(encoding="utf-8")).encode("utf-8")).hexdigest()  # Freeze normalized source identity at import so later edits cannot relabel an active process.
 
 
 def condition_name(name: str, alpha: float) -> str:
@@ -26,6 +28,8 @@ def condition_name(name: str, alpha: float) -> str:
 def calibrate(model, model_key: str, run_dir: Path, vectors: dict, seeds: list[int], config: Config,
               *, action_biases: dict | None = None, previous: list | None = None) -> list[dict]:
     """Local: evaluate a prespecified grid; global: give candidate and controls equal selection data."""
+    if any(row.get("analysis_sha256") != ANALYSIS_ID for row in (previous or [])):  # Derived metrics may change while raw simulator data remain valid.
+        raise ValueError("Saved validation analysis differs; preserve prior results and explicitly register reanalysis before resuming")  # Require an auditable correction rather than silently mixing definitions.
     baseline = summaries(collect_episodes(model, model_key, run_dir, "validation", seeds, config), config)  # Identical prefix and seeds anchor each comparison.
     results = list(previous or [])  # Bias comparators may be added after vector calibration.
     for name, vector in vectors.items():  # Controls are fitted and scaled before this phase.
@@ -38,7 +42,7 @@ def calibrate(model, model_key: str, run_dir: Path, vectors: dict, seeds: list[i
                                         condition=condition_name(name, alpha), vector=vector if bias is None else None,
                                         alpha=alpha, action_bias=None if bias is None else alpha * bias)  # Runtime applies a constant action offset after warmup.
             effect = paired_effect(baseline, summaries(episodes, config), behavior, seed=710, warmup=config.warmup)  # Bootstrap whole paired episodes.
-            row = {"vector": name, "behavior": behavior, "alpha": alpha, "effect": effect}  # Save signed measured effects, not only pass/fail.
+            row = {"vector": name, "behavior": behavior, "alpha": alpha, "effect": effect, "analysis_sha256": ANALYSIS_ID}  # Save signed measured effects and exact derived-analysis identity.
             results.append(row)  # No unsuccessful conditions are discarded.
             save_json(run_dir / "validation.json", results)  # Persist after every grid point.
             logging.info("validation %s", row)  # Full condition results are visible immediately.
@@ -93,7 +97,7 @@ def evaluate(model, model_key: str, run_dir: Path, phase: str, selected: list[di
                                     condition=condition_name(name, alpha), vector=vectors.get(name) if bias is None else None,
                                     alpha=alpha, action_bias=None if bias is None else alpha * bias)  # Equal onset, horizon, and simulator settings.
         effect = paired_effect(baseline, summaries(episodes, config), row["behavior"], seed=720 if phase == "confirmation" else 730, warmup=config.warmup)  # Independent deterministic bootstrap streams.
-        results.append(dict(row, effect=effect))  # Preserve the original selected direction beside the measured direction.
+        results.append(dict(row, effect=effect, analysis_sha256=ANALYSIS_ID))  # Preserve original selection beside the measured effect and analysis identity.
         save_json(run_dir / f"{phase}.json", results)  # Resume episodes even if report generation later fails.
         logging.info("%s %s", phase, results[-1])  # Log the complete estimate and every gate.
     return results  # The caller decides success without changing settings.
