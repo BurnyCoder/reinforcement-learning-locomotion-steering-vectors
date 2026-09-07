@@ -23,6 +23,11 @@ def main() -> None:
     run.add_argument("--model", choices=("halfcheetah", "ant"), default="halfcheetah")  # Restrict models to pinned verified specifications.
     run.add_argument("--run-dir", type=Path, required=True)  # Explicit run identities prevent accidental evidence mixing.
     run.add_argument("--stop-after", choices=("diagnose", "extract", "calibrate", "confirm"))  # Optional inspection boundaries do not change the protocol.
+    retarget = commands.add_parser("retarget", help="Test a saved vector family against a newly registered behavioral outcome")  # Cross-behavior follow-ups reuse fitting evidence but require fresh evaluation seeds.
+    retarget.add_argument("--source-run", type=Path, required=True)  # Read exact vectors and fitting provenance from one completed source run.
+    retarget.add_argument("--run-dir", type=Path, required=True)  # Preserve the source experiment under a separate immutable run identity.
+    retarget.add_argument("--vector", required=True)  # Name a primary fitted family, such as height.
+    retarget.add_argument("--behavior", choices=("speed", "effort", "height", "lateral", "turning"), required=True)  # Make the new tested outcome explicit.
     replay = commands.add_parser("replay", help="Replay a saved activation intervention to MP4 and NPZ")  # Produce visual and numerical evidence together.
     replay.add_argument("--run-dir", type=Path, required=True)  # Read checkpoint identity from the existing manifest.
     replay.add_argument("--vector", default="speed")  # Vector keys match vectors.npz.
@@ -44,6 +49,17 @@ def main() -> None:
             with RolloutPool(args.model, Path.cwd(), workers=config.rollout_workers) as pool, use_pool(pool):  # Reuse frozen worker policies while guaranteeing shutdown on failure.
                 result = run_pipeline(args.model, run_dir, config, args.stop_after)  # Carry the requested phases to completion.
             logging.info("run completed status=%s", result["status"])  # Distinguish valid null results from a discovery.
+        elif args.command == "retarget":
+            from .parallel import RolloutPool  # Reuse isolated frozen workers for this follow-up too.
+            from .retarget import run_retarget  # Keep the import-and-evaluate workflow outside the CLI.
+            source_dir = args.source_run.resolve()  # Validate the parent artifact location before reading it.
+            if not source_dir.is_relative_to(Path.cwd().resolve()) or source_dir == run_dir:  # Source data must remain project-local and separate from the new experiment.
+                raise ValueError("--source-run must be a different run inside this project")  # Prevent accidental overwrite or unrelated-folder inspection.
+            source_manifest = load_json(source_dir / "manifest.json")  # Resolve the known checkpoint for worker initialization.
+            config = read_config()  # New evaluation seeds are declared in the normal .env configuration.
+            with RolloutPool(source_manifest["model_key"], Path.cwd(), workers=config.rollout_workers) as pool, use_pool(pool):  # Share one persistent pool across calibration and held-out phases.
+                result = run_retarget(source_dir, run_dir, args.vector, args.behavior, config)  # Register the changed outcome before new observations.
+            logging.info("retarget completed status=%s", result["status"])  # A useful follow-up still requires replication and an application demonstration.
         elif args.command == "replay":
             manifest = load_json(run_dir / "manifest.json")  # Use the original experiment's identity.
             config = Config(**manifest["config"])  # Preserve original onset and simulator horizon.
