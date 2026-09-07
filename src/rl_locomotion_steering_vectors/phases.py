@@ -33,7 +33,8 @@ def run_evaluation_phases(model, model_key: str, run_dir: Path, vectors: dict, b
     selected = select_conditions(validation, behaviors)  # Selection uses validation data exclusively.
     selection_path = run_dir / "selection.json"  # One frozen selection governs every held-out phase.
     if selected and not selection_path.exists():  # Fit action controls only for a newly shortlisted hypothesis.
-        biases = derive_action_biases(model, fitting_loader(), selected, vectors, config.warmup)  # The caller supplies original fitting observations, never held-out observations.
+        biases = derive_action_biases(model, fitting_loader(), selected, vectors, config.warmup,
+                                     reference_strength=max(abs(value) for value in config.strengths))  # Fit only on original fitting observations and preserve the full action-displacement range when the grid is finer.
         save_arrays(run_dir / "action_biases.npz", biases)  # Keep action-space comparators separate from activation vectors.
         validation = calibrate(model, model_key, run_dir, biases, seeds["validation"], config, action_biases=biases, previous=validation)  # Give the comparator the same calibration grid and episodes.
         selected = select_conditions(validation, behaviors)  # Include calibrated controls before locking the hypothesis.

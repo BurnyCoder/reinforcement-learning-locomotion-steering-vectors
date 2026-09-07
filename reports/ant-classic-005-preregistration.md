@@ -1,0 +1,15 @@
+# Experiment 005: lateral and turning contrasts in Ant
+
+Registered 2026-09-07 at 23:55 UTC, before diagnostic episodes. This independent environment experiment follows the original plan's Ant branch while experiment 004 tests smaller HalfCheetah additions.
+
+**Question and hypothesis.** Does the verified frozen Ant SAC medium policy contain sustained variation in lateral velocity or yaw rate that supports useful activation-difference steering? Ant's free three-dimensional root permits these outcomes; the planar HalfCheetah cannot provide the same test. Natural variation is a fitting diagnostic and does not itself establish controllability.
+
+Use the pinned Ant checkpoint `de5978d34b0118341df2b0a30232c5d2bfcb148e`, seed offset 500000, 16 diagnostic episodes, and an explicit diagnostic review boundary. If sustained eligible contrasts exist, expand to 64 fitting episodes (501000–501063). The extraction, first actor ReLU, eligible-window rules, episode balancing, fitting RMS, original signed strengths ±0.05/±0.1/±0.2/±0.5, controls, and pilot usefulness gates stay as documented in the shared methodology. Examine lateral movement and turning only. Derive yaw from quaternion orientation with wrapped angle differences, never from a quaternion component treated as an angle.
+
+Validation seeds are 510000–510009, confirmation 520000–520029, and replication 530000–530029. If diagnostics or fitting are unsuitable, record the failure before consuming later splits. The hypothesis, intervention choices, and any revision must remain explicit; failed evaluation episodes are retained. A practical application for a successful lateral or turning intervention will require a separately locked target and fresh episodes.
+
+Sources: [official Ant environment documentation](https://gymnasium.farama.org/environments/mujoco/ant/) and [upstream checkpoint](https://huggingface.co/farama-minari/Ant-v5-SAC-medium). The checkpoint/runtime source audit already established the 105-observation, eight-action interface and two 256-unit actor layers. This run reuses the existing simulator, measurement, extraction, and evaluation code.
+
+## Diagnostic review and expansion
+
+The diagnostic command completed at 23:55:50 UTC. Across all 16 post-startup episode summaries, mean forward speed was 6.3512 m/s and lateral velocity ranged from −0.0904 to +0.4434 m/s (mean +0.1673). Mean yaw rates ranged from −0.00893 to +0.00582 rad/s. Two episodes terminated early; neither aggregate inversion nor forbidden torso contact was observed. These are descriptive stochastic-policy outcomes, not intervention effects. The lateral variation warrants the planned 64-episode fitting expansion; the much smaller turning variation requires checking full windows before treating its contrast as useful signal. Fitting began at 23:56:25 UTC, with validation still untouched.
