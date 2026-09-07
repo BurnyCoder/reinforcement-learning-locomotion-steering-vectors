@@ -14,9 +14,11 @@ The intervention site is the output of `actor.latent_pi[1]`, the first ReLU in t
 
 ## Data collection and vector extraction
 
-Default reset partitions are diagnostic `0-15`, fitting `1000-1063`, validation `10000-10009`, confirmation `20000-20029`, and replication `30000-30029`. The manifest records the actual configuration and full seed lists; `.env` can change episode counts. All data derived from an episode stay in its partition.
+With seed offset zero, reset partitions are diagnostic `0-15`, fitting `1000-1063`, validation `10000-10009`, confirmation `20000-20029`, and replication `30000-30029`. The configured `STEERING_SEED_OFFSET` is added to every seed; `hc-classic-002` uses `100000` so all partitions are fresh relative to experiment 001. The manifest records actual configuration and full seed lists. All data derived from an episode stay in its partition.
 
 Episodes run for at most 1,000 steps, with a 100-step unsteered prefix. Fitting uses non-overlapping 100-step windows after startup. This allows local behavioral variation even when whole-episode speed is nearly constant. Incomplete or unhealthy fitting windows are excluded with recorded reasons; failed evaluation episodes remain in the analysis.
+
+Experiment 001 used health-only eligibility. Its [fitting review](../reports/hc-classic-001-diagnostics.md) found substantial influence from ten near-stationary windows. The follow-up adds `STEERING_FIT_MIN_SPEED_FRACTION=0.5`: calculate the median forward speed among finite, initially health-eligible fitting windows and retain only windows strictly above half that median. The fraction, derived absolute floor, and excluded count are saved. A fraction of zero disables this rule. The rule affects both contrast extraction and activation RMS, never evaluation episodes. It is a project pilot heuristic motivated by fitting-only sensitivity analysis; it does not guarantee that posture or effort contrasts are free of speed confounding.
 
 For each behavior, upper and lower quartiles define contrasting activation means. Each group needs at least eight independent contributing episodes. Contributing episodes receive equal weight within each group, so many windows from a single episode do not manufacture independent evidence. The raw direction is `mean(h_high) - mean(h_low)`. Effort contrasts are formed within up to five speed bins, with equal bin weighting, so simply moving slowly does not define reduced action effort.
 
@@ -24,9 +26,11 @@ Vector magnitude is normalized to the fitting set's centered activation RMS, inc
 
 ## Calibration, controls, and fresh evaluation
 
-The initial strength grid is `0, +/-0.05, +/-0.1, +/-0.2, +/-0.5`. Evaluation uses deterministic actions, paired reset seeds, and matching complete simulator states immediately before intervention. This supports a causal comparison of the activation change within the tested simulator and policy.
+The initial nonzero strength grid is `+/-0.05, +/-0.1, +/-0.2, +/-0.5`; zero steering is a shared paired baseline collected once per evaluation split. Evaluation uses deterministic actions, paired reset seeds, and matching complete simulator states immediately before intervention. This supports a causal comparison of the activation change within the tested simulator and policy.
 
-Every candidate has three random directions and a shuffled-label direction with the same norm. Controls receive the same validation opportunity. Selection is recorded before confirmation. Later report rendering cannot choose a different strength.
+Every candidate has three random directions and a shuffled-label direction with the same norm. Controls receive the same validation opportunity. A candidate must pass the usefulness gate to be shortlisted. Per vector, the selection favors the smallest absolute strength within 5% of the largest absolute useful effect; controls without a useful grid point retain a strong measured comparison instead of disappearing. Selected signs and strengths are recorded before confirmation. Later report rendering cannot choose a different strength.
+
+For shortlisted candidate vectors, the pipeline fits a constant action-bias comparator from every tenth post-startup fitting observation. It averages the steered-minus-baseline deterministic action displacement at the validation-selected activation strength. The stored action vector is scaled so comparator strength `0.5` produces that fitted mean displacement; the same signed validation grid explores smaller offsets and the reverse direction. Action biases have action dimensions, are stored separately, and are applied after warmup with action-bound clipping. They test whether useful effects also arise from a simple fixed motor-command offset.
 
 Fresh confirmation and replication episodes evaluate locked candidates. Confidence intervals are percentile bootstraps of paired episode differences, not independent resampling of correlated timesteps. Replication here means new reset episodes using the same policy checkpoint. One trained policy cannot establish robustness to the training seed.
 
@@ -46,6 +50,6 @@ Mean squared normalized action is an effort proxy. It is not motor energy, batte
 
 Report a direction as useful only when its locked effect and quality conditions survive fresh evaluation. Check random and shuffled controls before claiming specificity. Report one-sided effects, disruptive effects, insufficient contrast, and null results explicitly.
 
-A constant action-bias comparator and a fresh application demonstration remain follow-up experiments for promising candidates; neither is silently implied by a passing gate. Possible escalation includes a continuous-action adaptation of policy-gradient steering or an online-RL policy trained to respond to varied commands. These additions require their own implementation, validation, source review, and experiment specification. No behavioral cloning is permitted.
+A fresh application demonstration remains a follow-up experiment for promising candidates; a passing gate does not establish an application. The replay command supports saved activation directions, fresh reset seeds, MP4/NPZ output, and off/on/off interventions through a later switch-off step. Possible escalation includes a continuous-action adaptation of policy-gradient steering or an online-RL policy trained to respond to varied commands. These additions require their own implementation, validation, source review, and experiment specification. No behavioral cloning is permitted.
 
 The research loop is: define a question, inspect prior work and diagnostics, state a hypothesis, run an experiment, interpret all results, and revise the hypothesis. Keep the reasoning for each change in its experiment report, including what failed, why the next intervention is plausible, and which fresh data will test it.
