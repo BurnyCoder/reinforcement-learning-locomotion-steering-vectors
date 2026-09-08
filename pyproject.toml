@@ -32,6 +32,7 @@ dev = ["pytest>=8,<9"]
 
 [tool.pytest.ini_options]
 testpaths = ["tests"]
+pythonpath = ["."] # Make repository audit scripts importable through the documented pytest entry point; https://docs.pytest.org/en/stable/explanation/pythonpath.html
 
 [tool.uv.sources]
 torch = { index = "pytorch-cpu" }

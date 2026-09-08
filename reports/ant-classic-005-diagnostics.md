@@ -2,7 +2,7 @@
 
 Inspected 2026-09-08 UTC, before this inspection accessed any validation data. Scope: the 16 saved stochastic diagnostic episodes (500000–500015), 64 saved stochastic fitting episodes (501000–501063), and existing extraction metadata. Numerical detail is preserved in `artifacts/runtime-smoke/ant-classic-005-fitting-inspection.json`. No rollouts were rerun and no vectors, thresholds, or selections were changed.
 
-**Recommendation:** proceed with the registered lateral-motion validation. Its fitting contrast reflects moving trajectories and survives the checks below. The turning vector can remain an exploratory causal test, but its labels provide substantially weaker evidence of sustained turning: they are consistent with alternating heading corrections. Neither fitted association establishes causal usefulness.
+**Historical fitting-stage recommendation:** proceed with the specified lateral-motion validation. Its fitting contrast reflects moving trajectories and survives the checks below. The turning vector can remain an exploratory causal test, but its labels provide substantially weaker evidence of sustained turning: they are consistent with alternating heading corrections. Neither fitted association establishes causal usefulness. The [preserved fitting-inspection audit](ant-classic-005/audit/fitting-inspection.json), reproduced by [audit_documentation.py](../scripts/audit_documentation.py), supplies the detailed sensitivity evidence; the [documentation audit](documentation-audit.md) records verification and timestamp qualifications.
 
 ## Movement and episode endings
 

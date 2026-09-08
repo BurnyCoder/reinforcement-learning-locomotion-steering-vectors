@@ -1,6 +1,6 @@
 # Experiment 005: lateral and turning contrasts in Ant
 
-Registered 2026-09-07 at 23:55 UTC, before diagnostic episodes. This independent environment experiment follows the original plan's Ant branch while experiment 004 tests smaller HalfCheetah additions.
+Locally dated 2026-09-07 at 23:55 UTC. This document is a project protocol record, not an independent registration. Its first Git record, [commit 2377452](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/commit/23774522cd6fbd69a986c8a09b18b55266918372), is timestamped 23:57:51 UTC, after diagnostics began at 23:55:37 and fitting at 23:56:25, but before validation. The earlier local date is not independently timestamped by that commit. The [manifest](ant-classic-005/manifest.json), [phase provenance](ant-classic-005/phase-provenance-audit.json), and [documentation audit](documentation-audit.md) preserve the chronology. This separate environment experiment follows the original plan's Ant branch while experiment 004 tests smaller HalfCheetah additions.
 
 **Question and hypothesis.** Does the verified frozen Ant SAC medium policy contain sustained variation in lateral velocity or yaw rate that supports useful activation-difference steering? Ant's free three-dimensional root permits these outcomes; the planar HalfCheetah cannot provide the same test. Natural variation is a fitting diagnostic and does not itself establish controllability.
 

@@ -2,6 +2,8 @@
 
 Inspected on 2026-09-08 before reviewing validation or confirmation outcomes. This report analyzes existing `runs/hc-classic-001/episodes/{diagnostic,fit}/baseline/*.npz` files; no policy rollouts were rerun. The checkpoint is the pinned HalfCheetah TQC policy recorded in this run's manifest.
 
+The [manifest](hc-classic-001/manifest.json) records revision `6fb6381` retrospectively. Its [commit timestamp](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/commit/6fb638125edb71625c13dc4d11130bdc4c239e98), 22:57:14 UTC, falls within the logged 22:55:57–22:57:33 run. It is not an independently verified invocation-time source pin. The [documentation audit](documentation-audit.md) records this provenance limit and the terminology corrections below.
+
 ## Question and measurement
 
 Do speed, effort, and height contrasts describe sustained running, or do a few recovery episodes determine their activation differences?
@@ -62,6 +64,6 @@ After the median-based floor, 507 windows remain. The speed groups still contain
 
 **Experiment `hc-classic-001` was not calibrated. Its initial fitting construction was rejected because near-stationary, accumulated-rotation observations materially influenced the activation directions.** The original vectors are not presented as clean speed, posture, or fixed-speed effort vectors.
 
-The adopted next hypothesis, registered as **`hc-classic-002` before validation**, adds a fitting-only competent-forward-movement rule: retain windows moving at least half the initially health-eligible fitting median speed, then recompute extraction. Preserve every original trajectory and this diagnosis; exclusion from fitting must not become exclusion of failed evaluation episodes.
+The adopted follow-up, executed as **[`hc-running-002`](hc-running-002-findings.md)**, adds a fitting-only forward-speed rule: retain healthy windows moving **strictly above** half the health-eligible fitting median speed, then recompute extraction. The [002 manifest](hc-running-002/manifest.json) records `fit_min_speed_fraction=0.5`; the [filter implementation](../src/rl_locomotion_steering_vectors/analysis.py#L69) excludes equality as well as lower values. Every original trajectory and this diagnosis remain preserved; exclusion from fitting must not become exclusion of failed evaluation episodes.
 
-This floor is an exploratory change motivated by fitting data, not a universally validated locomotion criterion. All causal evaluation and locomotion-preservation requirements remain unchanged. Height/speed covariance and residual effort/speed mismatch remain measured limitations rather than being assumed solved by filtering.
+This floor is an exploratory change motivated by fitting data, not a universally validated locomotion criterion. Its introduction did not itself change the evaluation gates. A separate quality-measurement correction was later made during 002 validation and is documented in the [002 findings](hc-running-002-findings.md). Height/speed covariance and residual effort/speed mismatch remain measured limitations rather than being assumed solved by filtering.
