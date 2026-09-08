@@ -34,6 +34,8 @@ For shortlisted candidate vectors, the pipeline fits a constant action-bias comp
 
 Fresh confirmation and replication episodes evaluate locked candidates. Confidence intervals are percentile bootstraps of paired episode differences, not independent resampling of correlated timesteps. Replication here means new reset episodes using the same policy checkpoint. One trained policy cannot establish robustness to the training seed.
 
+An explicitly registered cross-behavior experiment can test an existing vector against a different outcome. `retarget` copies the complete candidate/control family without changing its values, keeps the source diagnostic/fitting partitions, and requires fresh evaluation partitions disjoint from the source evaluation. `retarget.json` records the source manifest, extraction name, new target, and every imported array's shape, dtype, and hash. Vector keys in the new run use the new target name, while diagnostics retain the original extraction label. Hypothesis formation may use earlier validation; later fresh evidence must not be described as if the new target had been specified in the parent experiment.
+
 | Behavior | Initial practical effect threshold | Movement preservation |
 | --- | --- | --- |
 | Speed | At least 5% sustained absolute change | Retain at least 50% of baseline forward speed |
@@ -50,10 +52,18 @@ The review paused calibration after 74 conditions. Those original derived estima
 
 Mean squared normalized action is an effort proxy. It is not motor energy, battery consumption, or mechanical work. Changes in effort must be interpreted alongside movement, original reward, action saturation, and locomotion-quality metrics. Turning uses yaw-rate geometry rather than reading a quaternion component as an angle.
 
+## Fixed-speed application
+
+The implemented `demonstrate` command requires a recorded replicated speed candidate. If several exist, it chooses the smallest absolute strength, breaking ties by vector name, before collecting application data. Its target is that exact condition's validation mean speed, with a tolerance of 5% of the validation baseline speed. This is a fixed calibrated intervention, without application-time feedback or strength retuning.
+
+Ten new paired reset seeds start at the saved seed offset plus 40000; checks reject overlap with current or inherited source partitions. At least 80% of steered episodes must have post-onset mean speed inside the target band. Both baseline and treatment must have zero physical failures, and the fresh paired speed effect must pass the existing usefulness gate in the locked direction. These application thresholds are project pilot choices. The specification and vector/policy hashes are written before collection; failed applications remain recorded.
+
+Media use the first three predetermined application seeds for paired baseline/steered videos, with bitwise replay checks against numerical episodes. The first seed also supplies an off/on/off trial with removal at step 600 and a speed/height time-series plot. The saved horizon must satisfy `warmup < 600 < max_steps`. Removing the hook restores the original policy function at identical observations; it does not restore an earlier physical state or undo trajectory history. No experiment through 003 has qualified for this application stage.
+
 ## Interpretation and escalation
 
 Report a direction as useful only when its locked effect and quality conditions survive fresh evaluation. Check random and shuffled controls before claiming specificity. Report one-sided effects, disruptive effects, insufficient contrast, and null results explicitly.
 
-A fresh application demonstration remains a follow-up experiment for promising candidates; a passing gate does not establish an application. The replay command supports saved activation directions, fresh reset seeds, MP4/NPZ output, and off/on/off interventions through a later switch-off step. Possible escalation includes a continuous-action adaptation of policy-gradient steering or an online-RL policy trained to respond to varied commands. These additions require their own implementation, validation, source review, and experiment specification. No behavioral cloning is permitted.
+A passing replication gate does not establish an application; the fixed-speed workflow above supplies a separate test. The general replay command also supports saved activation directions, chosen reset seeds, MP4/NPZ output, and off/on/off interventions through a later switch-off step. Possible escalation includes a continuous-action adaptation of policy-gradient steering or an online-RL policy trained to respond to varied commands. These additions require their own implementation, validation, source review, and experiment specification. No behavioral cloning is permitted.
 
 The research loop is: define a question, inspect prior work and diagnostics, state a hypothesis, run an experiment, interpret all results, and revise the hypothesis. Keep the reasoning for each change in its experiment report, including what failed, why the next intervention is plausible, and which fresh data will test it.

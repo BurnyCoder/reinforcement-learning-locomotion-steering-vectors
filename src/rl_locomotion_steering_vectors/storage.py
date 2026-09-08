@@ -3,9 +3,13 @@
 Sources: https://numpy.org/doc/1.26/reference/generated/numpy.load.html
 https://docs.python.org/3.12/library/logging.html
 https://docs.python.org/3.12/library/pathlib.html#pathlib.Path.replace
+https://docs.python.org/3.12/library/subprocess.html#subprocess.run
+https://git-scm.com/docs/git-rev-parse
 """
+import hashlib  # Content hashes distinguish actual source from its nominal Git revision.
 import json  # JSON stores readable protocol decisions without executable objects.
 import logging  # Standard handlers share timestamped terminal and file records.
+import subprocess  # Query local Git with argument arrays rather than shell interpolation.
 import sys  # The terminal handler uses the current output stream.
 from datetime import datetime, timezone  # UTC makes records comparable across machines.
 from pathlib import Path  # Paths remain platform independent.
@@ -16,6 +20,18 @@ import numpy as np  # NPZ preserves simulator arrays with explicit dtypes.
 def utc_now() -> str:
     """Local: produce an aware timestamp; global: establish event chronology."""
     return datetime.now(timezone.utc).isoformat()  # ISO 8601 includes the UTC offset.
+
+
+def code_identity(root: Path) -> dict:
+    """Local: identify owned source and lockfile; global: record reproducible code without reading credentials."""
+    paths = sorted((root / "src" / "rl_locomotion_steering_vectors").rglob("*.py")) + [root / name for name in ("pyproject.toml", "uv.lock")]  # Explicit source/dependency paths exclude configuration secrets and experiment data.
+    hashes = {path.relative_to(root).as_posix(): hashlib.sha256(path.read_text(encoding="utf-8").encode("utf-8")).hexdigest() for path in paths if path.is_file()}  # Normalize checkout line endings while retaining every implementation edit.
+    try:
+        revision = subprocess.run(["git", "rev-parse", "HEAD"], cwd=root, capture_output=True, text=True, timeout=5, check=False)  # Read one public commit identifier without invoking a shell or displaying Git configuration.
+        commit = revision.stdout.strip() if revision.returncode == 0 else None  # Source archives may legitimately lack Git metadata.
+    except (OSError, subprocess.TimeoutExpired):  # Missing or stalled Git must not erase the available source fingerprints.
+        commit = None  # Make unavailable provenance explicit rather than inventing a revision.
+    return {"git_revision": commit, "source_sha256": hashes, "hash_convention": "UTF-8 text with universal newlines"}  # A commit is a reference; actual file hashes also describe local edits.
 
 
 def save_json(path: Path, value: dict | list) -> None:
