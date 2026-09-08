@@ -9,6 +9,9 @@ import imageio.v2 as imageio  # Local: exercise real streamed video I/O; global:
 import numpy as np  # Local: create tiny deterministic frame fixtures; global: avoid consuming fresh application trajectories in tests.
 
 from rl_locomotion_steering_vectors.demonstration import assess_target, fresh_application_seeds, _paired_video  # Local: import decision and media helpers; global: test acceptance and faithful failure visualization.
+from rl_locomotion_steering_vectors import demonstration  # Local: isolate expensive rollout/media boundaries; global: test pre-data specification and the unchanged acceptance workflow.
+from rl_locomotion_steering_vectors.config import Config  # Local: create an explicit test protocol; global: keep application seeds and switch timing realistic.
+from rl_locomotion_steering_vectors.storage import load_json, save_arrays, save_json  # Local: exercise actual immutable JSON/NPZ inputs; global: protect the saved candidate identity.
 
 
 def _row(seed, speed, bad_contact=0.0):
@@ -66,3 +69,71 @@ def test_streamed_comparison_keeps_frames_after_one_episode_ends(tmp_path):
     with imageio.get_reader(str(output)) as reader:  # Local: decode the completed movie; global: validate produced rather than merely requested output.
         assert reader.count_frames() == 3  # Local: retain the longer sequence; global: ensure the short episode is visibly held at its final frame.
         assert reader.get_data(2).shape == (68, 96, 3)  # Local: check both panels and caption bar; global: verify the shareable video layout.
+
+
+@pytest.mark.parametrize("target", [-.4, 0., .4])
+def test_lateral_targets_accept_signed_velocity_and_retain_zero_failure_gate(target):
+    """Local: score signed lateral commands; global: preserve the exact targeting and physical-quality conjunction."""
+    rows = [dict(_row(seed, 2.), y_velocity=target + (.1 if seed < 8 else .3)) for seed in range(10)]  # Local: retain positive forward progress with eight lateral target matches; global: isolate signed target semantics.
+    result = assess_target(rows, target=target, tolerance=.2, behavior="lateral")  # Local: allow a negative or zero world-y target; global: avoid importing a positive-speed assumption.
+    assert result["gate"] and result["success_fraction"] == .8  # Local: accept the same coverage threshold; global: preserve the registered 80% rule.
+    assert result["behavior"] == "lateral" and result["units"] == "m/s"  # Local: identify the measured coordinate; global: support unambiguous reporting.
+    assert result["episodes"][0]["value"] == pytest.approx(target + .1)  # Local: expose the signed measurement; global: prevent confusing forward and lateral speeds.
+    rows[0]["bad_contact"] = .4  # Local: make one well-targeted episode physically fail; global: test the existing per-episode quality criterion.
+    failed = assess_target(rows, target=target, tolerance=.2, behavior="lateral")  # Local: retain target coverage despite the collapse; global: evaluate the independent competence condition.
+    assert failed["failed_episode_seeds"] == [0] and not failed["gate"]  # Local: reject any treated physical failure; global: do not hide a collapse in pooled contact fractions.
+
+
+@pytest.mark.parametrize("behavior, expected_gate", [("lateral", True), ("speed", False)])
+def test_application_locks_behavior_rules_and_retains_baseline_failures(tmp_path, monkeypatch, behavior, expected_gate):
+    """Local: mock only simulator/media work; global: preserve the speed rule and register lateral baseline handling before new outcomes."""
+    config = Config(seed_offset=500000)  # Local: reserve application seeds 540000 through 540009; global: match the new Ant cohort convention.
+    vector = np.arange(256, dtype=np.float32)  # Local: create a fixed imported treatment; global: detect any application-time vector modification.
+    chosen = dict(vector=behavior, behavior=behavior, alpha=-.1, direction=1 if behavior == "lateral" else -1, role="candidate")  # Local: supply an already replicated condition; global: avoid application-time selection from unconfirmed candidates.
+    target, reference = (-.1, -.6) if behavior == "lateral" else (10., 12.)  # Local: use a signed lateral target or the existing positive-speed case; global: test both acceptance specifications.
+    manifest = dict(model_key="ant" if behavior == "lateral" else "halfcheetah", config=config.as_dict(), provenance={"parameter_sha256": "frozen"}, seed_splits={"replication": [530000]})  # Local: preserve policy and seed identities; global: retain the normal application contract.
+    save_json(tmp_path / "manifest.json", manifest)  # Local: establish the completed run identity; global: exercise real artifact loading.
+    save_json(tmp_path / "results.json", {"replicated": [chosen], "validation": [dict(chosen, effect={"treated_mean": target, "baseline_mean": reference})]})  # Local: provide validation-only calibration; global: prohibit target fitting on fresh episodes.
+    save_arrays(tmp_path / "vectors.npz", {behavior: vector})  # Local: retain exact numerical directions; global: make this an application of an existing vector.
+    model = object()  # Local: identify a fixed supplied policy without allocating another actor; global: detect accidental replacement at the delegated boundaries.
+    monkeypatch.setattr(demonstration, "prepare_model", lambda *args: (model, {"parameter_sha256": "frozen"}))  # Local: replace only checkpoint I/O; global: retain the production identity comparison.
+    monkeypatch.setattr(demonstration, "summaries", lambda rows, config: rows)  # Local: use already-complete scalar summaries; global: leave the actual analysis failure and paired-effect functions intact.
+
+    def collect(actual_model, model_key, run_dir, phase, seeds, config, **kwargs):
+        """Local: supply prespecified paired measurements; global: assert registration precedes the first application outcome."""
+        assert actual_model is model and seeds == list(range(540000, 540010))  # Local: preserve policy/cohort identity; global: prohibit application retuning or reset reuse.
+        spec = load_json(run_dir / "application_spec.json")  # Local: require a real saved contract before collection; global: make the chronological boundary testable.
+        assert spec["behavior"] == behavior and spec["baseline_failure_rule"]  # Local: freeze the behavior-specific rule; global: prevent after-the-fact baseline exclusions.
+        assert spec["tolerance_rule"] == ("fixed 0.2 m/s" if behavior == "lateral" else "5% of validation baseline speed")  # Local: compare the registered band definition; global: retain the unchanged speed application.
+        treated = "condition" in kwargs  # Local: distinguish the existing paired conditions; global: avoid replacing the numerical engine's role.
+        if treated:
+            np.testing.assert_array_equal(kwargs["vector"], vector)  # Local: require the original vector values; global: forbid fitting a new direction during application.
+        return [dict(_row(seed, 2. if behavior == "lateral" else (10. if treated else 12.)),
+                     y_velocity=(target if treated else reference) if behavior == "lateral" else 0., failure=float(not treated and seed == seeds[0])) for seed in seeds]  # Local: retain one baseline failure and no treated failures; global: isolate the intended behavior-dependent acceptance rule.
+
+    monkeypatch.setattr(demonstration, "collect_episodes", collect)  # Local: prevent any real fresh application simulation in software tests; global: keep scientific holdouts untouched.
+    monkeypatch.setattr(demonstration, "_media", lambda *args: {"videos_complete": True, "policy_function_restored": True})  # Local: avoid rendering fake measurements; global: retain the existing media boundary unchanged.
+    result = demonstration.demonstrate(tmp_path)  # Local: run the normal application wrapper; global: test the actual selection/specification/acceptance data flow.
+    assert result["baseline_failed_episode_seeds"] == [540000]  # Local: report the baseline failure even when lateral application qualifies; global: prohibit survivor filtering.
+    assert result["paired_effect"]["gate"] and result["gate"] == expected_gate  # Local: retain the common paired usefulness gate while preserving the stricter historical speed baseline rule.
+    assert result["failed_episode_seeds"] == []  # Local: require zero treated physical failures; global: enforce the same practical competence criterion for both behaviors.
+    spec = load_json(tmp_path / "application_spec.json")  # Local: inspect the original locked rule; global: make resumption identity concrete.
+    spec["baseline_failure_rule"] = "changed after outcomes"  # Local: simulate a post-hoc acceptance revision; global: ensure the attempt cannot be silently reinterpreted.
+    save_json(tmp_path / "application_spec.json", spec)  # Local: alter only the saved rule; global: leave vector and calibration fixed.
+    with pytest.raises(ValueError, match="specification changed"):
+        demonstration.demonstrate(tmp_path)  # Local: reject before collecting another outcome; global: protect application evidence from rule drift.
+
+
+def test_lateral_plot_uses_world_xy_displacement_and_four_physical_panels(tmp_path, monkeypatch):
+    """Local: inspect a rendered synthetic figure; global: ensure signed world-axis motion is integrated with the actual simulator timestep."""
+    episode = dict(seed=np.array(1), dt=np.array(.5), x_velocity=np.array([1., 2., 3.]), y_velocity=np.array([-1., -2., -3.]), height=np.array([.5, .6, .7]))  # Local: provide analytically integrable velocities; global: distinguish displacement from velocity or position guesses.
+    closed = []  # Local: retain the completed figure briefly; global: inspect actual plotting outputs rather than duplicate formulas.
+    original_close = demonstration.plt.close  # Local: preserve the real cleanup function; global: release the test figure after inspecting it.
+    monkeypatch.setattr(demonstration.plt, "close", lambda figure: closed.append(figure))  # Local: intercept final figure cleanup only; global: leave PNG/PDF rendering real.
+    path = tmp_path / "lateral.png"  # Local: isolate synthetic visualization from research artifacts; global: do not spend application seeds for testing.
+    demonstration._series_plot(path, episode, episode, episode, -.2, .2, Config(), behavior="lateral")  # Local: exercise the actual four-panel output; global: verify the Ant extension without changing the speed path.
+    figure = closed[-1]  # Local: inspect the completed plotted object; global: validate meaningful axes and data.
+    assert len(figure.axes) == 4 and path.exists() and path.with_suffix(".pdf").exists()  # Local: require all panels and both shareable formats; global: complete the visualization artifact contract.
+    np.testing.assert_allclose(figure.axes[-1].lines[0].get_xdata(), [0., .5, 1.5, 3.])  # Local: integrate forward velocity from the origin; global: show actual world-x displacement in metres.
+    np.testing.assert_allclose(figure.axes[-1].lines[0].get_ydata(), [0., -.5, -1.5, -3.])  # Local: preserve lateral sign and timestep scaling; global: prevent mirrored or dimensionally wrong planar paths.
+    original_close(figure)  # Local: free Matplotlib resources; global: keep repeated test runs bounded.

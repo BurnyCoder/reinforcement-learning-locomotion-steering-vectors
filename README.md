@@ -4,6 +4,34 @@ This project tests whether adding a constant vector to a frozen reinforcement-le
 
 The scientific objective is a useful, repeatable causal effect, rather than a particular speed change. HalfCheetah candidates concern speed, torso height, and action effort; Ant also enables lateral movement and turning. A nearly constant behavior is an extraction diagnostic, not proof that hidden-state steering is impossible. See [the experiment protocol](docs/methodology.md) for the contrast rules, controls, usefulness thresholds, and limitations. [The experiment register](reports/experiments.md) records measured progress; planned capabilities are not results.
 
+## Featured experiment: Ant travels further sideways
+
+Adding the saved 256-dimensional **lateral vector at strength −0.1** to the frozen Ant actor's first ReLU changes its ground-plane trajectory. On **30 fresh paired confirmation episodes**, mean world-Y velocity increases by **0.402 m/s** (paired 95% bootstrap interval **[0.308, 0.491]**), with **96.83% of forward speed retained**. This is sideways displacement relative to the world's axes; it can involve a changed heading and does not establish body-relative sidestepping or jumping.
+
+The [independent code and data audit](reports/ant-classic-005-causal-audit.md) reproduced the vector from fitting data, checked split separation, reconstructed SAC actions, and replayed the recorded physics. It found a constant hidden-activation addition followed by ordinary policy inference, with the original reward and environment. There is no scripted sideways motor rule or reward modification in this experiment.
+
+**Acceptance caveat:** the recorded outcome remains `confirmation_failed`. Both arms have **4/30 failures**, on partly different seeds; equal counts do not establish safety on every episode. A shared episode ends at step 34, before steering starts at step 100, violating the additional strict pre-onset criterion. Mean squared action increases **17.84%**, and the original environment reward decreases. No formal replication or practical-target application has been completed. The [experiment findings](reports/ant-classic-005-findings.md) retain all results and controls; the [paper](reports/paper.md) / [PDF](reports/paper.pdf) covers all five experiments, including failures.
+
+### Watch the same episode from three cameras
+
+Baseline is on the left and steering is on the right. All three movies show the **same predetermined validation seed 510000**, replaying the saved trajectories exactly. They illustrate the effect; they are not fresh confirmation or application evidence.
+
+**Fixed, far-away camera:** both panels share a stationary world frame and scale. The 20 m ground grid, position rings, and past-path trails are visual annotations; the robot's geometry and physics are unchanged.
+
+https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a
+
+**Top-down tracking camera:** see the gait and direction from above.
+
+https://github.com/user-attachments/assets/17286e19-c5a2-4ab9-96ab-f50444d494ca
+
+**Original tracking camera:** inspect the actual locomotion more closely.
+
+https://github.com/user-attachments/assets/676ef6c8-ade4-4f85-a0b7-01d7fcdb86c9
+
+![Ground-plane trajectories of the same validation episode; both axes are metres on the ground](reports/paper_assets/ant-topdown-validation.png)
+
+Download the [steering vector on Hugging Face](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz), together with its [manifest, scaling diagnostics, and locked selection](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005). The published vector was downloaded back and its SHA256 matched the local artifact exactly. [Video and vector reproduction instructions](docs/ant-videos.md) include pinned downloads and commands.
+
 ## Install and run
 
 Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and Git, clone this repository, and run these commands from its root. The project uses Python 3.12 and a local `.venv`; `uv` resolves the interpreter and installs the dependencies specified by `uv.lock`. Both pinned policies and the Baukit intervention have been exercised on native Windows with CPU inference, and an Ant rollout video has been checked. Other operating systems require their own runtime verification.
@@ -41,7 +69,7 @@ uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir r
 
 This reuses the exact source vector, its complete random/shuffled control family, and source fitting evidence. It recalibrates the new outcome on fresh episodes, preserving the source mapping in `retarget.json`. In the new bundle, vector keys use the target name: `speed` here identifies the imported height direction. Keep the source run's fitting trajectories available because shortlisted candidates require them for action-bias comparison. The [experiment register](reports/experiments.md) links the actual outcomes and the uploaded 002 evidence.
 
-After a speed candidate has passed confirmation and replication, `uv run locomotion-steering demonstrate --run-dir runs/your-replicated-run` tests its fixed, validation-derived speed target on ten new episodes. It restores the saved configuration, records numerical targeting and physical-quality checks, and renders the first three paired videos plus an off/on/off example. The command rejects runs without a replicated speed candidate. No completed experiment through 003 qualifies yet; this is an implemented workflow, not an application result. Exact acceptance rules are in [methodology](docs/methodology.md#fixed-speed-application).
+After a speed or lateral candidate has passed confirmation and replication, `uv run locomotion-steering demonstrate --run-dir runs/your-replicated-run` tests its fixed, validation-derived target on ten new episodes. It restores the saved configuration, records numerical targeting and physical-quality checks, and renders the first three paired videos plus an off/on/off example. The command rejects runs without a supported replicated candidate. No completed experiment through 005 qualifies yet; this is an implemented workflow, not an application result. Exact acceptance rules are in [methodology](docs/methodology.md#fixed-speed-application).
 
 ## What happens during a run
 
@@ -61,7 +89,7 @@ flowchart TD
     RESULTS --> REPORT[Explicit report command: plots, Markdown and PDF]
     SOURCE[Saved family and source fitting evidence] --> RETARGET[Retarget: new outcome and fresh seed partitions]
     RETARGET --> VALIDATE
-    REPLICATE --> DEMO[Demonstrate: fixed speed target on fresh episodes]
+    REPLICATE --> DEMO[Demonstrate: fixed velocity target on fresh episodes]
     DEMO --> MEDIA[Application measurements and paired videos]
     BASE --> STORE[Compressed episode artifacts and timestamped logs]
     VALIDATE --> STORE
@@ -85,7 +113,7 @@ The thin pipeline coordinates reusable configuration, checkpoint/rollout, analys
 | `report.md`, `report.pdf`, `strength_response_*.png` | Human-readable evidence rendered from saved results |
 | `*.log` | One timestamp-named log per invocation, with complete logged messages |
 | `videos/` | Replay MP4s and matching numerical episodes |
-| `application_spec.json`, `application.json`, `application-media/` | Fixed-target application contract, complete outcomes, and audited videos/plots, when a replicated speed candidate exists |
+| `application_spec.json`, `application.json`, `application-media/` | Fixed-target application contract, complete outcomes, and audited videos/plots, when a supported replicated candidate exists |
 
 Preserve the run directory together with the exact Git commit and lockfile when sharing an experiment. New manifests automatically record the Git revision and normalized SHA256 hashes of owned source and dependency files; each resumed invocation logs its current code identity. These fingerprints exclude `.env`. Compare the saved checkpoint hash and configuration before interpreting a rerun. Episode replication reuses the same frozen checkpoint with fresh resets; it does not establish generalization across independently trained models.
 
