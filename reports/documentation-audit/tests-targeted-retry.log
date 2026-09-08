@@ -1,0 +1,4 @@
+UTC=2026-09-08T01:06:40.5958314Z
+command=uv run --no-sync pytest tests/test_experiment.py::test_calibration_uses_only_the_configured_grid -q
+.                                                                        [100%]
+1 passed in 6.99s
