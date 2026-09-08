@@ -1,8 +1,9 @@
-"""Local: demonstrate a frozen speed target on fresh episodes. Global: turn replicated causal evidence into an auditable application.
+"""Local: demonstrate a frozen speed or lateral target on fresh episodes. Global: turn replicated causal evidence into an auditable application.
 
 Sources: https://imageio.readthedocs.io/en/stable/examples.html (streamed video),
 https://pillow.readthedocs.io/en/stable/reference/ImageDraw.html (frame labels), and
-https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html (scientific plots).
+https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.subplots.html (scientific plots),
+https://numpy.org/doc/1.26/reference/generated/numpy.cumsum.html (integrated planar displacement).
 Target calibration and physical failure classification reuse the project's existing analysis.
 """
 
@@ -42,19 +43,19 @@ def fresh_application_seeds(manifest: dict, source_manifests=()) -> list[int]:
     return seeds  # Local: expose the locked cohort; global: let specification persistence precede simulation.
 
 
-def assess_target(rows: list[dict], target: float, tolerance: float, *, warmup: int = 100) -> dict:
-    """Local: score every episode against a fixed speed band. Global: require coverage and zero episode-level physical failures."""
-    if not rows or not np.isfinite(target) or not np.isfinite(tolerance) or target <= 0 or tolerance <= 0:  # Local: reject empty or invalid calibration; global: prevent vacuous success claims.
-        raise ValueError("Require episodes and finite positive speed target/tolerance")  # Local: describe the acceptance inputs; global: fail before statistical interpretation.
+def assess_target(rows: list[dict], target: float, tolerance: float, *, warmup: int = 100, behavior: str = "speed") -> dict:
+    """Local: score every episode against a fixed physical-velocity band. Global: require coverage and zero episode-level physical failures."""
+    if behavior not in ("speed", "lateral") or not rows or not np.isfinite(target) or not np.isfinite(tolerance) or tolerance <= 0 or (behavior == "speed" and target <= 0):  # Local: lateral commands may be signed or zero while forward-speed targets remain positive; global: reject undefined acceptance bands.
+        raise ValueError("Require speed/lateral episodes, a finite target, and positive tolerance; speed targets must be positive")  # Local: describe the supported physical targets; global: fail before statistical interpretation.
     episodes = []  # Local: retain every target error and failure; global: prevent selective reporting.
     for row in rows:  # Local: score each independent reset; global: keep the analysis unit as an episode.
         measured = _summary(row, warmup)  # Local: reuse the current analysis failure criterion; global: detect isolated collapses before pooling.
-        error = measured["speed"] - target  # Local: compute signed physical-unit error; global: compare to the validation-derived command.
-        episodes.append(dict(seed=int(row["seed"]), speed=measured["speed"], error=error, absolute_error=abs(error),  # Local: preserve individual measurements; global: expose variation and misses.
+        error = measured[behavior] - target  # Local: compute signed error for the chosen physical velocity; global: compare to the validation-derived command.
+        episodes.append(dict(seed=int(row["seed"]), value=measured[behavior], units="m/s", **{behavior: measured[behavior]}, error=error, absolute_error=abs(error),  # Local: retain generic and behavior-specific measurements, including the existing speed key; global: expose signed values without changing speed consumers.
                              within_tolerance=bool(abs(error) <= tolerance), physical_failure=bool(measured["failure"])))  # Local: separate targeting from competence; global: avoid one successful mean hiding a failure.
     fraction = float(np.mean([row["within_tolerance"] for row in episodes]))  # Local: divide by all episodes; global: retain misses in the coverage denominator.
     failed = [row["seed"] for row in episodes if row["physical_failure"]]  # Local: identify failed resets; global: make zero-failure acceptance explicit.
-    return dict(target=float(target), tolerance=float(tolerance), episodes=episodes,  # Local: publish the fixed band and per-seed errors; global: support independent interpretation.
+    return dict(behavior=behavior, units="m/s", target=float(target), tolerance=float(tolerance), episodes=episodes,  # Local: publish the measured coordinate, fixed band, and per-seed errors; global: support independent interpretation.
                 mean_absolute_error=float(np.mean([row["absolute_error"] for row in episodes])),  # Local: average all errors; global: report misses even if 80% coverage passes.
                 success_fraction=fraction, failed_episode_seeds=failed, gate=bool(fraction >= 0.8 and not failed))  # Local: implement the prespecified coverage/quality conjunction; global: prohibit post-hoc relaxation.
 
@@ -97,28 +98,67 @@ def _paired_video(left_path: Path, right_path: Path, output_path: Path, seed: in
             writer.append_data(np.asarray(canvas))  # Local: stream the composed frame; global: avoid accumulating videos in memory.
 
 
-def _series_plot(path: Path, baseline: dict, steered: dict, switched: dict, target: float, tolerance: float, config: Config) -> None:
-    """Local: plot measured speed and height through switching. Global: show target control and distinguish policy restoration from trajectory reversal."""
-    figure, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)  # Local: give speed/posture separate physical scales; global: create a readable standalone research figure.
+def _draw_xy(axis, labeled_episodes) -> None:
+    """Local: draw integrated world-ground paths. Global: make sideways travel visibly distinct from vertical height."""
+    for label, episode in labeled_episodes:  # Local: preserve the same condition ordering as the numerical comparison; global: keep each path traceable to its recorded episode.
+        dt = float(episode["dt"])  # Local: use the actual integration interval; global: convert measured velocities to displacement in metres.
+        axis.plot(np.r_[0., np.cumsum(episode["x_velocity"]) * dt], np.r_[0., np.cumsum(episode["y_velocity"]) * dt], label=label, linewidth=1.5)  # Local: accumulate world-x/world-y motion from a shared zero-displacement origin; global: represent horizontal travel without using torso height.
+    axis.scatter([0.], [0.], color="black", marker="o", s=20, zorder=5, label="Reset position")  # Local: identify the common displacement origin; global: make the direction of travel interpretable.
+    axis.set(xlabel="Forward displacement on ground (m)", ylabel="Sideways displacement on ground (m)")  # Local: explicitly label both horizontal axes; global: prevent interpreting the y-axis as jumping height.
+    axis.set_title("Viewed from above:\nboth axes lie on the ground", fontsize=10)  # Local: state the viewpoint in plain language; global: clarify the physical meaning of lateral velocity.
+    axis.set_aspect("equal", adjustable="datalim")  # Local: draw one metre at the same scale on both axes; global: preserve physical path angles.
+    axis.grid(alpha=.2)  # Local: aid distance reading; global: keep the ground-path figure quantitative.
+    axis.legend(loc="best", fontsize=8)  # Local: identify the paired conditions and origin; global: make exported images self-contained.
+
+
+def plot_xy(path: Path, baseline: dict, steered: dict, switched: dict | None = None) -> None:
+    """Local: export a top-down view from existing trajectory arrays. Global: explain horizontal steering without collecting or claiming new evidence."""
+    labeled = [("Baseline", baseline), ("Steered", steered)] + ([] if switched is None else [("Off / on / off", switched)])  # Local: accept an optional already-recorded switching trace; global: make this helper usable before an application exists.
+    figure, axis = plt.subplots(figsize=(8, 6))  # Local: reserve a readable standalone ground-plane panel; global: support immediate sharing of measured paths.
+    _draw_xy(axis, labeled)  # Local: reuse the exact application ground-path renderer; global: avoid competing coordinate conventions.
+    figure.suptitle(f"Paired locomotion | seed {int(baseline['seed'])}")  # Local: identify the actual reset; global: do not imply fresh application or confirmed evidence.
+    figure.tight_layout()  # Local: fit explicit coordinate labels; global: prevent clipping in the exported explanation.
+    path = Path(path)  # Local: accept normal path-like callers; global: keep artifact destinations explicit.
+    path.parent.mkdir(parents=True, exist_ok=True)  # Local: create only the chosen figure's directory; global: keep explanatory media beside its source experiment.
+    figure.savefig(path, dpi=160)  # Local: export a directly viewable image; global: make the side-versus-up distinction concrete.
+    figure.savefig(path.with_suffix(".pdf"))  # Local: preserve a vector-format companion; global: allow later report reuse without rerunning simulation.
+    plt.close(figure)  # Local: release the renderer; global: keep repeated media work bounded.
+
+
+def _series_plot(path: Path, baseline: dict, steered: dict, switched: dict, target: float, tolerance: float, config: Config, *, behavior: str = "speed") -> None:
+    """Local: plot measured velocity/posture and optional planar travel. Global: show control and distinguish policy restoration from trajectory reversal."""
+    if behavior == "lateral":  # Local: Ant needs signed motion and its preserved forward progress; global: show the physical dimensions behind lateral usefulness.
+        figure, axes = plt.subplots(2, 2, figsize=(12, 8))  # Local: give the three timeseries and XY path separate axes; global: avoid mixing metres and metres per second.
+        axes = axes.ravel()  # Local: flatten the small grid; global: reuse the existing timeseries drawing loop.
+        fields = ("y_velocity", "x_velocity", "height")  # Local: place the targeted lateral velocity first; global: show forward/posture side effects alongside it.
+    else:  # Local: preserve the original speed presentation; global: keep existing demonstration artifacts stable.
+        figure, axes = plt.subplots(2, 1, figsize=(10, 6), sharex=True)  # Local: give speed/posture separate physical scales; global: retain the established standalone research figure.
+        fields = ("x_velocity", "height")  # Local: keep the original speed and height panels; global: avoid changing previous speed outputs.
+    time_axes = axes[:len(fields)]  # Local: annotate elapsed time only on timeseries axes; global: prevent switch-time lines appearing as XY distances.
     for label, episode in (("Baseline", baseline), ("Constant steering", steered), ("Off / on / off", switched)):  # Local: compare three matched-prefix conditions; global: expose the intervention's temporal behavior.
         dt = float(episode["dt"])  # Local: use actual simulation timing; global: avoid assuming a frame rate in numerical plots.
         width = max(1, round(1 / dt))  # Local: smooth over one second; global: reveal sustained behavior beyond gait oscillation.
-        for axis, field in zip(axes, ("x_velocity", "height")):  # Local: plot only the requested physical outcomes; global: make speed/posture interactions visible.
+        for axis, field in zip(time_axes, fields):  # Local: reuse the same smoothing for each physical velocity/posture quantity; global: keep behavior-specific plots comparable.
             values = episode[field]  # Local: use preserved raw measurements; global: keep the plot traceable to NPZ evidence.
             window = min(width, len(values))  # Local: permit shorter failed episodes; global: do not drop early termination from figures.
             smoothed = np.convolve(values, np.ones(window) / window, mode="valid")  # Local: compute an explicit trailing mean; global: avoid hidden model-based smoothing.
             axis.plot(np.arange(window, len(values) + 1) * dt, smoothed, label=label, linewidth=1.5)  # Local: align each average at its final timestamp; global: preserve causal timing.
     axes[0].axhspan(target - tolerance, target + tolerance, color="gray", alpha=0.15, label="Locked target band")  # Local: show the predeclared acceptance region; global: make application errors inspectable.
     axes[0].axhline(target, color="gray", linestyle=":", linewidth=1)  # Local: mark the calibrated target; global: separate the command from measured responses.
-    for axis in axes:  # Local: share intervention timing annotations; global: connect both physical outcomes to the same schedule.
+    for axis in time_axes:  # Local: share intervention timing annotations across timeseries only; global: connect physical outcomes to the same schedule.
         axis.axvline(config.warmup * float(baseline["dt"]), color="black", linestyle="--", linewidth=0.8)  # Local: mark the common treatment onset; global: display the matched-prefix boundary.
         axis.axvline(600 * float(baseline["dt"]), color="black", linestyle="--", linewidth=0.8)  # Local: mark off/on/off removal; global: distinguish constant and switched trajectories.
         axis.grid(alpha=0.2)  # Local: aid numerical reading; global: preserve a simple scientific presentation.
-    axes[0].set_ylabel("Forward speed (m/s)")  # Local: state the target's physical unit; global: avoid an abstract activation-only presentation.
-    axes[1].set_ylabel("Torso height (m)")  # Local: state the posture unit; global: reveal secondary behavior changes.
-    axes[1].set_xlabel("Simulation time (s)")  # Local: label elapsed physical time; global: make onset and removal interpretable.
+    labels = {"x_velocity": "Forward speed (m/s)", "y_velocity": "Lateral velocity (m/s)", "height": "Torso height (m)"}  # Local: map each saved simulator quantity to its physical unit; global: prevent velocity/position ambiguity.
+    for axis, field in zip(time_axes, fields):
+        axis.set_ylabel(labels[field])  # Local: label the measured coordinate; global: make each exported panel self-contained.
+    time_axes[-1].set_xlabel("Simulation time (s)")  # Local: label elapsed physical time; global: make onset and removal interpretable.
+    if behavior == "lateral":  # Local: complete the independent planar path panel; global: distinguish world displacement from the smoothed velocity traces.
+        _draw_xy(axes[-1], (("Baseline", baseline), ("Constant steering", steered), ("Off / on / off", switched)))  # Local: reuse the same explicit ground-plane renderer as standalone explanations; global: distinguish lateral travel from vertical posture.
+        for axis in time_axes:
+            axis.set_xlabel("Simulation time (s)")  # Local: label each unshared time axis in the grid; global: avoid ambiguous independent axes.
     axes[0].legend(loc="best", fontsize=8)  # Local: identify all traces/band; global: keep the exported figure self-contained.
-    figure.suptitle(f"Fresh application seed {int(baseline['seed'])} | one-second trailing means")  # Local: disclose seed and smoothing; global: prevent overinterpreting a selected trace.
+    figure.suptitle(f"Fresh application seed {int(baseline['seed'])} | one-second trailing means" + ("; XY integrates raw velocities" if behavior == "lateral" else ""))  # Local: disclose seed and both numerical conventions; global: prevent overinterpreting smoothing or integrated travel.
     figure.tight_layout()  # Local: fit annotations cleanly; global: avoid clipped output labels.
     figure.savefig(path, dpi=160)  # Local: export a portable raster chart; global: support direct report embedding.
     figure.savefig(path.with_suffix(".pdf"))  # Local: retain a vector-format plot; global: support the final research paper.
@@ -155,22 +195,28 @@ def _media(model, model_key: str, run_dir: Path, baseline: list[dict], steered: 
         _assert_episode_equal(load_arrays(arrays_path), switched)  # Local: verify the rerendered result; global: avoid silently replacing earlier switching data.
     else:  # Local: store the first verified switching episode; global: support later reporting without rerunning.
         save_arrays(arrays_path, switched)  # Local: write atomic non-executable arrays; global: retain full numerical evidence.
-    plot = folder / "speed-height-timeseries.png"  # Local: give the figure a stable path; global: simplify report embedding.
-    _series_plot(plot, baseline[0], steered[0], switched, spec["target"], spec["tolerance"], config)  # Local: compare measured trajectories; global: show both the requested outcome and posture side effects.
-    return dict(video_paths=videos, video_replay_audits=equality, off_on_off_video=str(off_path.relative_to(run_dir)),  # Local: expose all media outputs; global: support publishing without guessed filenames.
-                plot_path=str(plot.relative_to(run_dir)), policy_function_restored=True, videos_complete=True)  # Local: record the verified restoration result; global: distinguish function identity from a physical reset.
+    plot = folder / ("lateral-forward-height-xy.png" if spec["behavior"] == "lateral" else "speed-height-timeseries.png")  # Local: preserve the speed filename and explicitly name Ant's additional physical panels; global: simplify report embedding.
+    _series_plot(plot, baseline[0], steered[0], switched, spec["target"], spec["tolerance"], config, behavior=spec["behavior"])  # Local: compare the same measured trajectories; global: show the requested outcome, posture, and relevant travel.
+    outputs = dict(video_paths=videos, video_replay_audits=equality, off_on_off_video=str(off_path.relative_to(run_dir)),  # Local: expose all media outputs; global: support publishing without guessed filenames.
+                   plot_path=str(plot.relative_to(run_dir)), policy_function_restored=True, videos_complete=True)  # Local: record the verified restoration result; global: distinguish function identity from a physical reset.
+    if spec["behavior"] == "lateral":  # Local: provide a standalone sideways-motion explanation alongside the four-panel figure; global: keep the useful physical effect understandable.
+        xy_path = folder / "top-down-ground-path.png"  # Local: give the explanation a discoverable filename; global: prevent confusion with the torso-height plot.
+        plot_xy(xy_path, baseline[0], steered[0], switched)  # Local: reuse only the first prespecified already-audited trajectories; global: do not cherry-pick or collect another episode.
+        outputs["xy_plot_path"] = str(xy_path.relative_to(run_dir))  # Local: publish a portable artifact reference; global: let reporting show the explanation without guessing paths.
+    return outputs  # Local: expose verified media and physical-path figures; global: preserve the existing video/replay audit contract.
 
 
 def demonstrate(run_dir: Path) -> dict:
-    """Local: execute a locked speed-target application. Global: require fresh practical evidence after independent causal replication."""
+    """Local: execute a locked speed/lateral-target application. Global: require fresh practical evidence after independent causal replication."""
     run_dir = Path(run_dir).resolve()  # Local: canonicalize the chosen experiment directory; global: anchor every output to one run.
     manifest, results = load_json(run_dir / "manifest.json"), load_json(run_dir / "results.json")  # Local: load completed experimental evidence; global: avoid relying on conversational success claims.
-    candidates = [row for row in results.get("replicated", []) if row.get("role") == "candidate" and row["behavior"] == "speed"]  # Local: require an actually replicated speed candidate; global: exclude unconfirmed or control directions.
+    candidates = [row for row in results.get("replicated", []) if row.get("role") == "candidate" and row["behavior"] in ("speed", "lateral")]  # Local: require an actually replicated supported candidate; global: exclude unconfirmed or control directions.
     if not candidates:  # Local: make unsupported behavior/success states explicit; global: do not invent an application from incomplete research.
-        raise ValueError("Demonstration currently requires a replicated speed candidate")  # Local: explain the supported application; global: prevent silent fallback to another target.
+        raise ValueError("Demonstration requires a replicated speed or lateral candidate")  # Local: explain the supported application; global: prevent silent fallback to an unsupported target.
     chosen = min(candidates, key=lambda row: (abs(row["alpha"]), row["vector"]))  # Local: choose deterministically before new data; global: avoid optimizing on application outcomes.
     validation = load_json(run_dir / "validation.json") if (run_dir / "validation.json").exists() else results["validation"]  # Local: reuse the saved calibration evidence; global: forbid target estimation from fresh episodes.
-    matches = [row for row in validation if row["vector"] == chosen["vector"] and row["alpha"] == chosen["alpha"] and row["behavior"] == "speed"]  # Local: identify the exact validated treatment; global: prevent mixing signs or extraction aliases.
+    behavior = chosen["behavior"]  # Local: freeze the measured outcome from the replicated condition; global: avoid redefining success at application time.
+    matches = [row for row in validation if row["vector"] == chosen["vector"] and row["alpha"] == chosen["alpha"] and row["behavior"] == behavior]  # Local: identify the exact validated treatment; global: prevent mixing signs, outcomes, or extraction aliases.
     if len(matches) != 1:  # Local: require unambiguous calibration; global: avoid guessing which target belongs to the replicated condition.
         raise ValueError("Replicated candidate must have exactly one matching validation result")  # Local: expose incomplete provenance; global: fail before collecting application data.
     effect = matches[0]["effect"]  # Local: access the matched validation outcome; global: lock the intended behavioral target.
@@ -180,15 +226,17 @@ def demonstrate(run_dir: Path) -> dict:
     sources = [load_json(run_dir / "retarget.json")["source_manifest"]] if (run_dir / "retarget.json").exists() else []  # Local: include retargeting provenance snapshots; global: protect inherited evaluation seed boundaries.
     seeds = fresh_application_seeds(manifest, sources)  # Local: verify the ten reserved resets; global: keep all application outcomes unseen during selection.
     vector = load_arrays(run_dir / "vectors.npz")[chosen["vector"]]  # Local: load the exact saved direction; global: perform no application-time extraction or retuning.
-    target, tolerance = float(effect["treated_mean"]), 0.05 * abs(float(effect["baseline_mean"]))  # Local: use the calibrated response and fixed baseline-relative band; global: lock the target before fresh collection.
-    if not np.isfinite(target) or not np.isfinite(tolerance) or target <= 0 or tolerance <= 0:  # Local: validate the calibration before persistence; global: reject nonsensical application specifications.
-        raise ValueError("Validation must provide finite positive speed target and tolerance")  # Local: identify invalid calibration; global: avoid unusable downstream evidence.
+    target, tolerance = float(effect["treated_mean"]), .2 if behavior == "lateral" else .05 * abs(float(effect["baseline_mean"]))  # Local: retain the speed band and use the fixed signed-lateral band; global: lock target calibration before fresh collection.
+    tolerance_rule = "fixed 0.2 m/s" if behavior == "lateral" else "5% of validation baseline speed"  # Local: name the prespecified behavior-dependent band; global: make acceptance reproducible.
+    baseline_failure_rule = "retain and report; paired quality gate limits failure increase to five percentage points" if behavior == "lateral" else "zero physical failures"  # Local: preserve the speed requirement while retaining naturally failing Ant baselines; global: keep lateral quality governed by the existing paired gate.
+    if not np.isfinite(target) or not np.isfinite(tolerance) or tolerance <= 0 or (behavior == "speed" and target <= 0):  # Local: lateral targets may legitimately be negative or zero; global: reject invalid calibration before registration.
+        raise ValueError("Validation must provide a finite target and positive tolerance; speed targets must be positive")  # Local: identify unusable calibration; global: avoid fabricating application evidence.
     torch.set_num_threads(config.torch_threads)  # Local: restore recorded inference parallelism; global: preserve deterministic computation.
     model, provenance = prepare_model(manifest["model_key"], Path.cwd())  # Local: verify and freeze the original checkpoint; global: keep intervention provenance intact.
     if provenance["parameter_sha256"] != manifest["provenance"]["parameter_sha256"]:  # Local: compare actual policy values; global: prevent a changed checkpoint from inheriting prior success.
         raise ValueError("Application policy differs from the replicated policy")  # Local: explain invalid provenance; global: stop a scientifically incompatible run.
-    spec = dict(schema=1, behavior="speed", vector=chosen["vector"], alpha=float(chosen["alpha"]), direction=int(chosen["direction"]),  # Local: freeze the replicated condition; global: prohibit application-time strength selection.
-                target=target, tolerance=tolerance, tolerance_rule="5% of validation baseline speed", validation_baseline=float(effect["baseline_mean"]),  # Local: record calibration arithmetic; global: make the acceptance band reproducible.
+    spec = dict(schema=1, behavior=behavior, units="m/s", vector=chosen["vector"], alpha=float(chosen["alpha"]), direction=int(chosen["direction"]),  # Local: freeze the replicated outcome and condition; global: prohibit application-time strength or outcome selection.
+                target=target, tolerance=tolerance, tolerance_rule=tolerance_rule, baseline_failure_rule=baseline_failure_rule, validation_baseline=float(effect["baseline_mean"]),  # Local: record both target calibration and baseline treatment before data; global: prevent post-hoc acceptance changes.
                 seeds=seeds, warmup=config.warmup, max_steps=config.max_steps, off_at=600, minimum_success_fraction=0.8, maximum_physical_failures=0,  # Local: freeze cohort and acceptance rules; global: prevent post-hoc threshold changes.
                 vector_sha256=hashlib.sha256(np.asarray(vector, dtype=np.float32).tobytes()).hexdigest(), policy_sha256=provenance["parameter_sha256"])  # Local: fingerprint treatment and policy; global: make resumption identity explicit.
     spec_path = run_dir / "application_spec.json"  # Local: give the pre-data contract a stable artifact; global: establish chronological evidence.
@@ -206,10 +254,10 @@ def demonstrate(run_dir: Path) -> dict:
     baseline = collect_episodes(model, manifest["model_key"], run_dir, "application", seeds, config)  # Local: collect matched unsteered episodes; global: retain the reference for causal and physical-quality checks.
     steered = collect_episodes(model, manifest["model_key"], run_dir, "application", seeds, config, condition=condition_name(spec["vector"], spec["alpha"]), vector=vector, alpha=spec["alpha"])  # Local: apply only the frozen intervention; global: retain all successes and failures.
     baseline_rows, steered_rows = summaries(baseline, config), summaries(steered, config)  # Local: reduce each complete episode once; global: preserve equal episode weighting.
-    result = assess_target(steered_rows, target, tolerance, warmup=config.warmup)  # Local: evaluate the predeclared band; global: prohibit application-time adjustment.
-    result["paired_effect"] = paired_effect(baseline_rows, steered_rows, "speed", seed=740, warmup=config.warmup)  # Local: reuse paired causal evaluation on fresh data; global: retain the existing locomotion-preservation gates.
-    result["baseline_failed_episode_seeds"] = [int(row["seed"]) for row in baseline_rows if _summary(row, config.warmup)["failure"]]  # Local: check both application conditions; global: require zero physical failures rather than only a favorable difference.
-    result["gate"] = bool(result["gate"] and not result["baseline_failed_episode_seeds"] and result["paired_effect"]["gate"] and result["paired_effect"]["direction"] == spec["direction"])  # Local: combine targeting, competence, and frozen-direction evidence; global: avoid claiming usefulness from an unrelated or reversed effect.
+    result = assess_target(steered_rows, target, tolerance, warmup=config.warmup, behavior=behavior)  # Local: evaluate the predeclared physical-velocity band; global: prohibit application-time adjustment.
+    result["paired_effect"] = paired_effect(baseline_rows, steered_rows, behavior, seed=740, warmup=config.warmup)  # Local: reuse the exact behavior-specific paired gate and preservation thresholds; global: retain causal comparability on fresh episodes.
+    result["baseline_failed_episode_seeds"] = [int(row["seed"]) for row in baseline_rows if _summary(row, config.warmup)["failure"]]  # Local: report every baseline failure; global: retain the full paired denominator for Ant and HalfCheetah alike.
+    result["gate"] = bool(result["gate"] and (behavior == "lateral" or not result["baseline_failed_episode_seeds"]) and result["paired_effect"]["gate"] and result["paired_effect"]["direction"] == spec["direction"])  # Local: apply the locked baseline rule along with targeting, zero treated failures, and the frozen paired-effect sign; global: preserve the speed application and avoid redefining Ant competence.
     result.update(specification="application_spec.json", created_utc=utc_now(), videos_complete=False,  # Local: preserve numeric progress before rendering; global: survive later media failures without losing evidence.
                   limitations="Fixed open-loop calibrated strength on one pretrained policy; no application retuning. Removing the hook restores the original policy function, not the earlier physical state or trajectory.")  # Local: state practical limits; global: avoid claiming feedback control or trajectory rewind.
     save_json(run_dir / "application.json", result)  # Local: save all numeric outcomes before expensive media work; global: retain failed applications too.

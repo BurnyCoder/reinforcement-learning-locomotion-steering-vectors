@@ -34,7 +34,7 @@ def main() -> None:
     replay.add_argument("--alpha", type=float, required=True)  # Always make strength explicit for visual evidence.
     replay.add_argument("--seed", type=int, default=40000)  # Demonstration seeds are outside statistical selection/evaluation splits.
     replay.add_argument("--off-at", type=int)  # Turn steering off later to demonstrate policy-function recovery.
-    application = commands.add_parser("demonstrate", help="Test a replicated speed intervention against its calibrated target on fresh episodes")  # A concrete application follows held-out causal replication.
+    application = commands.add_parser("demonstrate", help="Test a replicated speed or lateral intervention against its calibrated target on fresh episodes")  # A concrete application follows held-out causal replication.
     application.add_argument("--run-dir", type=Path, required=True)  # Restore the frozen run specification rather than recalibrating.
     report = commands.add_parser("report", help="Regenerate Markdown, plots, and PDF from saved results")  # No simulation is needed to rebuild reports.
     report.add_argument("--run-dir", type=Path, required=True)  # Reporting reads one experiment bundle.

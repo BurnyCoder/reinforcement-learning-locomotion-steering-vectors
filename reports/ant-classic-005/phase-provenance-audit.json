@@ -1,0 +1,24 @@
+{
+  "created_utc": "2026-09-08T00:24:01.334082+00:00",
+  "original_manifest_code_commit": "8ad6ce3",
+  "manifest_scope": "Diagnostic and fitting phases; original manifest retained unchanged.",
+  "validation_confirmation_invocation_code_commit": "1b835f98446b86aa30c8ba3e50a6826b12ef4068",
+  "invocation_log": "runs/ant-classic-005/20260908T000243916712Z.log",
+  "invocation_log_sha256": "f6ed9005fdca4d885e157a21075e32b88d6d0ed8da2156d723bdbd3173ee93e8",
+  "identity_log_lines": [
+    "2026-09-08 00:02:44,140Z INFO invocation code={'git_revision': '1b835f98446b86aa30c8ba3e50a6826b12ef4068', 'source_sha256': {'src/rl_locomotion_steering_vectors/__init__.py': '2d629d43e86233e7cfefe1271996d9a0be1d57acfafbe982df869e682b930ddc', 'src/rl_locomotion_steering_vectors/analysis.py': '523b4faeb03ac83ae0b66df43b3f1b71ee8af09d283bdb5b3494058b32ae09b1', 'src/rl_locomotion_steering_vectors/cli.py': '1adcf2652b462850abd44d0bc88306e4c440c57db7572e7e06a200855562b06c', 'src/rl_locomotion_steering_vectors/config.py': 'ea6bfc4b61c9e615d3dfedfc49dc6efd0144f398fd7a5553854129d66cb38682', 'src/rl_locomotion_steering_vectors/demonstration.py': '7826dad0ae7492a865444a6d7f604f9b80df0a7ff765d1852265b3a77bccc407', 'src/rl_locomotion_steering_vectors/execution.py': '8101109339180f5f8e0da741a827c51b18a304230976d61ca49ca4e5890e219c', 'src/rl_locomotion_steering_vectors/experiment.py': 'a723d4a996bdb287461027129307e60b262788dac0a3f69a1c36247f1869094f', 'src/rl_locomotion_steering_vectors/parallel.py': '96566efe66fc687cb44938144bff906e6829201bbbcf75299f4e1ebab9cd3919', 'src/rl_locomotion_steering_vectors/pgs.py': '5a57df171af789456ae2271f5b7ce9524a60b502e2480e5c4dac765ecf8f02a6', 'src/rl_locomotion_steering_vectors/phases.py': '2120980035fd52684d4a5bba72a261d29c3d052d57527f1186bdb8b99738cb09', 'src/rl_locomotion_steering_vectors/pipeline.py': '51e0664473d7a4df54e9c9ba1ba74ce8d09806a66083d815e0006d9ecd268e3a', 'src/rl_locomotion_steering_vectors/reporting.py': '2c8d6ca4e7470435dfac139547bb9968c846d92f69f11a1e204c686ebeb17a23', 'src/rl_locomotion_steering_vectors/retarget.py': 'bf4c380c3ba7a1fe9ad909e0716bbad25a91986350aa58b2c2d9cab5cf5e6480', 'src/rl_locomotion_steering_vectors/runtime.py': '7ef8bf1980974aeab02035ec90dd69012ccf16f3e142e82280c78d46382f4c4e', 'src/rl_locomotion_steering_vectors/storage.py': '24717d98268940970b5f8a0fc72a0bb5f24718be7b1f412d1bbeb98a16305ac2', 'pyproject.toml': '249cf60ad77bc7bc6bc1c492b5c1619dfcda62392d179e4f8231a85d039eaaee', 'uv.lock': 'a7825993b4f353aa94f48c9c3c63495d00c8d1b930dc1c1f1669fae59964f847'}, 'hash_convention': 'UTF-8 text with universal newlines'}"
+  ],
+  "manifest_decisions": [
+    {
+      "time_utc": "2026-09-08T00:02:10.064096+00:00",
+      "decision": "Proceed after fitting review: lateral contrast is sustained and robust to fitting-only exclusions. Turning remains an exploratory heading-correction contrast; no sustained-turn concept is inferred. Keep both original registered candidates for causal validation.",
+      "evidence": "531 healthy running windows; lateral split-half cosine 0.9657, extended-window contrasts retained; turning adjacent-window correlation -0.505 and declining long-window contrast. See fitting-inspection report."
+    },
+    {
+      "time_utc": "2026-09-08T00:02:10.064096+00:00",
+      "decision": "Explicit manifest migration adds strength_grid equal to the exact original hard-coded coarse grid, already preregistered before diagnostics. No prior validation exists; fitting trajectories/vectors unchanged.",
+      "evidence": "Code 2377452 replaces the fixed tuple with a serialized equivalent default. Diagnostic and fitting collection used 8ad6ce3; future invocation code is logged."
+    }
+  ],
+  "selected_analysis_sha256": "e7bd8fd1424d400b535c720f5fcb3bc3a71679a8e897ca33b5bd37d1ede32061"
+}
