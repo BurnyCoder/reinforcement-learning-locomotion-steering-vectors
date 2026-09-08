@@ -1,0 +1,397 @@
+{
+  "created_utc": "2026-09-08T00:42:16.999867+00:00",
+  "scope": "Publication replay of the original bounded inline runtime audit; no new experimental seeds or selection",
+  "run": "runs\\ant-classic-005",
+  "identity": {
+    "model_key": "ant",
+    "policy_sha256": "3c6a121a5e9eeffd7430286c229aba7c5b43cb3db2cd2ecd0d738e8a0702d071",
+    "runtime_sha256": "7ef8bf1980974aeab02035ec90dd69012ccf16f3e142e82280c78d46382f4c4e",
+    "vector_sha256": "3f38ead5514174ad6e249e80050c3f1f24ae4706bd77dfe364d1f0c11009b895",
+    "bias_sha256": null,
+    "alpha": -0.1,
+    "warmup": 100,
+    "max_steps": 1000,
+    "capture": false,
+    "stochastic": false
+  },
+  "vector_shape": [
+    256
+  ],
+  "vector_norm": 5.1513495445251465,
+  "checkpoint_sha256": "dea0e6dbb847776ac9e91dc8b7df5ba975742924eb55831d2da08a0abc786ca2",
+  "source_files": {
+    "runs\\ant-classic-005\\manifest.json": "d08283f28e39fada187f7470713687504f6236b2258432b01ff987881efeff1a",
+    "runs\\ant-classic-005\\vectors.npz": "3626c79cb49539ef0c5170a6cabdbd9183d3800aeec82ab9196a8804764df36d",
+    "runs\\ant-classic-005\\selection.json": "676c0b321371a0af1890231388a9d29313b972d3ce09b04c5789e0ae35fd6d4e",
+    "runs\\ant-classic-005\\episodes\\validation\\baseline\\510000.npz": "99ddac7e661eff01e4785c61226daa39ecbce7654e5c7608a8949496462f79dc",
+    "runs\\ant-classic-005\\episodes\\validation\\lateral__-0.1000\\510000.npz": "2102a6766adb4ba3f606936edaa4d0f85b6adcbd908cc8a64fef7d37d7dda992",
+    "runs\\ant-classic-005\\episodes\\confirmation\\baseline\\520000.npz": "273864868952d3f7c3837656bd878fe7b02896851b6df0d5b7b3d2340efae62a",
+    "runs\\ant-classic-005\\episodes\\confirmation\\lateral__-0.1000\\520000.npz": "774b5b944a508ba8ddf5c04c7aeb46569612202929d5cb49723023ca315a2fc5"
+  },
+  "audit_script_sha256": "642f796009af4575aca624be69b2b8f9e45ca6eefb5d6963abde6a1e85ada732",
+  "actions": {
+    "check_locations": [
+      [
+        510000,
+        "baseline",
+        0
+      ],
+      [
+        510000,
+        "baseline",
+        99
+      ],
+      [
+        510000,
+        "baseline",
+        100
+      ],
+      [
+        510000,
+        "baseline",
+        101
+      ],
+      [
+        510000,
+        "baseline",
+        250
+      ],
+      [
+        510000,
+        "baseline",
+        500
+      ],
+      [
+        510000,
+        "baseline",
+        999
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        0
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        99
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        100
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        101
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        250
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        500
+      ],
+      [
+        510000,
+        "lateral__-0.1000",
+        999
+      ],
+      [
+        520000,
+        "baseline",
+        0
+      ],
+      [
+        520000,
+        "baseline",
+        99
+      ],
+      [
+        520000,
+        "baseline",
+        100
+      ],
+      [
+        520000,
+        "baseline",
+        101
+      ],
+      [
+        520000,
+        "baseline",
+        250
+      ],
+      [
+        520000,
+        "baseline",
+        500
+      ],
+      [
+        520000,
+        "baseline",
+        999
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        0
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        99
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        100
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        101
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        250
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        500
+      ],
+      [
+        520000,
+        "lateral__-0.1000",
+        999
+      ]
+    ],
+    "count": 28,
+    "stored_actions_and_manual_chain_bitwise_equal": true,
+    "zero_identity_and_cleanup_equal": true,
+    "all_parameters_frozen": true,
+    "policy_state_unchanged": true,
+    "remaining_hooks": 0,
+    "action_displacement": {
+      "samples": 10,
+      "values": [
+        [
+          -0.14311730861663818,
+          0.0807386040687561,
+          0.0010026097297668457,
+          -0.07479643821716309,
+          -0.019356250762939453,
+          -0.06084686517715454,
+          0.19759464263916016,
+          -0.011696696281433105
+        ],
+        [
+          -0.15565001964569092,
+          -0.050184547901153564,
+          0.029801666736602783,
+          -0.11904633045196533,
+          -0.09172213077545166,
+          -0.079567551612854,
+          0.09697282314300537,
+          0.09035706520080566
+        ],
+        [
+          0.2384135127067566,
+          -0.004134476184844971,
+          0.007082700729370117,
+          -0.12612056732177734,
+          -0.024682164192199707,
+          0.08951151371002197,
+          -0.0037922263145446777,
+          0.03797948360443115
+        ],
+        [
+          -0.05907416343688965,
+          0.04636305570602417,
+          -0.036759018898010254,
+          -0.08287429809570312,
+          0.00026535987854003906,
+          -0.025283455848693848,
+          0.07337045669555664,
+          0.02178049087524414
+        ],
+        [
+          -0.08402299880981445,
+          0.03334832191467285,
+          -0.09434527158737183,
+          -0.0643734335899353,
+          -0.11787128448486328,
+          -0.025912225246429443,
+          -0.012015104293823242,
+          -0.058692753314971924
+        ],
+        [
+          -0.11046695709228516,
+          -0.00032651424407958984,
+          0.0027425289154052734,
+          -0.08387017250061035,
+          -0.027655184268951416,
+          0.03166353702545166,
+          -0.002680182456970215,
+          -0.009937942028045654
+        ],
+        [
+          0.014971613883972168,
+          0.0007317662239074707,
+          0.0027164220809936523,
+          -0.08290398120880127,
+          0.01940608024597168,
+          0.02523958683013916,
+          -0.0006769895553588867,
+          0.012530684471130371
+        ],
+        [
+          0.21976029872894287,
+          0.026875019073486328,
+          -0.016117513179779053,
+          0.03161054849624634,
+          -0.07181429862976074,
+          -0.008319377899169922,
+          -0.031845927238464355,
+          -0.003540635108947754
+        ],
+        [
+          0.08324551582336426,
+          0.002265751361846924,
+          0.010004162788391113,
+          -0.15630066394805908,
+          0.00989222526550293,
+          -0.05140995979309082,
+          -0.0036954879760742188,
+          0.005885958671569824
+        ],
+        [
+          -0.0460132360458374,
+          -0.03094160556793213,
+          0.06025290489196777,
+          -0.03248000144958496,
+          -0.068184494972229,
+          0.04289376735687256,
+          -0.013368070125579834,
+          -0.0019402503967285156
+        ]
+      ],
+      "coordinate_std": [
+        0.1347934811744851,
+        0.035922728040953596,
+        0.03883775611381564,
+        0.04948100193925854,
+        0.04357934085249396,
+        0.05016298102347407,
+        0.06797916418856205,
+        0.036448949001775977
+      ],
+      "min_norm": 0.09097385786769133,
+      "max_norm": 0.2879114474223572
+    }
+  },
+  "physics": {
+    "environment": {
+      "wrappers": "<TimeLimit<OrderEnforcing<PassiveEnvChecker<AntEnv<Ant-v5>>>>>",
+      "dt": 0.05,
+      "frame_skip": 5,
+      "forward_reward_weight": 1,
+      "ctrl_cost_weight": 0.5,
+      "contact_cost_weight": 0.0005,
+      "healthy_reward": 1.0,
+      "healthy_z_range": [
+        0.2,
+        1.0
+      ],
+      "terminate_when_unhealthy": true,
+      "floor_id": 0,
+      "torso_geom_id": 1,
+      "observation_structure": {
+        "skipped_qpos": 2,
+        "qpos": 13,
+        "qvel": 14,
+        "cfrc_ext": 78
+      }
+    },
+    "replays": [
+      {
+        "condition": "baseline",
+        "seed": 510000,
+        "steps": 1000,
+        "field_mismatch_counts": {
+          "observations": 0,
+          "actions": 0,
+          "reward": 0,
+          "x_velocity": 0,
+          "y_velocity": 0,
+          "height": 0,
+          "yaw_rate": 0,
+          "inversion": 0,
+          "bad_contact": 0
+        },
+        "onset_equal": true,
+        "termination_equal": true,
+        "truncation_equal": true,
+        "original_reward_decomposition_equal": true,
+        "max_qpos_vs_info_velocity_difference": 0.10717877713489088
+      },
+      {
+        "condition": "lateral__-0.1000",
+        "seed": 510000,
+        "steps": 1000,
+        "field_mismatch_counts": {
+          "observations": 0,
+          "actions": 0,
+          "reward": 0,
+          "x_velocity": 0,
+          "y_velocity": 0,
+          "height": 0,
+          "yaw_rate": 0,
+          "inversion": 0,
+          "bad_contact": 0
+        },
+        "onset_equal": true,
+        "termination_equal": true,
+        "truncation_equal": true,
+        "original_reward_decomposition_equal": true,
+        "max_qpos_vs_info_velocity_difference": 0.12799798648686078
+      }
+    ]
+  },
+  "official_sources": [
+    {
+      "path": ".venv\\Lib\\site-packages\\gymnasium\\envs\\mujoco\\ant_v5.py",
+      "url": "https://raw.githubusercontent.com/Farama-Foundation/Gymnasium/v1.0.0/gymnasium/envs/mujoco/ant_v5.py",
+      "normalized_text_sha256": "8d3832e29155966c52f645a2d20907387bb99cac06492cf1fc972c85c75d6ad6",
+      "text_equal": true
+    },
+    {
+      "path": ".venv\\Lib\\site-packages\\stable_baselines3\\sac\\policies.py",
+      "url": "https://raw.githubusercontent.com/DLR-RM/stable-baselines3/v2.4.1/stable_baselines3/sac/policies.py",
+      "normalized_text_sha256": "aa2e1b32746d964058e128b6b639b1047b4dbf60992cd2d0b4897ffd85c5989a",
+      "text_equal": true
+    },
+    {
+      "path": ".venv\\Lib\\site-packages\\gymnasium\\envs\\mujoco\\assets\\ant.xml",
+      "url": "https://raw.githubusercontent.com/Farama-Foundation/Gymnasium/v1.0.0/gymnasium/envs/mujoco/assets/ant.xml",
+      "normalized_text_sha256": "cd5f83ef0ea35b0969e65d360c5bacd5b74ccaef6b27e4433b5168c605e3e2be",
+      "text_equal": true
+    }
+  ],
+  "versions": {
+    "gymnasium": "1.0.0",
+    "mujoco": "3.1.5",
+    "stable-baselines3": "2.4.1",
+    "sb3-contrib": "2.4.0",
+    "numpy": "1.26.4",
+    "torch": "2.5.1+cpu",
+    "baukit": "0.0.1"
+  },
+  "scientific_inputs_unchanged": true
+}
