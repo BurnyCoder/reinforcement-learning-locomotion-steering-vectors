@@ -1,0 +1,59 @@
+{
+  "created_utc": "2026-09-08T01:23:45.749473+00:00",
+  "source_sha256": "9a79f33ea65f99cb2ed80f5200ead3f52910336edf30016f1954fb2b356f0c82",
+  "pdf_sha256": "198e273e5b30747ac6e6dedac7af0782dc968e442ffb935132f4bc69405b9263",
+  "pages": 9,
+  "checked_prose_and_table_units": 189,
+  "missing_units": [],
+  "distinct_external_links": 50,
+  "missing_external_links": [],
+  "body_bounds": [
+    {
+      "page": 1,
+      "body_bottom": 749.22514,
+      "height": 841.8898
+    },
+    {
+      "page": 2,
+      "body_bottom": 728.9251,
+      "height": 841.8898
+    },
+    {
+      "page": 3,
+      "body_bottom": 754.92514,
+      "height": 841.8898
+    },
+    {
+      "page": 4,
+      "body_bottom": 692.2251,
+      "height": 841.8898
+    },
+    {
+      "page": 5,
+      "body_bottom": 770.60973,
+      "height": 841.8898
+    },
+    {
+      "page": 6,
+      "body_bottom": 733.9251,
+      "height": 841.8898
+    },
+    {
+      "page": 7,
+      "body_bottom": 674.8251,
+      "height": 841.8898
+    },
+    {
+      "page": 8,
+      "body_bottom": 720.7251,
+      "height": 841.8898
+    },
+    {
+      "page": 9,
+      "body_bottom": 515.8251,
+      "height": 841.8898
+    }
+  ],
+  "visual_review": "All nine final PNG pages inspected: text, tables, figures, captions and references readable; no observed clipping or overlap. Poppler reported unavailable system-font aliases while rendering; rendered content was visually checked.",
+  "figures_unchanged": true
+}
