@@ -1,6 +1,6 @@
 # Experiment 004: smaller height-derived interventions for speed control
 
-Registered on 2026-09-07 at 23:53 UTC, before collecting this experiment's validation episodes.
+Locally dated 2026-09-07 at 23:53 UTC. This is a project protocol record, not an independent registration. Its first Git record, [commit 2377452](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/commit/23774522cd6fbd69a986c8a09b18b55266918372), is timestamped 23:57:51 UTC, before this run began at 23:58:41. That verifies recording before this run's validation, not the earlier claimed minute of local drafting. See the [manifest](hc-height-speed-004/manifest.json) and [documentation audit](documentation-audit.md) for the chronology.
 
 **Question.** Can the unchanged height-derived vector from `hc-running-002` slow the frozen HalfCheetah policy by at least 5% at smaller intervention strengths while retaining competent forward movement?
 

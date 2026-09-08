@@ -6,7 +6,7 @@ The [complete bundle](hc-height-speed-003/README.md) contains all 40 measured co
 
 ## Question and hypothesis
 
-Experiment 002's height vector at +0.05 increased torso height while slowing the actor by 12.85%, with no measured physical failures in its ten validation episodes. The original height usefulness criterion rejected that slowdown. The broader research goal allows a vector's useful effect to differ from its fitting label, so the follow-up explicitly tested **height-derived speed control**. This hypothesis was registered before new calibration; it does not retroactively turn 002 into a successful height experiment.
+Experiment 002's height vector at +0.05 increased torso height while slowing the actor by 12.85%, with no measured physical failures in its ten validation episodes. The original height usefulness criterion rejected that slowdown. The broader research goal allows a vector's useful effect to differ from its fitting label, so the follow-up explicitly tested **height-derived speed control**. The [retarget specification](hc-height-speed-003/retarget.json) records this hypothesis before new calibration; it does not retroactively turn 002 into a successful height experiment. This is a project specification, not an independent registration; see the [documentation audit](documentation-audit.md).
 
 The frozen [HalfCheetah-v5 TQC medium actor](https://huggingface.co/farama-minari/HalfCheetah-v5-TQC-medium/tree/b4ce04da6f246f06ae4c4258b8ab39624e6600b4) and first-ReLU intervention were retained. No training or behavioral cloning took place. The direction uses the same contrast-of-means adaptation of [CAA](https://arxiv.org/abs/2312.06681) and [Baukit hooks](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py) as 002. The new question concerns a physical speed effect, not proof of an internal height or speed concept.
 
@@ -25,7 +25,7 @@ No diagnostic or fitting episodes were recollected. The 16 diagnostic and 64 fit
 | Controls | The original three random directions and shuffled-label direction; equal norms and equal calibration opportunity |
 | Horizon and onset | 1,000 steps, with 100 unsteered steps before intervention; matched onset states |
 | Useful speed threshold | At least 5% absolute change, interval excluding zero, and at least 50% of baseline forward speed retained |
-| Quality | Episode physical failure plus pooled inversion/contact; maximum five-percentage-point increase in each metric, using the corrected rule already established before this run |
+| Quality | Episode physical failure plus episode-averaged inversion/contact; maximum five-percentage-point increase in each metric, using the corrected rule already established before this run |
 | Uncertainty | 2,000 paired-episode percentile bootstrap resamples, seed 710 |
 | Execution | Four CPU workers, one Torch thread each; code commit `6600176`; pinned software in the manifest |
 
@@ -33,7 +33,7 @@ Keeping the original grid isolates the change of target and tests whether 002's 
 
 ## Primary results
 
-Baseline speed averaged **16.80795 m/s**, with zero measured physical failures. Every primary strength slowed the policy and cleared the target-size and interval criteria. Only the three moderate positive strengths retained sufficient mean forward motion; all strengths failed quality.
+Baseline speed averaged **16.80795 m/s**, with zero measured physical failures. Every primary strength slowed the policy and cleared the target-size and interval criteria. Only the three moderate positive strengths retained sufficient mean forward speed; all strengths failed quality. This speed ratio is not a travel-distance or completion measure.
 
 | Strength | Mean speed after steering, m/s | Speed change | Physical failures / 10 | Retains half baseline speed | Useful |
 | --- | ---: | ---: | ---: | --- | --- |
@@ -46,13 +46,13 @@ Baseline speed averaged **16.80795 m/s**, with zero measured physical failures. 
 | +0.2 | 9.26645 | −44.87% | 2 | Yes | No |
 | +0.5 | 1.78256 | −89.39% | 7 | No | No |
 
-At **+0.05**, the paired slowdown was **−2.85844 m/s**, with interval **[−4.02963, −2.19343] m/s**. Mean torso height increased from **0.592693 to 0.635091 m**. Pooled forbidden contact was only **3.556%**, but two individual episodes exceeded the physical-failure criterion. This repeats the lesson that a low pooled mean cannot establish competent behavior in every trial. Unlike 002's sample, this fresh sample did not show uniformly clean outcomes at +0.05 or +0.2.
+At **+0.05**, the paired slowdown was **−2.85844 m/s**, with interval **[−4.02963, −2.19343] m/s**. Mean torso height increased from **0.592693 to 0.635091 m**. Episode-averaged forbidden contact was **3.556%**, but two individual episodes exceeded the physical-failure criterion. This repeats the lesson that a low across-episode mean cannot establish competent behavior in every trial. Unlike 002's sample, this fresh sample did not show uniformly clean outcomes at +0.05 or +0.2.
 
 The study establishes sensitivity to reset episodes under a fixed intervention; it does not identify the dynamical mechanism responsible for every failure. These results are numerical trajectory measurements, without an additional video-based diagnosis in this report. No failed episodes were removed from means or bootstrap denominators.
 
 ## Controls and limitations
 
-Two settings from the same random direction passed all speed-validation gates. At **speed_random0 +0.05**, mean speed was **15.81472 m/s**, a **5.91%** slowdown (paired effect −0.99323 m/s; interval [−1.09334, −0.90097]), with zero observed failure/contact/inversion. At **+0.1**, it was **14.97058 m/s**, a **10.93%** slowdown (effect −1.83737 m/s; interval [−2.04882, −1.66931]), with zero physical failures/inversion and **0.0111%** pooled contact. This is 002's height_random0 array, not a newly drawn control.
+Two settings from the same random direction passed all speed-validation gates. At **speed_random0 +0.05**, mean speed was **15.81472 m/s**, a **5.91%** slowdown (paired effect −0.99323 m/s; interval [−1.09334, −0.90097]), with zero observed failure/contact/inversion. At **+0.1**, it was **14.97058 m/s**, a **10.93%** slowdown (effect −1.83737 m/s; interval [−2.04882, −1.66931]), with zero physical failures/inversion and **0.0111%** episode-averaged contact. This is 002's height_random0 array, not a newly drawn control.
 
 The pipeline only shortlists a primary candidate; neither control was selected or confirmed here. Their exploratory passes are evidence against claiming unique effectiveness of contrastive extraction, and they remain possible candidates for a separately registered discovery procedure. Failure of the primary family does not establish that every hidden direction is useless.
 
@@ -62,7 +62,7 @@ The result is `no_validation_candidate`. No action-bias comparator was fitted be
 
 ## Next hypothesis and reproduction
 
-Experiment 004 will test whether **smaller signed strengths** of the unchanged 002 height vector retain a meaningful speed effect with fewer physical failures. This is a dose-response hypothesis motivated by the adverse outcomes at the coarse grid, not a claim that a working interval already exists. The exact new grid and fresh seed partitions must be recorded before its outcomes are observed. The control family and quality requirements remain relevant; a favorable random direction must not be omitted because it was called a control.
+The next hypothesis recorded after 003 was that **smaller signed strengths** of the unchanged 002 height vector could retain a meaningful speed effect with fewer physical failures. This was a dose-response hypothesis motivated by the adverse coarse-grid outcomes, not a claim that a working interval existed. Experiment 004 subsequently tested it with its [locally dated protocol and exact grid](hc-height-speed-004-preregistration.md), then [failed primary confirmation](hc-height-speed-004-findings.md). The control family and quality requirements remain relevant; a favorable random direction must not be omitted because it was called a control.
 
 The new `retarget` command reproduces this experiment when `.env` matches its manifest, including seed offset 200000 and the original grid:
 
@@ -71,4 +71,4 @@ uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir r
 uv run locomotion-steering report --run-dir runs/hc-height-speed-003
 ```
 
-Use a new directory for a changed protocol. Full raw episodes and timestamped logs remain in the local run directory. The earlier 002 bundle has been uploaded to [Hugging Face commit 9fa4bb9](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/commit/9fa4bb97ef2ad7cc50d2888146c68407bc850d7c). The present 003 bundle is prepared locally; this report does not claim it has been uploaded.
+Use a new directory for a changed protocol. Full raw episodes and timestamped logs remain in the local run directory. The 003 raw run was published at [Hugging Face commit 238bd2d](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/commit/238bd2d9eba45fc1e69588f2beb2bbf15450f7b9); its numerical reports were published at [commit d4d4e76](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/d4d4e76cc3e9f5408bc348c9c85ba714b818b55b/experiments/hc-height-speed-003). The [bundle index](hc-height-speed-003/README.md) distinguishes the audit-file publication refresh. Publication does not change the recorded `no_validation_candidate` outcome. Later narrative corrections have their own publication history.

@@ -9,3 +9,6 @@
 *.npz binary
 *.png binary
 *.mp4 binary
+# Preserve this original inspection and captured logs byte-for-byte; https://git-scm.com/docs/gitattributes#_text
+reports/ant-classic-005/audit/fitting-inspection.json -text -whitespace
+reports/documentation-audit/*.log -text -whitespace
