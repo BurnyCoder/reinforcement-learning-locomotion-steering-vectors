@@ -2,7 +2,7 @@
 
 Six primary strengths passed validation, but the locked choice **−0.02 failed confirmation**: it reduced mean speed **31.89%** while producing physical failures in **10 of 30 episodes**. The run stopped at `confirmation_failed`; replication and application episodes were not collected. Two control conditions passed the confirmation pilot gates, and are retained in the complete evidence. This experiment does not establish a replicated useful primary intervention.
 
-The [artifact bundle](hc-height-speed-004/README.md) contains every one of the 72 validation and six confirmation conditions, the PDF, vectors, action-bias comparator, locked selection, and provenance. The [pre-registration](hc-height-speed-004-preregistration.md) preserves the hypothesis and thresholds recorded before this attempt.
+The [artifact bundle](hc-height-speed-004/README.md) contains every one of the 72 validation and six confirmation conditions, the PDF, vectors, action-bias comparator, locked selection, and provenance. The [locally dated protocol record](hc-height-speed-004-preregistration.md) preserves the hypothesis and thresholds; its first Git record precedes this run's validation. It is not an independent registration. The [documentation audit](documentation-audit.md) gives exact timestamp and terminology qualifications.
 
 ## Hypothesis and fixed protocol
 
@@ -22,7 +22,7 @@ The experiment reuses [CAA's additive contrast idea](https://arxiv.org/abs/2312.
 | Conditional application | 340000–340009, unused |
 | Rollout | 1,000 steps, identical 100-step unsteered prefix, deterministic evaluation |
 | Speed gate | At least 5% absolute change with an interval excluding zero and at least half baseline forward speed retained |
-| Quality | Existing episode-level physical failure and pooled inversion/contact criteria; no more than five percentage points increase in any quality measure |
+| Quality | Existing episode-level physical failure and episode-averaged inversion/contact criteria; no more than five percentage points increase in any quality measure |
 | Selection | Largest absolute useful effect, preferring a smaller absolute strength only when within 5% of that best effect |
 | Execution | Four CPU workers; one Torch thread each; code commit `2377452`; full software/configuration in the manifest |
 
@@ -32,13 +32,13 @@ Once a primary setting passed calibration, the pipeline derived a constant actio
 
 The primary passes were **−0.02, +0.02, +0.025, +0.03, +0.035, and +0.04**. All ten validation episodes for these strengths had zero physical failures. Positive strengths +0.02 through +0.04 produced slowdowns from **6.71% to 11.92%**, with no measured inversion or forbidden contact. These favorable calibration observations remain in the report; they were not independently confirmed in this run.
 
-The selected negative strength **−0.02** produced the largest passing slowdown, **16.43%**, with mean speed **16.80834 → 14.04651 m/s**. Its paired effect was **−2.76183 m/s**, interval **[−2.97538, −2.49581]**, with zero physical failures/inversion and **0.0111%** pooled forbidden contact. It therefore won under the recorded selection rule. Four shuffled-label strengths also passed validation. None of the random-direction or action-bias grid settings passed all validation gates; their strongest measured comparisons were nevertheless retained for confirmation.
+The selected negative strength **−0.02** produced the largest passing slowdown, **16.43%**, with mean speed **16.80834 → 14.04651 m/s**. Its paired effect was **−2.76183 m/s**, interval **[−2.97538, −2.49581]**, with zero physical failures/inversion and **0.0111%** episode-averaged forbidden contact. It therefore won under the recorded selection rule. Four shuffled-label strengths also passed validation. None of the random-direction or action-bias grid settings passed all validation gates; their strongest measured comparisons were nevertheless retained for confirmation.
 
 The selection rule rewards a large eligible effect, not an independent estimate of dynamical robustness. A clean sample of ten episodes can therefore promote a condition that is unreliable on new resets. That explanation concerns sampling and selection; it does not establish a particular gait-level failure mechanism.
 
 ## Confirmation and controls
 
-The selected vector at −0.02 retained a causal slowdown on thirty new episodes, but its quality did not generalize. Speed changed **16.80155 → 11.44279 m/s**, paired effect **−5.35876 m/s**, interval **[−6.98568, −3.99911]**. Physical failure rose from zero to **33.33%**; pooled forbidden contact was **18.24%** and inversion **3.13%**. The target-size, interval, and forward-movement gates passed, while quality failed. Every failed episode remains in the effect and uncertainty calculations.
+The selected vector at −0.02 retained a causal slowdown on thirty new episodes, but its quality did not generalize. Speed changed **16.80155 → 11.44279 m/s**, paired effect **−5.35876 m/s**, interval **[−6.98568, −3.99911]**. Physical failure rose from zero to **33.33%**; episode-averaged forbidden contact was **18.24%** and inversion **3.13%**. The target-size, interval, and forward-speed gates passed, while quality failed. Every failed episode remains in the effect and uncertainty calculations. Speed retention compares episode means; it does not assert retained travel distance or successful completion.
 
 | Locked confirmation condition | Strength | Speed change | Physical failures / 30 | Pilot gate |
 | --- | ---: | ---: | ---: | --- |
@@ -57,6 +57,6 @@ The comparison does not support unique usefulness of the contrastive primary dir
 
 The finer grid produced candidate-quality calibration results, but the locked primary failed the first fresh check. The correct outcome is failed confirmation, not a selection of a more favorable positive strength from the now-observed evidence. Replication seeds remain unused. All reported intervals resample paired episodes; validation involves many comparisons, and a single checkpoint cannot establish robustness across RL training seeds or simulators.
 
-The parallel [Ant experiment 005](ant-classic-005-preregistration.md) explores lateral and turning control in a different frozen policy. Its final usefulness and media claims require its own completed evidence. This report introduces no new method or additional training attempt.
+The parallel [Ant experiment 005](ant-classic-005-findings.md) subsequently recorded a held-out world-Y effect with its own strict prefix-criterion failure; its separate findings and media preserve that distinction. This report introduces no new method or additional training attempt.
 
-Reproduction uses the repository's `uv.lock`, the saved manifest including its exact strength grid, and the source 002 fitting artifacts. The commands are `uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir runs/hc-height-speed-004 --vector height --behavior speed` and the separate `report --run-dir runs/hc-height-speed-004` command. Changed protocols require a new run identity. The compact bundle preserves complete numerical results and fixed selection; full raw episodes and timestamped logs remain in the local run directory for publication.
+Reproduction uses the repository's `uv.lock`, the saved manifest including its exact strength grid, and the source 002 fitting artifacts. The commands are `uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir runs/hc-height-speed-004 --vector height --behavior speed` and the separate `report --run-dir runs/hc-height-speed-004` command. Changed protocols require a new run identity. The 004 run data and numerical reports were published at [Hugging Face commit dc0748d](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/dc0748d926dd9e9b038d14741ccada3d2f123673/experiments/hc-height-speed-004); the [bundle index](hc-height-speed-004/README.md) distinguishes the separate audit-file refresh. Publication preserves the failed-confirmation outcome; later narrative corrections have their own history.
