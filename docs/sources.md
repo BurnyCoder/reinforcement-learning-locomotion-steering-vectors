@@ -39,11 +39,14 @@ PyTorch's own [forward-hook API](https://docs.pytorch.org/docs/stable/generated/
 - [uv projects](https://docs.astral.sh/uv/guides/projects/) supplies project initialization, local environments, dependency locking, and execution.
 - [Python logging](https://docs.python.org/3.12/library/logging.html) supplies shared console/file handlers; logging format and research messages belong to this project.
 - [NumPy compressed NPZ](https://numpy.org/doc/1.26/reference/generated/numpy.savez_compressed.html) supplies array artifacts.
+- [NumPy array equality](https://numpy.org/doc/1.26/reference/generated/numpy.array_equal.html), [array byte serialization](https://numpy.org/doc/1.26/reference/generated/numpy.ndarray.tobytes.html), and [Python hashing](https://docs.python.org/3.12/library/hashlib.html) support the unchanged-vector import audit. A new evaluation label is a project hypothesis change; these APIs establish numerical identity, not semantic equivalence.
 - [NumPy median](https://numpy.org/doc/1.26/reference/generated/numpy.median.html) supplies the reduction used by the fitting speed floor. The chosen fraction `0.5` is a project pilot heuristic supported by [experiment 001's fitting-only diagnosis](../reports/hc-classic-001-diagnostics.md), not a rule from NumPy or a steering paper.
 - [Python ProcessPoolExecutor](https://docs.python.org/3.12/library/concurrent.futures.html#processpoolexecutor) supplies isolated rollout workers. The project uses spawned processes so workers do not share policy hooks or random-number-generator state.
 - [Matplotlib plotting](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.plot.html) and [saved figures](https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.savefig.html) supply strength-response charts.
 - [ReportLab Platypus](https://docs.reportlab.com/reportlab/userguide/ch5_platypus/), [paragraphs](https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/), and [tables](https://docs.reportlab.com/reportlab/userguide/ch7_tables/) supply pagination and PDF layout. Reports read recorded results; the renderer performs no new selection or statistical tests.
 - [pytest](https://docs.pytest.org/en/stable/) supplies tests for numerical contracts, simulator measurements, pairing, and cleanup.
+
+The fixed-speed application uses [ImageIO streaming](https://imageio.readthedocs.io/en/stable/examples.html) and [Pillow frame annotations](https://pillow.readthedocs.io/en/stable/reference/ImageDraw.html) for paired videos. Its validation-derived target, 5% baseline-relative tolerance, 80% episode coverage, and zero-failure requirement are project application criteria, not recommendations from those media libraries. Video replay equality and fixed observation action checks support media correspondence and hook removal; they do not imply physical trajectory reversal.
 
 ## Related work reserved for later experiments
 

@@ -14,13 +14,15 @@ from .config import Config  # Explicit settings become part of the immutable man
 from .execution import collect_episodes, diagnose  # Reuse collection for diagnostic and fitting data.
 from .phases import run_evaluation_phases, save_fixed_vectors  # Fitted and imported treatments share cache guards and the complete evidence sequence.
 from .runtime import prepare_model  # Verify upstream weights and runtime compatibility first.
-from .storage import check_manifest, load_json, save_json, utc_now  # Atomic artifacts make every completed phase resumable.
+from .storage import check_manifest, code_identity, load_json, save_json, utc_now  # Atomic artifacts and source fingerprints make every completed phase reproducible.
 
 
 def prepare(model_key: str, run_dir: Path, config: Config, source_manifest: dict | None = None) -> tuple:
     """Local: verify model and immutable protocol; global: establish provenance before evidence."""
     torch.set_num_threads(config.torch_threads)  # Avoid excessive threads for tiny MLP batches.
     model, provenance = prepare_model(model_key, Path.cwd())  # Check exact revision/hash, spaces, and frozen architecture.
+    implementation = code_identity(Path.cwd())  # Capture current owned code even when resuming an earlier manifest.
+    logging.info("invocation code=%s", implementation)  # Keep each invocation's actual source identity in its timestamped log.
     splits = {name: list(range(config.seed_offset + start, config.seed_offset + start + getattr(config, f"{name}_episodes"))) for name, start in
               (("diagnostic", 0), ("fit", 1000), ("validation", 10000), ("confirmation", 20000), ("replication", 30000))}  # Whole episodes stay in one phase.
     if source_manifest is not None:  # A registered follow-up can reuse existing fitting evidence without refitting a chosen vector.
@@ -31,7 +33,7 @@ def prepare(model_key: str, run_dir: Path, config: Config, source_manifest: dict
     if len(all_seeds) != len(set(all_seeds)):  # Excessively large counts could overlap nominal ranges.
         raise ValueError("Configured seed splits overlap; specify a new protocol")  # Stop rather than allow leakage.
     manifest = {"schema": 1, "created_utc": utc_now(), "model_key": model_key, "config": config.as_dict(), "seed_splits": splits,
-                "provenance": provenance, "decisions": [], "software": {name: importlib.metadata.version(name) for name in
+                "provenance": provenance, "code": implementation, "decisions": [], "software": {name: importlib.metadata.version(name) for name in
                 ("numpy", "torch", "torchvision", "stable-baselines3", "sb3-contrib", "gymnasium", "mujoco", "baukit")}}  # Save measured package versions alongside checkpoint identity.
     path = run_dir / "manifest.json"  # One run directory has one immutable protocol.
     if path.exists():  # Resume only when configuration and data splits match.

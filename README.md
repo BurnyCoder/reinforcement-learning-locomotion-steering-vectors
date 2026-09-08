@@ -33,6 +33,16 @@ Replay requires the named activation vector to have been extracted; inspect `vec
 
 Re-run the same `run` command to resume completed episode artifacts under the saved model, configuration, and seed splits. Use a new run directory when changing the protocol. `--stop-after diagnose`, `extract`, `calibrate`, or `confirm` provides an inspection boundary. Report regeneration reads saved evidence without changing selection or running new evaluations.
 
+To test an existing direction against a different behavioral outcome, use `retarget` with a separate run directory and a fresh `STEERING_SEED_OFFSET` in `.env`. For example, experiment 003 uses offset `200000` and the following command:
+
+```powershell
+uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir runs/hc-height-speed-003 --vector height --behavior speed
+```
+
+This reuses the exact source vector, its complete random/shuffled control family, and source fitting evidence. It recalibrates the new outcome on fresh episodes, preserving the source mapping in `retarget.json`. In the new bundle, vector keys use the target name: `speed` here identifies the imported height direction. Keep the source run's fitting trajectories available because shortlisted candidates require them for action-bias comparison. The [experiment register](reports/experiments.md) links the actual outcomes and the uploaded 002 evidence.
+
+After a speed candidate has passed confirmation and replication, `uv run locomotion-steering demonstrate --run-dir runs/your-replicated-run` tests its fixed, validation-derived speed target on ten new episodes. It restores the saved configuration, records numerical targeting and physical-quality checks, and renders the first three paired videos plus an off/on/off example. The command rejects runs without a replicated speed candidate. No completed experiment through 003 qualifies yet; this is an implemented workflow, not an application result. Exact acceptance rules are in [methodology](docs/methodology.md#fixed-speed-application).
+
 ## What happens during a run
 
 ```mermaid
@@ -49,6 +59,10 @@ flowchart TD
     CONFIRM --> REPLICATE[Fresh episode replication]
     REPLICATE --> RESULTS[Saved numerical results]
     RESULTS --> REPORT[Explicit report command: plots, Markdown and PDF]
+    SOURCE[Saved family and source fitting evidence] --> RETARGET[Retarget: new outcome and fresh seed partitions]
+    RETARGET --> VALIDATE
+    REPLICATE --> DEMO[Demonstrate: fixed speed target on fresh episodes]
+    DEMO --> MEDIA[Application measurements and paired videos]
     BASE --> STORE[Compressed episode artifacts and timestamped logs]
     VALIDATE --> STORE
     CONFIRM --> STORE
@@ -64,14 +78,16 @@ The thin pipeline coordinates reusable configuration, checkpoint/rollout, analys
 | `manifest.json` | Model revision/hash, software, configuration, seed splits, and research decisions |
 | `episodes/` | Compressed per-episode measurements and fitting activations |
 | `vectors.npz`, `vector_diagnostics.json` | Actual vectors, extraction diagnostics, and control provenance |
+| `retarget.json` | Imported-family source mapping and hashes, when testing a new outcome |
 | `action_biases.npz` | Constant action-space comparators, when candidates reach calibration |
 | `selection.json` | Validation choices recorded before confirmation |
 | `results.json` | Stage results, paired effects, confidence intervals, and quality checks |
 | `report.md`, `report.pdf`, `strength_response_*.png` | Human-readable evidence rendered from saved results |
 | `*.log` | One timestamp-named log per invocation, with complete logged messages |
 | `videos/` | Replay MP4s and matching numerical episodes |
+| `application_spec.json`, `application.json`, `application-media/` | Fixed-target application contract, complete outcomes, and audited videos/plots, when a replicated speed candidate exists |
 
-Preserve the run directory together with the exact Git commit and lockfile when sharing an experiment. Compare the saved checkpoint hash and configuration before interpreting a rerun. Episode replication reuses the same frozen checkpoint with fresh resets; it does not establish generalization across independently trained models.
+Preserve the run directory together with the exact Git commit and lockfile when sharing an experiment. New manifests automatically record the Git revision and normalized SHA256 hashes of owned source and dependency files; each resumed invocation logs its current code identity. These fingerprints exclude `.env`. Compare the saved checkpoint hash and configuration before interpreting a rerun. Episode replication reuses the same frozen checkpoint with fresh resets; it does not establish generalization across independently trained models.
 
 The project currently implements classic activation-difference extraction on pretrained policies. Command-conditioned RL training, gradient-based extraction, and additional environments are research extensions to implement when diagnostics justify them. Local experimental compute has no overall time limit; each experiment still has a declared protocol and review point. One training seed per attempted policy is permitted.
 

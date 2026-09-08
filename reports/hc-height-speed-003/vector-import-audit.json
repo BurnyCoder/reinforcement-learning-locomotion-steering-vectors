@@ -1,0 +1,63 @@
+{
+  "schema": 1,
+  "created_utc": "2026-09-07T23:57:13+00:00",
+  "source_run": "hc-running-002",
+  "target_run": "hc-height-speed-003",
+  "scope": "All five candidate/control array payloads compared; no fitting or simulator collection performed.",
+  "source_archive_sha256": "5849662209894e999f00dbd391442cdf1f8aa7a1b566fc64590723f183496f5e",
+  "target_archive_sha256": "9dbdf1ec451c75a5166eaca3582cb2ba0140f69967326fb05da2240c38e5d0eb",
+  "all_arrays_byte_equal": true,
+  "mappings": [
+    {
+      "source_vector": "height",
+      "target_key": "speed",
+      "shape": [
+        256
+      ],
+      "dtype": "float32",
+      "sha256": "a62751fde5ba5631cdbc7595beb813441e2ae62aad66d310d76845dba8674b13",
+      "bytes_equal": true
+    },
+    {
+      "source_vector": "height_random0",
+      "target_key": "speed_random0",
+      "shape": [
+        256
+      ],
+      "dtype": "float32",
+      "sha256": "52af32343dbeabce6c8d28f6fe1aa7c5cce53a81dd0e22aca45a9f2fe4d3efeb",
+      "bytes_equal": true
+    },
+    {
+      "source_vector": "height_random1",
+      "target_key": "speed_random1",
+      "shape": [
+        256
+      ],
+      "dtype": "float32",
+      "sha256": "022759ded04a51bbbe92c6cb1fa798e11b6f4d18809e377c6234cdd6fe129bfd",
+      "bytes_equal": true
+    },
+    {
+      "source_vector": "height_random2",
+      "target_key": "speed_random2",
+      "shape": [
+        256
+      ],
+      "dtype": "float32",
+      "sha256": "d415bf2171ecb40834974ef42759bbde3268c6c944f2fc7f1363bc028cec5608",
+      "bytes_equal": true
+    },
+    {
+      "source_vector": "height_shuffled",
+      "target_key": "speed_shuffled",
+      "shape": [
+        256
+      ],
+      "dtype": "float32",
+      "sha256": "ca2a87f4d4d63879b95499913601900d5f181038ff94dcc3e17124df6708a3ab",
+      "bytes_equal": true
+    }
+  ],
+  "interpretation": "Only evaluation aliases change. The speed candidate is the source height contrast; source diagnostic/fitting data are reused, with fresh target evaluation seeds."
+}
