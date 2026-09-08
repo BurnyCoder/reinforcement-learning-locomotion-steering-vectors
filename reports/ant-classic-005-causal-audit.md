@@ -2,6 +2,8 @@
 
 Audit date: 2026-09-08 UTC. Scope: the existing `ant-classic-005` lateral vector, its validation and confirmation artifacts, and the published rendering path. This audit did not change the vector, strengths, environment, outcomes, selection, or success criteria. The only simulator work was replaying existing actions from an already measured validation seed; no new experimental seeds were consumed.
 
+This is a separate within-project implementation and arithmetic check, not an external validation study. Later documentation corrections and local-protocol timestamp limits are recorded in the [documentation audit](documentation-audit.md); generated numerical snapshots and scientific inputs remain unchanged.
+
 **The inspected implementation applies a real activation intervention that changes world-coordinate Y motion. No reward substitution, hardcoded sideways action rule, policy training, or camera-induced physical change was found. The evidence does not establish pure sideways motion relative to the robot's body, a disentangled internal concept, or a completed replicated discovery.** The locked confirmation usefulness gate failed and replication was not run.
 
 ## What was actually applied
@@ -79,7 +81,7 @@ The fitting contrast is observational, and lateral labels were not conditioned o
 
 A descriptive audit rotated saved horizontal velocities by the inverse yaw calculated from each pre-action quaternion. This uses yaw only, not full pitch/roll orientation, and was not used for fitting, selection, or gates. In validation, the −0.1 intervention increased world-Y velocity by 0.545011 m/s but yaw-aligned side velocity by only 0.040051 m/s; mean heading increased by approximately 0.098829 rad, or 5.66 degrees. In confirmation the corresponding side-velocity change was 0.059427 m/s while world Y changed by 0.402379 m/s. Confirmation descriptive means retain the same prefix-zero convention.
 
-These patterns are consistent with directional/heading steering while keeping a similar body-oriented gait. They do **not** prove that heading is the sole mediator. Neither a body-relative strafing claim nor a disentangled internal “sideways” representation is established. The empirically useful sign is also opposite the extraction's high-minus-low sign: a negative activation offset raises world Y. That is compatible with closed-loop compensatory features and is another reason not to interpret the raw contrast as a direct semantic axis.
+These patterns are consistent with directional/heading change, but gait-pattern preservation was not directly measured. They do **not** prove that heading is the sole mediator. Neither a body-relative strafing claim nor a disentangled internal “sideways” representation is established. The empirically useful sign is also opposite the extraction's high-minus-low sign: a negative activation offset raises world Y. Closed-loop compensatory features are one possible explanation, not an identified mechanism; the sign is another reason not to interpret the raw contrast as a direct semantic axis.
 
 ## Camera and video integrity
 
@@ -92,7 +94,7 @@ Existing audit evidence is retained in `runs/ant-classic-005/videos/preliminary/
 ## Remaining methodological limits
 
 - The intervention is causal for this frozen policy under the paired simulator protocol, but fitting association, sign selection, and behavior naming do not establish internal semantics. Only one pretrained policy was studied in this Ant attempt.
-- Episode means include every failed episode and use its available post-onset duration. They are not a fixed 45-second outcome after an early termination. Failure rates, individual episodes, and the shared missing post-onset outcome must accompany the average velocity claim.
+- Episode summaries use available post-onset steps; prefix-only episodes receive zero behavioral/time-fraction summaries but still count as failures. Every planned pair remains in the estimator. Episode means, including inversion/contact fractions, receive equal weight rather than being pooled over timesteps. They are not a fixed 45-second outcome after an early termination. Forward-speed retention is a ratio of these mean speeds, not retained distance traveled. Failure rates, individual episodes, and the shared missing post-onset outcome must accompany the average velocity claim.
 - The 2,000-resample episode bootstrap describes the observed paired effect. It is not a simultaneous interval over the adaptive research history or a bound proving the population failure increase is below five percentage points. The safety gate uses observed rate differences, which remain uncertain with 30 pairs.
 - The cache identity hashes the runtime and treatment inputs; it does not itself hash every dependency, environment source, or analysis file. The manifest pins versions, analysis artifacts record a separate analysis hash, and this audit verified the important installed upstream sources. Those complementary records matter for reproduction.
 - No replicated discovery or calibrated fresh-episode application can be claimed from this run. The software's failed status and preserved failed episodes are part of the result, not artifacts to remove.
