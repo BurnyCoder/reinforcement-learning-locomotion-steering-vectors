@@ -19,7 +19,7 @@ import matplotlib.pyplot as plt  # noqa: E402  # Local: draw strength curves; gl
 from reportlab.lib import colors  # Local: set report colors; global: keep tables readable across pages.
 from reportlab.lib.pagesizes import A4  # Local: use a standard page size; global: make the report portable.
 from reportlab.lib.styles import ParagraphStyle, getSampleStyleSheet  # Local: define wrapping styles; global: avoid clipped prose.
-from reportlab.platypus import Image, PageBreak, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle  # Local: reuse layout primitives; global: avoid custom PDF positioning.
+from reportlab.platypus import Image, Paragraph, SimpleDocTemplate, Spacer, Table, TableStyle  # Local: reuse flowing layout primitives; global: avoid forced appendix pages with almost no evidence.
 
 LOGGER = logging.getLogger(__name__)  # Local: inherit CLI handlers; global: use one logging configuration.
 UNITS = {"speed": "m/s", "effort": "mean squared action", "height": "m", "lateral": "m/s", "turning": "rad/s"}  # Local: label physical quantities; global: prevent an energy claim from an action proxy.
@@ -82,6 +82,10 @@ def _fitting_diagnostics(results):
     extraction = results.get("extraction", {})  # Local: use the pipeline's extraction key; global: distinguish fitting from unsteered diagnostics.
     if not extraction:  # Local: handle runs stopped before extraction; global: do not imply missing work was completed.
         return "No fitting diagnostics were recorded."  # Local: state the evidence boundary; global: avoid invented contrast results.
+    if "source_extraction" in extraction:  # Local: detect an imported family; global: distinguish reused measurements from newly fitted evidence.
+        imported = extraction.get("imported", {})  # Local: read the saved name mapping; global: keep the extraction label separate from the new target.
+        notice = f"Inherited fitting diagnostics from {imported.get('source_run', 'recorded source')}; source vector {imported.get('source_vector', 'not recorded')} is evaluated as {imported.get('target_behavior', 'not recorded')}. No new fitting episodes were collected. The source statistics below retain their original labels."  # Local: state the actual reuse; global: prevent relabeled metadata implying a fitted semantic speed concept.
+        return notice + "\n" + _fitting_diagnostics({"extraction": extraction["source_extraction"]})  # Local: reuse the existing formatter on nested source evidence; global: avoid duplicate rendering rules and missing-data placeholders.
     windows = extraction.get("windows", {})  # Local: retrieve eligibility accounting; global: keep exclusions visible.
     lines = ["Fitting windows: " + "; ".join(f"{name.replace('_', ' ')}={_format(value)}" for name, value in windows.items()) + "."]  # Local: render every saved count; global: explain how much data supported extraction.
     lines.append(f"Centered activation RMS: {_format(extraction.get('activation_rms'))}. Convention: {extraction.get('rms_convention', 'not recorded')}.")  # Local: state actual normalization; global: give intervention strengths their recorded scale.
@@ -98,7 +102,7 @@ def _fitting_diagnostics(results):
 def _provenance_text(manifest):
     """Local: summarize execution identity compactly. Global: retain complete machine-readable provenance beside the report."""
     source = manifest.get("provenance", {})  # Local: read verified checkpoint metadata; global: distinguish this run from another pretrained policy.
-    lines = [f"Created: {manifest.get('created_utc', 'not recorded')}; code commit: {manifest.get('code_commit', 'not recorded')}."]  # Local: show chronology and code identity; global: make the report attributable.
+    lines = [f"Created: {manifest.get('created_utc', 'not recorded')}; code commit: {manifest.get('code_commit', manifest.get('code', {}).get('git_revision', 'not recorded'))}."]  # Local: read legacy or automatic code provenance; global: make reports attributable across schema versions.
     lines.append(f"Policy: {source.get('repo_id', manifest.get('model_key', 'not recorded'))}; algorithm: {source.get('algorithm', 'not recorded')}; environment: {source.get('env_id', 'not recorded')}.")  # Local: identify the actual RL checkpoint; global: preserve training provenance.
     lines.append(f"Checkpoint revision: {source.get('revision', 'not recorded')}. SHA256: {source.get('sha256', 'not recorded')}.")  # Local: retain full immutable identifiers; global: support integrity verification.
     lines.append(f"Layer: {source.get('layer', 'not recorded')}; hidden dimension: {_format(source.get('hidden_dimension'))}; observation/action shapes: {source.get('observation_shape', 'not recorded')} / {source.get('action_shape', 'not recorded')}.")  # Local: summarize model interfaces; global: make intervention placement reproducible.
@@ -179,12 +183,11 @@ def _write_markdown(path, title, timestamp, sections, images):
 def _write_pdf(path, title, timestamp, sections, images):
     """Local: lay out the same report with ReportLab. Global: produce a portable research artifact."""
     styles = getSampleStyleSheet()  # Local: reuse documented typography defaults; global: keep the renderer compact.
+    styles["Heading2"].keepWithNext = True  # Local: keep headings with their following paragraph or figure; global: avoid orphaned section labels at page boundaries.
     styles.add(ParagraphStyle("SmallCell", parent=styles["BodyText"], fontSize=7.5, leading=10, wordWrap="CJK"))  # Local: wrap long vector names and hashes; global: prevent table overflow.
     styles["BodyText"].fontSize, styles["BodyText"].leading = 9, 13  # Local: set legible compact prose; global: avoid excessive report length.
     story = [Paragraph(escape(title), styles["Title"]), Paragraph(escape(timestamp), styles["BodyText"]), Spacer(1, 12)]  # Local: start with title and timestamp; global: identify the report version.
     for heading, text, rows in sections:  # Local: consume shared report content; global: keep the PDF consistent with Markdown.
-        if heading == "Reproduction and provenance":  # Local: begin technical metadata on a fresh page; global: keep the scientific narrative visually distinct.
-            story.append(PageBreak())  # Local: let Platypus create a clean boundary; global: avoid a provenance heading stranded at the foot of a page.
         story.append(Paragraph(escape(heading), styles["Heading2"]))  # Local: mark section boundaries; global: support visual scanning.
         for paragraph in text.split("\n"):  # Local: let long provenance lines wrap individually; global: prevent a single unbreakable block.
             if paragraph:  # Local: omit empty paragraph objects; global: avoid unexplained layout gaps.
