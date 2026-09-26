@@ -1,0 +1,470 @@
+{
+  "git_revision": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+  "files": [
+    {
+      "source": "docs/huggingface-model-card.md",
+      "target": "README.md",
+      "sha256": "629ebfcb91b0f6772077a5dec53985e887ee97cab32ae99ec1da15f154a67c65",
+      "source_sha256": "629ebfcb91b0f6772077a5dec53985e887ee97cab32ae99ec1da15f154a67c65",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "629ebfcb91b0f6772077a5dec53985e887ee97cab32ae99ec1da15f154a67c65",
+      "matches": true
+    },
+    {
+      "source": "reports/paper.md",
+      "target": "paper/paper.md",
+      "sha256": "9a79f33ea65f99cb2ed80f5200ead3f52910336edf30016f1954fb2b356f0c82",
+      "source_sha256": "9a79f33ea65f99cb2ed80f5200ead3f52910336edf30016f1954fb2b356f0c82",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "9a79f33ea65f99cb2ed80f5200ead3f52910336edf30016f1954fb2b356f0c82",
+      "matches": true
+    },
+    {
+      "source": "reports/paper.pdf",
+      "target": "paper/paper.pdf",
+      "sha256": "198e273e5b30747ac6e6dedac7af0782dc968e442ffb935132f4bc69405b9263",
+      "source_sha256": "198e273e5b30747ac6e6dedac7af0782dc968e442ffb935132f4bc69405b9263",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "198e273e5b30747ac6e6dedac7af0782dc968e442ffb935132f4bc69405b9263",
+      "matches": true
+    },
+    {
+      "source": "reports/paper_build.md",
+      "target": "paper/paper_build.md",
+      "sha256": "963b246a512108d11079c40ba01367a7c201bbb56167cc7f3f512e521e2d0bd2",
+      "source_sha256": "c9425c2a99e7409bf99996be471bc79d4b773e84778b3dd67d2539a9b0debbd8",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "963b246a512108d11079c40ba01367a7c201bbb56167cc7f3f512e521e2d0bd2",
+      "matches": true
+    },
+    {
+      "source": "reports/build_paper.py",
+      "target": "paper/build_paper.py",
+      "sha256": "6ef4a641aa5f87470477df0c0c538112fad8ea10901d46604acfb3e292ac556e",
+      "source_sha256": "6ef4a641aa5f87470477df0c0c538112fad8ea10901d46604acfb3e292ac556e",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "6ef4a641aa5f87470477df0c0c538112fad8ea10901d46604acfb3e292ac556e",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit.md",
+      "target": "documentation-audit/README.md",
+      "sha256": "b877ab392353968cc854419c61cfd36218c823354fe625273d62cc59b3fd711a",
+      "source_sha256": "b480df24683ca40ecce62537ec4b0282a232144ad0b2838ace0b8dc620e487f2",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "b877ab392353968cc854419c61cfd36218c823354fe625273d62cc59b3fd711a",
+      "matches": true
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "target": "documentation/ant-videos.md",
+      "sha256": "155b6b630b6a49b6c09302a302fa0b2346884592585eba86310220ff7ebc64fd",
+      "source_sha256": "50d29dffb89c2ebb4f3f675e3cd2453d5efca7e3bb0597e2bbae2029f0d30528",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "155b6b630b6a49b6c09302a302fa0b2346884592585eba86310220ff7ebc64fd",
+      "matches": true
+    },
+    {
+      "source": "docs/methodology.md",
+      "target": "documentation/methodology.md",
+      "sha256": "60667bd529b5220b8191e0b88c9f6df2763c327e0c103e5209f935f286161b30",
+      "source_sha256": "34b40eee3b396b0cd614e859588c9c8ab7666e2c646269953aaad661141c94ef",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "60667bd529b5220b8191e0b88c9f6df2763c327e0c103e5209f935f286161b30",
+      "matches": true
+    },
+    {
+      "source": "docs/sources.md",
+      "target": "documentation/sources.md",
+      "sha256": "e6ff97f3ae208fc5b06882b9dc75cd315f3a3ac8c216283e337cf7c6814b7786",
+      "source_sha256": "ed10fbdd4a0bfcd0ac9096da17f573a1a73cd080211b2806507df63b57fa2098",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "e6ff97f3ae208fc5b06882b9dc75cd315f3a3ac8c216283e337cf7c6814b7786",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005-causal-audit.md",
+      "target": "documentation/experiments/ant-classic-005-causal-audit.md",
+      "sha256": "f9eb6802a951c68dff7b271ba8ae3e252d5a1d9be8f652d99008dee221648499",
+      "source_sha256": "484b86385f51852c1615885d79cef615acafbfeb865261dfba8b6f11da015fd4",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "f9eb6802a951c68dff7b271ba8ae3e252d5a1d9be8f652d99008dee221648499",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005-diagnostics.md",
+      "target": "documentation/experiments/ant-classic-005-diagnostics.md",
+      "sha256": "9dc738fff678ac897cb09279a73ba3efe08209437bb3b21e421fe62e23f9b2c7",
+      "source_sha256": "67797f6c4e6d383803146a2251ac994b4f244334ff2fd0689d7ad2f623a3dd63",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "9dc738fff678ac897cb09279a73ba3efe08209437bb3b21e421fe62e23f9b2c7",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005-findings.md",
+      "target": "documentation/experiments/ant-classic-005-findings.md",
+      "sha256": "b89c4717209592014c7b7100ff09f5874c17a0b317b46a9d59fe3994d79af430",
+      "source_sha256": "b712aa4f2d430351b43032cf72c088ccaedefe9abdb290c30ca5231c65e2ebf3",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "b89c4717209592014c7b7100ff09f5874c17a0b317b46a9d59fe3994d79af430",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005-preregistration.md",
+      "target": "documentation/experiments/ant-classic-005-preregistration.md",
+      "sha256": "8e53c876de6a412640591763b3f5595407db859fa5ec26e302351b6be8f04202",
+      "source_sha256": "53f5ac019476ac50414d32692a3564496a20652917b6dc3fdee469022096845b",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "8e53c876de6a412640591763b3f5595407db859fa5ec26e302351b6be8f04202",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/20260908T011504804304Z.log",
+      "target": "documentation-audit/20260908T011504804304Z.log",
+      "sha256": "bab18279c41390792df92b0860945f607fa4236b60e610f831dc78fae5421ce5",
+      "source_sha256": "bab18279c41390792df92b0860945f607fa4236b60e610f831dc78fae5421ce5",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "bab18279c41390792df92b0860945f607fa4236b60e610f831dc78fae5421ce5",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/20260908T011613334364Z.log",
+      "target": "documentation-audit/20260908T011613334364Z.log",
+      "sha256": "a9b1d912d647dfd405b970560e66af9ccda98fdc2af00693c23f1da74987fbf2",
+      "source_sha256": "a9b1d912d647dfd405b970560e66af9ccda98fdc2af00693c23f1da74987fbf2",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "a9b1d912d647dfd405b970560e66af9ccda98fdc2af00693c23f1da74987fbf2",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/20260908T011935235135Z.log",
+      "target": "documentation-audit/20260908T011935235135Z.log",
+      "sha256": "07a26f2ab24e9e4f7c294d9a4d822861ed2d1322e5d0541bd98c689d9941e78e",
+      "source_sha256": "07a26f2ab24e9e4f7c294d9a4d822861ed2d1322e5d0541bd98c689d9941e78e",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "07a26f2ab24e9e4f7c294d9a4d822861ed2d1322e5d0541bd98c689d9941e78e",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/ant-sensitivity-verification.json",
+      "target": "documentation-audit/ant-sensitivity-verification.json",
+      "sha256": "16e26abaed7acda07cd74c227aa93d6bac2f868e18d2dd17ebd3cb8ff43f72a9",
+      "source_sha256": "16e26abaed7acda07cd74c227aa93d6bac2f868e18d2dd17ebd3cb8ff43f72a9",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "16e26abaed7acda07cd74c227aa93d6bac2f868e18d2dd17ebd3cb8ff43f72a9",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/historical-provenance.json",
+      "target": "documentation-audit/historical-provenance.json",
+      "sha256": "7c7432ac39f0d24a43355f9b14bc33892cad97c5a947df255c4f6c2998475908",
+      "source_sha256": "7c7432ac39f0d24a43355f9b14bc33892cad97c5a947df255c4f6c2998475908",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "7c7432ac39f0d24a43355f9b14bc33892cad97c5a947df255c4f6c2998475908",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/input-identities.json",
+      "target": "documentation-audit/input-identities.json",
+      "sha256": "7fd77b143aedc3e81ac895e669463392873bdb685b3db3fe5146748597e5c918",
+      "source_sha256": "7fd77b143aedc3e81ac895e669463392873bdb685b3db3fe5146748597e5c918",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "7fd77b143aedc3e81ac895e669463392873bdb685b3db3fe5146748597e5c918",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/numerical-audit.json",
+      "target": "documentation-audit/numerical-audit.json",
+      "sha256": "04e0e0edc9ea1cd8226c34a881b957c22ebace8b699a1e204eedf8eed5c072ae",
+      "source_sha256": "04e0e0edc9ea1cd8226c34a881b957c22ebace8b699a1e204eedf8eed5c072ae",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "04e0e0edc9ea1cd8226c34a881b957c22ebace8b699a1e204eedf8eed5c072ae",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/paper-build.log",
+      "target": "documentation-audit/paper-build.log",
+      "sha256": "24ab880538b31469d84e0e6786849ba3a6a0c85caae1bb82c1bd6fa69966fe14",
+      "source_sha256": "24ab880538b31469d84e0e6786849ba3a6a0c85caae1bb82c1bd6fa69966fe14",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "24ab880538b31469d84e0e6786849ba3a6a0c85caae1bb82c1bd6fa69966fe14",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/paper-verification.json",
+      "target": "documentation-audit/paper-verification.json",
+      "sha256": "9828d340f2907f9117780f43f518132828074949338456ca01368860814a9f4c",
+      "source_sha256": "9828d340f2907f9117780f43f518132828074949338456ca01368860814a9f4c",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "9828d340f2907f9117780f43f518132828074949338456ca01368860814a9f4c",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/publication-before-terminal.log",
+      "target": "documentation-audit/publication-before-terminal.log",
+      "sha256": "c05f0948827406e687e743e42cb8aed9067d579dad5ffec806f29d7f44f0a4ab",
+      "source_sha256": "c05f0948827406e687e743e42cb8aed9067d579dad5ffec806f29d7f44f0a4ab",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "c05f0948827406e687e743e42cb8aed9067d579dad5ffec806f29d7f44f0a4ab",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/publication-before.json",
+      "target": "documentation-audit/publication-before.json",
+      "sha256": "86200c207c2aa049948f84de5b0ed2d76310362dd5ff603191b9a0e70b30761a",
+      "source_sha256": "86200c207c2aa049948f84de5b0ed2d76310362dd5ff603191b9a0e70b30761a",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "86200c207c2aa049948f84de5b0ed2d76310362dd5ff603191b9a0e70b30761a",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/readme-render-verification.json",
+      "target": "documentation-audit/readme-render-verification.json",
+      "sha256": "b08f8d06e0e98b8575feefd2fa161ed3b42308e7754cff1fddb9f2922b69f807",
+      "source_sha256": "b08f8d06e0e98b8575feefd2fa161ed3b42308e7754cff1fddb9f2922b69f807",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "b08f8d06e0e98b8575feefd2fa161ed3b42308e7754cff1fddb9f2922b69f807",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/tests-current.log",
+      "target": "documentation-audit/tests-current.log",
+      "sha256": "06e51847747214038f5bcf2ec7cbe32482681f7d0a5f34fb8d6da4dd3dd427b1",
+      "source_sha256": "06e51847747214038f5bcf2ec7cbe32482681f7d0a5f34fb8d6da4dd3dd427b1",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "06e51847747214038f5bcf2ec7cbe32482681f7d0a5f34fb8d6da4dd3dd427b1",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/tests-final.log",
+      "target": "documentation-audit/tests-final.log",
+      "sha256": "b71c1eadd5db84f6cfe2c28f4e45864420ee6f4024abf83d20d3d1b32326140f",
+      "source_sha256": "b71c1eadd5db84f6cfe2c28f4e45864420ee6f4024abf83d20d3d1b32326140f",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "b71c1eadd5db84f6cfe2c28f4e45864420ee6f4024abf83d20d3d1b32326140f",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/tests-full-retry.log",
+      "target": "documentation-audit/tests-full-retry.log",
+      "sha256": "03a7e5e4efaccc0ce3bed324de710b9f5dce374baf7df299a3961940795a08eb",
+      "source_sha256": "03a7e5e4efaccc0ce3bed324de710b9f5dce374baf7df299a3961940795a08eb",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "03a7e5e4efaccc0ce3bed324de710b9f5dce374baf7df299a3961940795a08eb",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/tests-initial.log",
+      "target": "documentation-audit/tests-initial.log",
+      "sha256": "3e2c9a98efdd6bbb7f96582e8b2dc6ab911e0c93c0e0442b62d790833f71e40e",
+      "source_sha256": "3e2c9a98efdd6bbb7f96582e8b2dc6ab911e0c93c0e0442b62d790833f71e40e",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "3e2c9a98efdd6bbb7f96582e8b2dc6ab911e0c93c0e0442b62d790833f71e40e",
+      "matches": true
+    },
+    {
+      "source": "reports/documentation-audit/tests-targeted-retry.log",
+      "target": "documentation-audit/tests-targeted-retry.log",
+      "sha256": "f83102d55649b4dd0049530f577f3d70dbd21b103d0a5f88a570e60c553a448d",
+      "source_sha256": "f83102d55649b4dd0049530f577f3d70dbd21b103d0a5f88a570e60c553a448d",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "f83102d55649b4dd0049530f577f3d70dbd21b103d0a5f88a570e60c553a448d",
+      "matches": true
+    },
+    {
+      "source": "reports/experiments.md",
+      "target": "documentation/experiments/experiments.md",
+      "sha256": "9342aa099aff86327977d703cc029becba5e274fddadc1ba38ace34fc7f238ab",
+      "source_sha256": "5c3958a555414b0ca372ea6a0a87786d1e76b44629b93bf55c6ae796bc509247",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "9342aa099aff86327977d703cc029becba5e274fddadc1ba38ace34fc7f238ab",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-classic-001-diagnostics.md",
+      "target": "documentation/experiments/hc-classic-001-diagnostics.md",
+      "sha256": "e6e1f40e784e476692c7625e9e48afb12a97b28cf674e9ae8067064ec9506420",
+      "source_sha256": "17b865df3d966558ce206d777de5a88a3eb423cb4ca9b5d6b6bd62dae9469b30",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "e6e1f40e784e476692c7625e9e48afb12a97b28cf674e9ae8067064ec9506420",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-003-findings.md",
+      "target": "documentation/experiments/hc-height-speed-003-findings.md",
+      "sha256": "606f5ee7e63accac268198bbcb0899c0226a5f3b151291c1d1b52ae4788974cb",
+      "source_sha256": "6ace8a19334885507fa1eb17e51460c813002f3019f5ca9fcefbbd68ec8b1b60",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "606f5ee7e63accac268198bbcb0899c0226a5f3b151291c1d1b52ae4788974cb",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-004-findings.md",
+      "target": "documentation/experiments/hc-height-speed-004-findings.md",
+      "sha256": "a03fcb647c3212931ddfb5016bb4332d76c5a91f6a7bd74fd36431957e9837ab",
+      "source_sha256": "c00733f033fd22f361e429549846e91fc0c6a90608bed954f2e1be0bda8a8d24",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "a03fcb647c3212931ddfb5016bb4332d76c5a91f6a7bd74fd36431957e9837ab",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-004-preregistration.md",
+      "target": "documentation/experiments/hc-height-speed-004-preregistration.md",
+      "sha256": "a75f87f2b24cb3747bda1df2bdb923642779ecf4886fbe6d06cbdf0aec2ec532",
+      "source_sha256": "851ae526e6ac51f9f9c9ac1160e8f094a0207984dabfce5d2074b0ccb527bcc2",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "a75f87f2b24cb3747bda1df2bdb923642779ecf4886fbe6d06cbdf0aec2ec532",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-running-002-findings.md",
+      "target": "documentation/experiments/hc-running-002-findings.md",
+      "sha256": "f3b9cb1ddd0354ccc5a10292618ab65f6f4476e1bca796a20902d8468b14112c",
+      "source_sha256": "d1cdc32a4dee66975b3d7074ab5a66176dd753e6a2ced6e124bce6fdf7ee4dd4",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "f3b9cb1ddd0354ccc5a10292618ab65f6f4476e1bca796a20902d8468b14112c",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-running-002-validation-inspection.md",
+      "target": "documentation/experiments/hc-running-002-validation-inspection.md",
+      "sha256": "8738c7e70024254be925e3c3338106b14e496b63f59669d9a1b79b178a22c46b",
+      "source_sha256": "35e7ace1381ab2e8da6d1e6c3e44a4029234363705cb6236a141bc0c706fde3f",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "8738c7e70024254be925e3c3338106b14e496b63f59669d9a1b79b178a22c46b",
+      "matches": true
+    },
+    {
+      "source": "scripts/audit_documentation.py",
+      "target": "documentation-audit/source/audit_documentation.py",
+      "sha256": "19bba63ca63d56f3788fda6c54506e3c5b6eef9c1bf64d164b3dbfb65f9692e1",
+      "source_sha256": "19bba63ca63d56f3788fda6c54506e3c5b6eef9c1bf64d164b3dbfb65f9692e1",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "19bba63ca63d56f3788fda6c54506e3c5b6eef9c1bf64d164b3dbfb65f9692e1",
+      "matches": true
+    },
+    {
+      "source": "scripts/documentation_checks.py",
+      "target": "documentation-audit/source/documentation_checks.py",
+      "sha256": "c4f576129a718d4054cedcc16d8f616c005268e472328283f774308cfe0eed7d",
+      "source_sha256": "c4f576129a718d4054cedcc16d8f616c005268e472328283f774308cfe0eed7d",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "c4f576129a718d4054cedcc16d8f616c005268e472328283f774308cfe0eed7d",
+      "matches": true
+    },
+    {
+      "source": "scripts/documentation_evidence.py",
+      "target": "documentation-audit/source/documentation_evidence.py",
+      "sha256": "bedc4b9a58d206d0294e5517871386280cc7ff0db4d9a2edbab96ecb447d8b50",
+      "source_sha256": "bedc4b9a58d206d0294e5517871386280cc7ff0db4d9a2edbab96ecb447d8b50",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "bedc4b9a58d206d0294e5517871386280cc7ff0db4d9a2edbab96ecb447d8b50",
+      "matches": true
+    },
+    {
+      "source": "scripts/verify_documentation_publication.py",
+      "target": "documentation-audit/source/verify_documentation_publication.py",
+      "sha256": "4d23e6cbd4bdfed3ca76019d2611500b01e530ba456355f0e310ec62a78ba905",
+      "source_sha256": "4d23e6cbd4bdfed3ca76019d2611500b01e530ba456355f0e310ec62a78ba905",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "4d23e6cbd4bdfed3ca76019d2611500b01e530ba456355f0e310ec62a78ba905",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-classic-001/README.md",
+      "target": "experiments/hc-classic-001/README.md",
+      "sha256": "c6c6e9fd457b5c55d008b9150159aac6aa43d4b1aafa49c9e01daf22ee530619",
+      "source_sha256": "3953a81c4fecaf4bafaf5d9b26921efbc6867e25f51b1b1a2fc22d8fdd0d0bca",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "c6c6e9fd457b5c55d008b9150159aac6aa43d4b1aafa49c9e01daf22ee530619",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-running-002/README.md",
+      "target": "experiments/hc-running-002/README.md",
+      "sha256": "6c9396b755fc8167baaf0b0af9d879235b747adf519828eb273fb49e447e5215",
+      "source_sha256": "60c37801946b5d920a965f67fbf71d98211916dd6395be4d526d7a5e769def9f",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "6c9396b755fc8167baaf0b0af9d879235b747adf519828eb273fb49e447e5215",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-003/README.md",
+      "target": "experiments/hc-height-speed-003/README.md",
+      "sha256": "27757e0e26ef0376f3a7fe65194ceb1e143c47c29aca2c57e7f07497839d99c0",
+      "source_sha256": "ed9dc76eb8ccb9a615eb1e16788c894eb82143ba14fee993d9c3d37a7e5ff50d",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "27757e0e26ef0376f3a7fe65194ceb1e143c47c29aca2c57e7f07497839d99c0",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-004/README.md",
+      "target": "experiments/hc-height-speed-004/README.md",
+      "sha256": "2e643d5c289625e872f027f95a3ba2fa0e7922dcd853fb62426c1c58beef358f",
+      "source_sha256": "56f7f1fa2b237bd546276c286edaf8dadc1fa1088ed7685c2e263f9bd05d0557",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "2e643d5c289625e872f027f95a3ba2fa0e7922dcd853fb62426c1c58beef358f",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005/README.md",
+      "target": "experiments/ant-classic-005/README.md",
+      "sha256": "7f396085663560155f64b3e5f7d87962153e0ad5272ffd13d71b16e9f4091b16",
+      "source_sha256": "2bbf50548d3b7ed8d278643b7e41391ba0f5169724f00dac6a0ee3bc825e892c",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "7f396085663560155f64b3e5f7d87962153e0ad5272ffd13d71b16e9f4091b16",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-003/vector-import-audit.json",
+      "target": "experiments/hc-height-speed-003/vector-import-audit.json",
+      "sha256": "fc7f54d3b956fc08ea6a413dd0979a25c7bda726b9ac68eedf5abd140af275b3",
+      "source_sha256": "fc7f54d3b956fc08ea6a413dd0979a25c7bda726b9ac68eedf5abd140af275b3",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "fc7f54d3b956fc08ea6a413dd0979a25c7bda726b9ac68eedf5abd140af275b3",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-height-speed-004/vector-import-audit.json",
+      "target": "experiments/hc-height-speed-004/vector-import-audit.json",
+      "sha256": "155def5a282c1f3d23afd5907ee37a92b3dd536f1b53015e420e0933d979e44b",
+      "source_sha256": "155def5a282c1f3d23afd5907ee37a92b3dd536f1b53015e420e0933d979e44b",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "155def5a282c1f3d23afd5907ee37a92b3dd536f1b53015e420e0933d979e44b",
+      "matches": true
+    },
+    {
+      "source": "reports/hc-running-002/quality-analysis-audit.json",
+      "target": "experiments/hc-running-002/quality-analysis-audit.json",
+      "sha256": "7e501b2e20091f62aa7a9170b8443b829eb0ce1489535f07772a4b3def706dec",
+      "source_sha256": "7e501b2e20091f62aa7a9170b8443b829eb0ce1489535f07772a4b3def706dec",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "7e501b2e20091f62aa7a9170b8443b829eb0ce1489535f07772a4b3def706dec",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005/audit/fitting-inspection.json",
+      "target": "experiments/ant-classic-005/audit/fitting-inspection.json",
+      "sha256": "b2d8db9239a36c84f9c3f6a4889715f627a14119b5fe7db018e9b31a500e1898",
+      "source_sha256": "b2d8db9239a36c84f9c3f6a4889715f627a14119b5fe7db018e9b31a500e1898",
+      "relative_links_resolved_to_git": null,
+      "download_sha256": "b2d8db9239a36c84f9c3f6a4889715f627a14119b5fe7db018e9b31a500e1898",
+      "matches": true
+    },
+    {
+      "source": "reports/ant-classic-005/audit/reproduction.md",
+      "target": "experiments/ant-classic-005/audit/reproduction.md",
+      "sha256": "199dfc533c2867d79dbcc5be71127bfa7811d21fa9fb2e3ade5cd8a61eaa57ed",
+      "source_sha256": "43f6cedcd6316064881f44a13b7a8751b29d1a09c843d3b14b634b4fa65f6e18",
+      "relative_links_resolved_to_git": "44e5a95d2570cff00f36059ca31b11b78edb10c0",
+      "download_sha256": "199dfc533c2867d79dbcc5be71127bfa7811d21fa9fb2e3ade5cd8a61eaa57ed",
+      "matches": true
+    }
+  ],
+  "total_bytes": 4879749,
+  "scope": "Explicit tracked-file allowlist. Relative Markdown targets resolved to this Git revision for portable Hub copies; existing absolute URLs and narrative text retained. No original numerical result, vector or episode overwritten.",
+  "created_utc": "2026-09-08T01:27:53.042977+00:00",
+  "hf_revision": "76b99109e5c13a0d39064c866aa7c46efe16f26c",
+  "all_downloads_match": true,
+  "method": "Unauthenticated urllib.request GET of each explicit upload target at the returned immutable commit, SHA256 compared with staged bytes."
+}
