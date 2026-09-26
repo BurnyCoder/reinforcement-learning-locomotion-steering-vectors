@@ -1,5 +1,7 @@
 # Documentation fact-check and evidence ledger
 
+Publication-record completion: 2026-09-26. The checks below retain their original 2026-09-08 timestamps; publishing their final receipts does not constitute a new experimental or test run.
+
 Audit revision: 2026-09-08. Baseline documentation: Git commit [`d0cd2c07e3641531c39037223eb98e309f44c4dc`](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/tree/d0cd2c07e3641531c39037223eb98e309f44c4dc). This is a documentation and saved-data audit, not another locomotion experiment. The measured outcomes, vectors, thresholds, selections, episode files, and original generated experiment reports are preserved. Corrected narrative reports and the paper supersede their earlier prose; Git and Hugging Face revisions retain publication history.
 
 ## Findings and limits
@@ -111,6 +113,16 @@ uv run --no-sync python scripts/verify_documentation_publication.py --revision m
 ```
 
 The [publication verifier](../scripts/verify_documentation_publication.py) resolves each service's commit separately, compares the 52 original compact bundle artifacts, requests the three movie headers, and counts actual README video elements without saving signed redirects or HTML. This is not a frame-identity test; the saved replay audits provide that evidence. The [pre-update check](documentation-audit/publication-before.json) found three supporting audits absent from Hugging Face: 003/004 `vector-import-audit.json` and 002 `quality-analysis-audit.json`. They were already public in Git. All 49 available compact files matched, and the three movies/players were accessible. These three gaps are included in this publication update alongside the original Ant sensitivity JSON. The first verifier draft also mistakenly mapped paper figures into experiment directories; the explicit five-bundle filter and its test fixed that audit-tool defect. Original scientific artifacts were unaffected.
+
+## Completed publication and final receipts
+
+The correction set was merged in [GitHub PR #9](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/pull/9), producing commit [`44e5a95d2570cff00f36059ca31b11b78edb10c0`](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/tree/44e5a95d2570cff00f36059ca31b11b78edb10c0). The corrected model card, narrative reports, rebuilt paper, original Ant fitting-sensitivity JSON, and audit evidence were published at [Hugging Face revision `76b99109e5c13a0d39064c866aa7c46efe16f26c`](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/76b99109e5c13a0d39064c866aa7c46efe16f26c). The [upload receipt](documentation-audit/upload-verification.json) records all 51 explicitly uploaded files, their source and downloaded hashes, and the relative-link transformations used for portable Markdown copies. All 51 downloads matched their staged bytes.
+
+The [final publication check](documentation-audit/publication-verification.json), [timestamped log](documentation-audit/20260908T012747934647Z.log), and [captured terminal output](documentation-audit/publication-final-terminal.log) record a successful check of all 52 original compact bundle artifacts against that immutable Hub revision. Each comparison retains its stated convention: byte equality for binaries, JSON value equality, or Markdown equality after newline normalization. All three previously missing supporting audits were present and matched. The three video URLs returned HTTP 200 with `video/mp4` content types, and the rendered GitHub README contained three video players. These are dated availability checks, not guarantees of future availability or new frame-identity tests.
+
+Before the correction merge, staging exposed Git newline normalization of the original fitting-inspection JSON. The [.gitattributes correction](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/commit/bfd85a3) and [byte-preserving re-add](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/commit/6ec6a3b) preserved its original bytes and captured logs; the final upload receipt records the fitting-inspection hash given above. The initial failures and successful retries remain in the audit record.
+
+The four final receipt files remained local after the September 8 publication interruption. This completion revision adds them and this publication note. They describe the already verified releases above; subsequent receipt-only publication does not change their evidence scope. The documentation-audit plan is complete with the stated uncertainties retained. The broader discovery objective remains unmet: the Ant experiment has no accepted replication or practical-target demonstration, and its original `confirmation_failed` status is unchanged.
 
 ## Interpretation and publication policy
 
