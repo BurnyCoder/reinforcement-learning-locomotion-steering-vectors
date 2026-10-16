@@ -16,12 +16,20 @@ Verdict on the methodology's initial hypothesis that contrast directions beat ge
 
 | Comparison | Verdict |
 | --- | --- |
-| Ant lateral vs the three tested isotropic random directions | Partly supported |
+| Ant lateral vs the three tested isotropic random directions | Partly supported; six draws give rank p = 1/7 at \|α\| = 0.1 |
 | Ant lateral vs the shuffled-label control | Untestable |
+| Ant lateral vs the other-label (turning) contrast vector | Not supported: turning moves world Y more |
 | HalfCheetah speed | Unsupported |
 | HalfCheetah 002 height | Specific in validation only |
 
 A post hoc reward-optimality hypothesis explains why posture and heading respond with a sign-dependent (odd) component while rewarded speed responds with a sign-independent (even) one. It awaits a fresh-seed test.
+
+The [world-Y specificity audit](ant-classic-005-y-shift-audit.md) (2026-10-16, saved data, post hoc) checks the featured Ant claim. No error invalidates it as a causal, held-out, world-frame effect. It sharpens three readings:
+- **Not specific to the lateral label.** The turning contrast vector (cosine +0.114) has a larger sign-dependent world-Y response at every |α| ≤ 0.2. At −0.1 it would pass the lateral gate.
+- **About a quarter of the selected shift is sign-independent.** The even part is positive in 17 of 18 non-shuffled entries at |α| ≤ 0.1.
+- **The shift is a rotated straight path.** The direction of travel rotates +3.84° [+3.01, +4.58] (28 of 29 pairs), with a bounded 4–7° heading offset and no sustained yaw rate. A rigid rotation predicts 18.0 m of extra world Y against 17.4 m measured.
+
+Thirty pairs were enough to detect the threshold (about 13 needed), but a specificity rank test needs at least 19 random directions, and only six exist.
 
 **Featured: Ant experiment 005.** The locked vector at −0.1 changes world-ground lateral velocity by **+0.40238 m/s**, paired 95% interval **[+0.30803, +0.49127]**, on thirty fresh confirmation episodes while retaining **96.83%** of forward speed. Failure counts are **4/30 in both arms**. This is a measured causal effect in the tested frozen policy; it is not a claim of body-frame sidestepping or a newly discovered internal concept.
 
@@ -113,6 +121,8 @@ Before the scientific run, the core implementation passed 23 tests; both checkpo
 | Causal effect | A behavioral difference caused by the controlled activation intervention in the tested system |
 | Odd / even response | Halves of the difference and of the sum of the effects at +alpha and −alpha. A steerable direction has a large odd part; generic degradation appears as an even part with the same sign at both alpha signs. |
 | Shuffled-control alignment | Cosine between a label-shuffled control and its primary. A large value means the control re-tests part of the primary direction instead of being a label-free null. |
+| Travel angle | Direction of an episode's net ground displacement after steering starts. Its change measures how much the whole path is rotated, without relying on torso orientation. |
+| Rank test | Compares one direction's response with k random directions: p = (1 + number at least as large) / (k + 1). With k = 6 the smallest possible p is 1/7, so at least 19 are needed to reach 0.05. |
 
 ## Entry requirements
 

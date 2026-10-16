@@ -24,7 +24,7 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
 - **Order of steps.** Selection was locked before confirmation, and the seed splits are disjoint.
 - **Statistics.** The sign-flip p-value is 5×10⁻⁶, and 28 of 30 pairs are positive.
 - **Measurement.** World Y comes from root `qpos`, and the replays are bit-exact.
-- **Figures and movies.** The top-down movie camera uses azimuth 90 and elevation −90 ([render_topdown.py:47](../scripts/render_topdown.py#L47)), so +X is right and +Y is up. The XY plot uses equal axes.
+- **Figures and movies.** The top-down movie camera uses azimuth 90 and elevation −90 ([render_topdown.py:47](../scripts/render_topdown.py#L47)), so +X is right and +Y is up. The last frame of the fixed-camera movie shows the steered trail rising toward +Y while the baseline stays level. The XY plot uses equal axes.
 
 **Three readings need correcting:**
 1. **The lateral label is not what produces the +Y shift.**
