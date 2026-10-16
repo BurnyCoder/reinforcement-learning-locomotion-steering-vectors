@@ -16,7 +16,7 @@ import math  # Round sample sizes up to whole pairs.
 from statistics import NormalDist  # Standard-library normal quantiles; avoids a SciPy dependency.
 import numpy as np  # Vectorized resampling, circular means and cosines.
 from rl_locomotion_steering_vectors.analysis import _contrast, _speed_bins  # Reuse the exact production contrast and effort strata.
-from rl_locomotion_steering_vectors.runtime import quaternion_yaw  # Reuse the audited scalar-first quaternion-to-yaw conversion.
+from rl_locomotion_steering_vectors.runtime import quaternion_yaw, wrapped_angle_difference  # Reuse the audited quaternion-to-yaw conversion and circular difference.
 
 
 def odd_even(plus: float, minus: float) -> tuple[float, float]:
@@ -24,12 +24,22 @@ def odd_even(plus: float, minus: float) -> tuple[float, float]:
     return (plus - minus) / 2, (plus + minus) / 2  # f(a)=odd+even and f(-a)=-odd+even, so both parts are exactly identified.
 
 
-def sign_flip_pvalue(differences, resamples: int = 200_000, seed: int = 0) -> float:
-    """Local: two-sided Monte Carlo paired randomization test. Global: an assumption-light check of the bootstrap conclusion."""
+def sign_flip_pvalue(differences, resamples: int = 200_000, seed: int = 0, studentized: bool = False) -> float:
+    """Local: two-sided Monte Carlo paired randomization test. Global: an assumption-light check of the bootstrap conclusion.
+
+    Exact under the sharp null (or symmetric differences); for a zero-mean (weak) null the sign-change test of the
+    mean is only asymptotically valid (Romano 1990, JASA 85:686). studentized=True divides each relabeled mean by
+    its own standard error, the usual robustness device (Chung & Romano 2013, https://arxiv.org/abs/1304.5939).
+    """
     values = np.asarray(differences, dtype=float)  # One paired treatment-minus-baseline difference per reset.
-    observed = abs(values.mean())  # Two-sided statistic: the absolute mean paired difference.
     signs = np.random.default_rng(seed).choice([-1., 1.], size=(resamples, len(values)))  # Under the sharp null each pair's sign is exchangeable.
-    null = np.abs(signs @ values) / len(values)  # Absolute mean after each random within-pair relabeling.
+    means = np.r_[values.mean(), signs @ values / len(values)]  # Observed mean first, then the mean after each random within-pair relabeling.
+    statistic = np.abs(means)  # Two-sided statistic: the absolute mean paired difference.
+    if studentized:
+        error = np.sqrt(np.maximum(np.mean(values ** 2) - means ** 2, 0.) / (len(values) - 1))  # SE = sqrt(s^2/n), s^2 = n(mean(v^2) - m^2)/(n-1); sign flips leave sum(v^2) unchanged.
+        with np.errstate(divide="ignore", invalid="ignore"):
+            statistic = np.nan_to_num(statistic / error, nan=0.)  # |t| per labeling; 0/0 (all-zero data) is no evidence, m/0 stays infinite.
+    observed, null = statistic[0], statistic[1:]  # Split the observed statistic from its randomization distribution.
     hits = int(np.sum(null >= observed - 1e-12))  # A tiny tolerance counts floating-point ties as extreme, which is conservative.
     return (hits + 1) / (resamples + 1)  # Including the observed labeling keeps the p-value valid and never zero (Phipson & Smyth).
 
@@ -79,6 +89,22 @@ def travel_angle(episode: dict, warmup: int = 100) -> float | None:
     if length <= warmup:
         return None  # No post-onset path exists for a prefix-only episode.
     return float(np.arctan2(np.mean(episode["y_velocity"][warmup:length]), np.mean(episode["x_velocity"][warmup:length])))  # Mean velocity times duration is net displacement, so this is its world-frame direction.
+
+
+def body_relative_travel_change(before: dict, after: dict, warmup: int = 100) -> float | None:
+    """Local: change of (travel angle - circular-mean torso yaw). Global: 0 for a rigidly rotated gait, the whole path change for pure sidestepping."""
+    if min(int(before["length"]), int(after["length"])) <= warmup:
+        return None  # A prefix-only arm has neither a post-onset path nor a post-onset heading.
+    relative = [travel_angle(item, warmup) - mean_heading(item["observations"], item["length"], warmup) for item in (before, after)]  # Direction of travel seen from each arm's own torso.
+    return wrapped_angle_difference(relative[1], relative[0])  # Production circular difference keeps the result in [-pi, pi].
+
+
+def matched_horizon_difference(before: dict, after: dict, field: str, warmup: int = 100) -> float | None:
+    """Local: treated-minus-baseline mean over the post-onset steps both arms recorded. Global: remove termination timing from a paired outcome."""
+    shared = min(int(before["length"]), int(after["length"]))  # Steps before the earlier of the two terminations.
+    if shared <= warmup:
+        return None  # No common post-onset step exists.
+    return float(np.mean(after[field][warmup:shared]) - np.mean(before[field][warmup:shared]))  # Identical step range in both arms.
 
 
 def heading_series(observations, length: int) -> np.ndarray:
