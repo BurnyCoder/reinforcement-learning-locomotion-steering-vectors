@@ -10,6 +10,8 @@ The read-only investigation reproduced all 332 saved validation/confirmation con
 
 No headline numerical correction was required. The Ant effect is a change in **world-coordinate Y velocity**, with evidence of heading involvement. Its original status remains `confirmation_failed`; no replication or practical-target application data exist. Gait preservation, pure body-relative strafing, semantic disentanglement, generalization across independently trained policies, and a completed discovery are not established. See the [measured Ant results](ant-classic-005/results.json), [causal audit](ant-classic-005-causal-audit.md), and [original prefix-failure audit](ant-classic-005/prefix-failure-audit.json).
 
+A later [scientific-rigor audit](scientific-rigor-audit.md) (2026-10-16) checks inferences rather than numbers. It qualifies the specificity of the Ant effect, the shuffled controls and the HalfCheetah speed effects; it changes no number or status verified here.
+
 “Verified” below means checked against the specified evidence within this audit's scope. It is not a guarantee that no software defect, missing observation, or unsupported interpretation remains. Upstream documentation is evidence of what its authors report; it is not an independent reproduction of upstream training. Project thresholds and procedural choices are identified as such rather than attributed to the libraries used to implement them.
 
 ## Reproduction and evidence files

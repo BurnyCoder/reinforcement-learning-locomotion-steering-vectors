@@ -4,6 +4,25 @@
 
 The [documentation audit](documentation-audit.md) records the later fact-check corrections and their evidence. Locally dated protocol documents and saved phase specifications are distinguished from independent registration. Generated numerical reports remain historical snapshots; narrative terminology is corrected here without changing results.
 
+The [scientific-rigor audit](scientific-rigor-audit.md) (2026-10-16) checks whether the interpretations follow from the design. It recomputes all 332 saved conditions with production code and finds no error that invalidates a recorded number or status. It corrects three readings:
+- **The Ant world-Y effect is robust but only partly specific.**
+  - It survives a sign-flip randomization test (p = 5×10⁻⁶) and a displacement estimand: +17.4 m, interval [12.8, 21.7] m.
+  - It exceeds each norm-matched random direction and the action bias by 0.15–0.27 m/s on the same seeds.
+  - Those random directions still show 35–112% of its sign-dependent lateral response at |α| ≤ 0.1.
+- **Shuffled-label controls are not label-free.** They share the primary's dominant activation subspace: cosine +0.60 (Ant lateral), +0.58 (HalfCheetah height) and −0.83 (HalfCheetah effort).
+- **Every HalfCheetah "speed effect" is degradation.** No HalfCheetah condition raised speed by more than 0.4%, and the slowdown dominates at both signs. The 004 calibration passes are degradation, not controllable speed.
+
+Verdict on the methodology's initial hypothesis that contrast directions beat generic perturbations:
+
+| Comparison | Verdict |
+| --- | --- |
+| Ant lateral vs the three tested isotropic random directions | Partly supported |
+| Ant lateral vs the shuffled-label control | Untestable |
+| HalfCheetah speed | Unsupported |
+| HalfCheetah 002 height | Specific in validation only |
+
+A post hoc reward-optimality hypothesis explains why posture and heading respond with a sign-dependent (odd) component while rewarded speed responds with a sign-independent (even) one. It awaits a fresh-seed test.
+
 **Featured: Ant experiment 005.** The locked vector at −0.1 changes world-ground lateral velocity by **+0.40238 m/s**, paired 95% interval **[+0.30803, +0.49127]**, on thirty fresh confirmation episodes while retaining **96.83%** of forward speed. Failure counts are **4/30 in both arms**. This is a measured causal effect in the tested frozen policy; it is not a claim of body-frame sidestepping or a newly discovered internal concept.
 
 Its recorded status is nevertheless `confirmation_failed`, solely because an additional strict rule forbids any episode ending before steering: seed 520025 ends identically at step 34 in both arms. The effect, movement preservation, and allowed quality increases pass. Equal aggregate failure counts do not mean identical failed-seed identities. No replication or application was run. See [005 findings and three attached videos](ant-classic-005-findings.md), its [complete bundle](ant-classic-005/README.md), the [separate within-project causal/code audit](ant-classic-005-causal-audit.md), and the standalone [research paper](paper.md) / [PDF](paper.pdf).
@@ -92,6 +111,8 @@ Before the scientific run, the core implementation passed 23 tests; both checkpo
 | Effort proxy | Mean squared normalized actions, which is not a measurement of physical energy |
 | Useful gate | A predeclared threshold combining behavioral effect, uncertainty, and locomotion preservation |
 | Causal effect | A behavioral difference caused by the controlled activation intervention in the tested system |
+| Odd / even response | Halves of the difference and of the sum of the effects at +alpha and −alpha. A steerable direction has a large odd part; generic degradation appears as an even part with the same sign at both alpha signs. |
+| Shuffled-control alignment | Cosine between a label-shuffled control and its primary. A large value means the control re-tests part of the primary direction instead of being a label-free null. |
 
 ## Entry requirements
 

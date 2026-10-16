@@ -59,6 +59,17 @@ Effect size, interval, forward-speed retention, and the maximum five-percentage-
 
 The selected action bias gives **+0.13439 m/s**, below the lateral threshold. Random controls give **+0.15550**, **+0.25282**, and **+0.15472 m/s**; the shuffled control gives **+0.89039 m/s**. None passes the complete gate because every arm includes the shared prefix failure; some also fail size or increase failure. The shuffled control has nine failures versus four at baseline, so its larger effect does not establish equally competent control. The primary's positive effect should be distinguished from both a formal protocol pass and a claim of superiority to all generic directions.
 
+**Later qualification ([scientific-rigor audit](scientific-rigor-audit.md)).** The audit leaves the recorded status unchanged. It finds that the effect is robust:
+- a sign-flip randomization test gives p = 5×10⁻⁶;
+- 28 of 30 pairs are positive;
+- post-onset world-Y displacement rises +17.4 m, interval [12.8, 21.7] m, a measure that avoids the prefix-only zero-fill convention.
+
+It also finds that the effect is only partly specific to this vector:
+- On the same seeds, the primary exceeds each isotropic random control by 0.15–0.25 m/s and the action bias by 0.27 m/s.
+- In validation, those random directions produce 35–112% of the primary's sign-dependent lateral response at |α| ≤ 0.1.
+- The shuffled control has cosine +0.60 with the primary, so its larger shift is not label-free evidence.
+- Mean torso heading changes +5.23°.
+
 ## Visual evidence and interpretation
 
 The first three predetermined validation seeds, **510000–510002**, were replayed with and without −0.1 steering. All six episodes complete 1,000 steps without measured inversion/contact. Paired videos are preliminary validation illustrations, not new independent evaluations. The media audit verifies exact replay-array equality, matching initial states and unsteered action prefixes. The tracking camera and finite ground texture can obscure world displacement late in the video; the accompanying XY plot shows **sideways motion on the ground, not torso height or jumping**. For seed 510000, mean lateral velocity changes from +0.073 to +0.547 m/s. See the media index under `runs/ant-classic-005/videos/preliminary/` and the cumulative [paper](paper.md). A completed top-down paired movie is at `runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-preliminary-topdown-paired.mp4`; the scene-only ground improvement preserves the numerical trajectory.
