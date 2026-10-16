@@ -74,7 +74,7 @@ It also finds that the effect is only partly specific to this vector:
 - **Not label-specific.** The turning vector, fitted on yaw-rate labels and nearly orthogonal to this one (cosine +0.114), moves world Y more at every |α| ≤ 0.2: by +0.19 m/s [+0.14, +0.25] more at |α| = 0.1 in validation.
 - **Weak evidence against isotropic noise.** Among six norm-matched isotropic directions, the primary's sign-dependent response ranks first at |α| = 0.1, but the rank p is only 1/7.
 - **Partly generic.** About a quarter of the selected validation shift is sign-independent. Almost every perturbation pushes the Ant toward +Y.
-- **A straight, rotated path.** The path is rotated by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a turn nor sidestepping.
+- **A rotated path, not a continuing turn.** On average the direction of travel rotates by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a turn nor sidestepping.
 
 ## Visual evidence and interpretation
 

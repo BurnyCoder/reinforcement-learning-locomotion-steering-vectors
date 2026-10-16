@@ -27,7 +27,7 @@ A post hoc reward-optimality hypothesis explains why posture and heading respond
 The [world-Y specificity audit](ant-classic-005-y-shift-audit.md) (2026-10-16, saved data, post hoc) checks the featured Ant claim. No error invalidates it as a causal, held-out, world-frame effect. It sharpens three readings:
 - **Not specific to the lateral label.** The turning contrast vector (cosine +0.114) has a larger sign-dependent world-Y response at every |α| ≤ 0.2. At −0.1 it would pass the lateral gate.
 - **About a quarter of the selected shift is sign-independent.** The even part is positive in 17 of 18 non-shuffled entries at |α| ≤ 0.1.
-- **The shift is a rotated straight path.** The direction of travel rotates +3.84° [+3.01, +4.58] (28 of 29 pairs), with a bounded 4–7° heading offset and no sustained yaw rate. A rigid rotation predicts 18.0 m of extra world Y against 17.4 m measured.
+- **The shift is a rotated path, not a continuing turn.** The direction of travel rotates +3.84° [+3.01, +4.58] (28 of 29 pairs), with a bounded 4–7° heading offset and no sustained yaw rate. A rigid rotation predicts 18.0 m of extra world Y against 17.4 m measured.
 
 Thirty pairs were enough to detect the threshold (about 13 needed), but a specificity rank test needs at least 19 random directions, and only six exist.
 
