@@ -7,7 +7,7 @@ Source: https://numpy.org/doc/1.26/reference/routines.testing.html
 import numpy as np  # Build small arrays whose expected statistics are known exactly.
 import pytest  # Compare floating-point results at explicit tolerances.
 from rl_locomotion_steering_vectors.analysis import paired_effect  # The audit reuses the production paired estimator rather than a copy.
-from scripts.rigor_statistics import heading_series, mean_heading, odd_even, pairs_for_power, percentile_interval, post_onset_displacement, rank_pvalue, shuffled_alignment_null, sign_flip_pvalue, travel_angle, window_means  # Helpers under test.
+from scripts.rigor_statistics import body_relative_travel_change, heading_series, matched_horizon_difference, mean_heading, odd_even, pairs_for_power, percentile_interval, post_onset_displacement, rank_pvalue, shuffled_alignment_null, sign_flip_pvalue, travel_angle, window_means  # Helpers under test.
 
 
 def test_odd_even_separates_sign_dependent_from_sign_independent_response():
@@ -102,6 +102,50 @@ def test_rank_pvalue_counts_ties_and_includes_the_observed_direction():
     assert rank_pvalue(5., [1., 2., 3.]) == pytest.approx(1 / 4)  # Largest of four exchangeable values: the smallest attainable p.
     assert rank_pvalue(2., [1., 2., 3.]) == pytest.approx(3 / 4)  # A tie counts as at least as extreme, which is conservative.
     assert rank_pvalue(9., np.zeros(19)) == pytest.approx(0.05)  # Nineteen reference directions are needed to reach 0.05.
+
+
+def walk(heading: float, travel: float, steps: int = 300) -> dict:
+    """Local: synthetic Ant episode with constant torso yaw and constant 6 m/s ground velocity; global: separate body turning from path turning."""
+    observations = np.zeros((steps, 105)); observations[:, 1], observations[:, 4] = np.cos(heading / 2), np.sin(heading / 2)  # Pure-yaw scalar-first quaternion at observation indices 1..4.
+    return {"observations": observations, "x_velocity": np.full(steps, 6. * np.cos(travel)), "y_velocity": np.full(steps, 6. * np.sin(travel)), "length": steps, "dt": 0.05}  # World-frame velocity along the travel direction.
+
+
+def test_body_relative_travel_change_is_zero_for_rigid_rotation_and_full_for_sidestep():
+    """Local: three synthetic gaits; global: only torso heading can tell a rotated gait from sidestepping."""
+    crab, turn = np.deg2rad(45.), np.deg2rad(4.)  # Baseline torso yaw sits 45 degrees from the direction of travel, as in the Ant gait.
+    base = walk(crab, 0.)  # Unsteered reference arm.
+    assert body_relative_travel_change(base, walk(crab + turn, turn)) == pytest.approx(0., abs=1e-12)  # Body and path turn together: no change relative to the body.
+    assert body_relative_travel_change(base, walk(crab, turn)) == pytest.approx(turn)  # Path turns, body does not: pure sidestep.
+    assert body_relative_travel_change(base, walk(crab + np.deg2rad(5.23), np.deg2rad(3.84))) == pytest.approx(np.deg2rad(-1.39))  # Body turning more than the path shows up as a negative change.
+    assert body_relative_travel_change(base, {**walk(crab, turn), "length": 34}) is None  # A prefix-only arm has no post-onset direction.
+
+
+def test_displacement_rotation_check_cannot_distinguish_rotation_from_sidestep():
+    """Local: the old 'forward distance x tan(travel change)' prediction; global: show that matching it is arithmetic, not mechanism evidence."""
+    turn, base = np.deg2rad(4.), walk(0., 0.)  # Small path change relative to straight +X travel.
+    sidestep = {**base, "y_velocity": np.full(300, 6. * np.tan(turn))}  # Same forward velocity, extra world-Y velocity, torso unchanged.
+    for treated in (walk(turn, turn), sidestep):  # A rigid rotation and a pure sidestep.
+        predicted = post_onset_displacement(base, "x_velocity") * np.tan(travel_angle(treated) - travel_angle(base))  # The prediction used in the y-shift audit.
+        measured = post_onset_displacement(treated, "y_velocity") - post_onset_displacement(base, "y_velocity")  # World-Y displacement change.
+        assert predicted == pytest.approx(measured, rel=0.01)  # Both mechanisms "pass" the check, so it carries no evidential weight.
+    assert body_relative_travel_change(base, sidestep) == pytest.approx(turn)  # The heading-based estimand does separate them.
+
+
+def test_matched_horizon_difference_uses_only_steps_both_arms_recorded():
+    """Local: arms with different durations; global: remove termination timing from a paired velocity outcome."""
+    before = {"y_velocity": np.r_[np.zeros(100), np.full(900, 1.)], "length": 1000}  # Baseline survives the full horizon at 1 m/s.
+    after = {"y_velocity": np.r_[np.zeros(100), np.full(100, 3.)], "length": 200}  # Treated arm terminates at step 200.
+    assert matched_horizon_difference(before, after, "y_velocity") == pytest.approx(2.)  # Only steps 100..199 are compared.
+    assert matched_horizon_difference(before, {**after, "length": 34}, "y_velocity") is None  # No common post-onset step.
+
+
+def test_studentized_sign_flip_matches_plain_test_at_the_extremes():
+    """Local: studentized statistic on extreme and null data; global: a weak-null robustness check of the headline p-value."""
+    assert sign_flip_pvalue(np.ones(20), resamples=1000, seed=0, studentized=True) <= 2 / 1001  # Zero variance gives an infinite t that only all-same-sign patterns match.
+    assert sign_flip_pvalue(np.array([-1., 1., -1., 1.]), resamples=500, seed=0, studentized=True) == 1.0  # A zero observed mean is matched by every relabeling.
+    assert sign_flip_pvalue(np.zeros(5), resamples=100, seed=0, studentized=True) == 1.0  # Undefined 0/0 statistics count as no evidence.
+    shifted = np.random.default_rng(1).normal(1., 1., 30)  # Clear mean shift.
+    assert sign_flip_pvalue(shifted, resamples=2000, seed=0, studentized=True) < 0.01  # The studentized test also detects it.
 
 
 def test_pairs_for_power_uses_the_paired_normal_approximation():

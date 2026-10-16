@@ -66,6 +66,12 @@ The speed gate accepts a change of either sign, so on its own it cannot tell ste
 
 Future protocols should report the odd/even decomposition alongside each gate. The existing gates and recorded outcomes are unchanged.
 
+Shared reset seeds do not guarantee a precision gain. In Ant, baseline and treated episode means are nearly uncorrelated after onset ([path-mechanism audit](../reports/ant-classic-005-mechanism-audit.md#4-pairing-does-not-reduce-variance-for-world-y-and-what-that-means-for-the-tests)). Future protocols should therefore:
+- report the arm correlation;
+- read sign-flip p-values as tests of zero mean, with a studentized version alongside;
+- estimate even parts that share one baseline as a cross-direction mean with seeds resampled jointly, never as a count of positive signs;
+- treat agreement between travel angle and displacement as arithmetic. Only a heading-relative estimand separates rotation from sidestepping.
+
 This episode-level physical-failure measurement was registered during `hc-running-002` validation review, before selection or any confirmation data. The [inspection report](../reports/hc-running-002-validation-inspection.md) found that a 4.47% mean contact fraction hid one episode stalled on its head for 400 consecutive steps. Across ten paired episodes, one additional physical failure is a ten-percentage-point failure increase and therefore exceeds the existing five-percentage-point allowance. Averaging contact duration across trials alone would miss that distinction.
 
 The review paused calibration after 74 conditions. Those original derived estimates remain in `runs/hc-running-002/validation_pooled-quality-v1.json`; cached raw rollouts, vectors, and simulator measurements were not changed. All 120 validation conditions were subsequently analyzed using the revised derived failure criterion, with no primary candidate selected. This is an explicitly documented measurement revision informed by exploratory validation, not a claim that the original calibration protocol was untouched. No held-out evidence informed the revision, and all failed episodes remain in statistical denominators. The completed [experiment findings](../reports/hc-running-002-findings.md) and its comparison audit retain the outcome and both analysis versions.

@@ -1,0 +1,313 @@
+{
+  "created_utc": "2026-10-16T13:40:44.661843+00:00",
+  "finished_utc": "2026-10-16T13:41:03.064438+00:00",
+  "command": [
+    "C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\.venv\\Scripts\\python.exe",
+    "scripts/audit_ant005_path_mechanism.py"
+  ],
+  "python": "3.12.13 (main, Aug  7 2026, 02:26:41) [MSC v.1944 64 bit (AMD64)]",
+  "numpy": "1.26.4",
+  "source_identity": {
+    "git_revision": "c20174f880194152c1a6c936270022d75a1e3404",
+    "source_sha256": {
+      "src/rl_locomotion_steering_vectors/__init__.py": "2d629d43e86233e7cfefe1271996d9a0be1d57acfafbe982df869e682b930ddc",
+      "src/rl_locomotion_steering_vectors/analysis.py": "523b4faeb03ac83ae0b66df43b3f1b71ee8af09d283bdb5b3494058b32ae09b1",
+      "src/rl_locomotion_steering_vectors/cli.py": "c58abc35648e5b4bad5af41c822658a1f25af260949ebbf91104e50c3788c841",
+      "src/rl_locomotion_steering_vectors/config.py": "ea6bfc4b61c9e615d3dfedfc49dc6efd0144f398fd7a5553854129d66cb38682",
+      "src/rl_locomotion_steering_vectors/demonstration.py": "98004658ae88b37d573dcc66c64975ad2e3ff4ff959c8f3ab4a2ca64e5ce19a1",
+      "src/rl_locomotion_steering_vectors/execution.py": "8101109339180f5f8e0da741a827c51b18a304230976d61ca49ca4e5890e219c",
+      "src/rl_locomotion_steering_vectors/experiment.py": "a723d4a996bdb287461027129307e60b262788dac0a3f69a1c36247f1869094f",
+      "src/rl_locomotion_steering_vectors/parallel.py": "96566efe66fc687cb44938144bff906e6829201bbbcf75299f4e1ebab9cd3919",
+      "src/rl_locomotion_steering_vectors/pgs.py": "09e2413bf2c223c12033fc712a4b3d06e4770d7c932af79b3bd779286308bef5",
+      "src/rl_locomotion_steering_vectors/phases.py": "2120980035fd52684d4a5bba72a261d29c3d052d57527f1186bdb8b99738cb09",
+      "src/rl_locomotion_steering_vectors/pipeline.py": "51e0664473d7a4df54e9c9ba1ba74ce8d09806a66083d815e0006d9ecd268e3a",
+      "src/rl_locomotion_steering_vectors/reporting.py": "2c8d6ca4e7470435dfac139547bb9968c846d92f69f11a1e204c686ebeb17a23",
+      "src/rl_locomotion_steering_vectors/retarget.py": "bf4c380c3ba7a1fe9ad909e0716bbad25a91986350aa58b2c2d9cab5cf5e6480",
+      "src/rl_locomotion_steering_vectors/runtime.py": "7ef8bf1980974aeab02035ec90dd69012ccf16f3e142e82280c78d46382f4c4e",
+      "src/rl_locomotion_steering_vectors/storage.py": "24717d98268940970b5f8a0fc72a0bb5f24718be7b1f412d1bbeb98a16305ac2",
+      "pyproject.toml": "23f0d1c9833ee020b74a3f9281e626e508c1a8fc0216248fecb8f706dddd6f3d",
+      "uv.lock": "a7825993b4f353aa94f48c9c3c63495d00c8d1b930dc1c1f1669fae59964f847"
+    },
+    "hash_convention": "UTF-8 text with universal newlines",
+    "audit_source_sha256": {
+      "audit_ant005_path_mechanism.py": "a807f5210862b9213f030baca4907e3d9c5cef5824f80507fa616a3cad855ffa",
+      "audit_ant005_specificity.py": "b10aec3ef524b7a3415fd49ba9491014d0be958e14fb807d8ee1d6ee849abbf6",
+      "rigor_statistics.py": "9057ddfd4934e3c4facd8034945c7197c7470f63c858fd7eda00ac59fd7b106b",
+      "documentation_checks.py": "c4f576129a718d4054cedcc16d8f616c005268e472328283f774308cfe0eed7d"
+    }
+  },
+  "passed": true,
+  "checked_leaf_fields": 1123,
+  "max_numeric_error": 0.0,
+  "mismatches": [],
+  "phase_errors": [],
+  "calculations": {
+    "matched_horizon_effect": {
+      "recorded_estimator": {
+        "mean": 0.4023786944449476,
+        "ci95": [
+          0.3080324277139172,
+          0.4912674960807787
+        ],
+        "positive_pairs": 28,
+        "n_pairs": 30,
+        "sign_flip_pvalue": 4.9999750001249995e-06,
+        "studentized_sign_flip_pvalue": 4.9999750001249995e-06,
+        "t_statistic": 8.608309358207638
+      },
+      "matched_horizon": {
+        "mean": 0.39237166713203186,
+        "ci95": [
+          0.2987039998037797,
+          0.47653082134405383
+        ],
+        "positive_pairs": 28,
+        "n_pairs": 29,
+        "sign_flip_pvalue": 4.9999750001249995e-06,
+        "studentized_sign_flip_pvalue": 4.9999750001249995e-06,
+        "t_statistic": 8.597527401019915
+      }
+    },
+    "heading_vs_travel": {
+      "travel_angle_change_deg": {
+        "mean": 3.8441093234281247,
+        "ci95": [
+          3.0121857717351723,
+          4.575918062981149
+        ],
+        "positive_pairs": 28,
+        "n_pairs": 29,
+        "sign_flip_pvalue": 4.9999750001249995e-06,
+        "studentized_sign_flip_pvalue": 4.9999750001249995e-06,
+        "t_statistic": 9.54122429103449
+      },
+      "torso_heading_change_deg": {
+        "mean": 5.2349168043112595,
+        "ci95": [
+          4.327688320662968,
+          6.092519438516552
+        ],
+        "positive_pairs": 28,
+        "n_pairs": 29,
+        "sign_flip_pvalue": 4.9999750001249995e-06,
+        "studentized_sign_flip_pvalue": 4.9999750001249995e-06,
+        "t_statistic": 11.416416484527568
+      },
+      "body_relative_travel_change_deg": {
+        "mean": -1.3908074808831352,
+        "ci95": [
+          -2.031765217553561,
+          -0.8465591344260013
+        ],
+        "positive_pairs": 6,
+        "n_pairs": 29,
+        "sign_flip_pvalue": 2.4999875000624998e-05,
+        "studentized_sign_flip_pvalue": 2.4999875000624998e-05,
+        "t_statistic": -4.460254472329445
+      },
+      "share_of_heading_change_seen_in_path": 0.7343209963264892
+    },
+    "rotation_check_discrimination": {
+      "complete_pairs": 23,
+      "baseline_forward_distance_m": 291.47023055439,
+      "measured_world_y_displacement_change_m": 19.51291904245094,
+      "real_pairs": {
+        "travel_angle_change_deg": 3.937613776656795,
+        "predicted_m": 20.062690405961007
+      },
+      "pure_sidestep_synthetic": {
+        "travel_angle_change_deg": 3.822607662177534,
+        "predicted_m": 19.474949537359713
+      }
+    },
+    "common_mode_even_parts": {
+      "magnitudes": {
+        "0.05": {
+          "per_direction_mean": {
+            "lateral": -0.005088262275668007,
+            "turning": 0.0039913191993598,
+            "lateral_bias": 0.0626043028232017,
+            "lateral_random0": 0.12815442148127848,
+            "lateral_random1": 0.07709379739659032,
+            "lateral_random2": 0.08895328669207911,
+            "turning_random0": 0.07079079883466473,
+            "turning_random1": 0.1296997849733928,
+            "turning_random2": 0.10716186127671375
+          },
+          "positive_directions": 8,
+          "cross_direction_mean": {
+            "mean": 0.07370681226684586,
+            "ci95": [
+              -0.02742941383664422,
+              0.16365351760186042
+            ],
+            "positive_pairs": 7,
+            "n_pairs": 10,
+            "sign_flip_pvalue": 0.1948240258798706,
+            "studentized_sign_flip_pvalue": 0.1948240258798706,
+            "t_statistic": 1.382373461698249
+          }
+        },
+        "0.1": {
+          "per_direction_mean": {
+            "lateral": 0.1417682154044618,
+            "turning": 0.028237157092934013,
+            "lateral_bias": 0.09604823229778421,
+            "lateral_random0": 0.015846944559730826,
+            "lateral_random1": 0.07082164033853852,
+            "lateral_random2": 0.21025461868231168,
+            "turning_random0": 0.11566004155398624,
+            "turning_random1": 0.14287196930926782,
+            "turning_random2": 0.15195282166559548
+          },
+          "positive_directions": 9,
+          "cross_direction_mean": {
+            "mean": 0.10816240454495671,
+            "ci95": [
+              0.01965051515475753,
+              0.1873242333162386
+            ],
+            "positive_pairs": 9,
+            "n_pairs": 10,
+            "sign_flip_pvalue": 0.046619766901165496,
+            "studentized_sign_flip_pvalue": 0.046619766901165496,
+            "t_statistic": 2.3668979362185913
+          }
+        }
+      },
+      "lateral_even_share_of_selected_effect": {
+        "point": 0.2601197827264309,
+        "ci95": [
+          0.08503228095035718,
+          0.386329518775815
+        ]
+      },
+      "validation_baseline_world_y": {
+        "mean": 0.1253577427911275,
+        "sd": 0.13846096550603618,
+        "se": 0.04378520180250827,
+        "n": 10
+      },
+      "confirmation_baseline_world_y_excluding_prefix_only": {
+        "mean": 0.18074650998271122,
+        "sd": 0.12206735478811144,
+        "n": 29
+      }
+    },
+    "arm_correlation": {
+      "confirmation": {
+        "lateral/-0.1": {
+          "lateral": {
+            "r": -0.40275174671610114,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.17315018263695528,
+            "sd_difference": 0.2488102377837985,
+            "n": 29
+          },
+          "speed": {
+            "r": 0.2629040874853881,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 0.36920171532525003,
+            "sd_difference": 0.35674550168545466,
+            "n": 29
+          }
+        },
+        "lateral_bias/+0.5": {
+          "lateral": {
+            "r": -0.08150458981024991,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.11281244844071595,
+            "sd_difference": 0.17283472144378573,
+            "n": 29
+          },
+          "speed": {
+            "r": -0.1079569082393573,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 0.13144169842120362,
+            "sd_difference": 0.18483478893272332,
+            "n": 29
+          }
+        },
+        "lateral_random0/-0.05": {
+          "lateral": {
+            "r": 0.15021058863394732,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.14563425611086275,
+            "sd_difference": 0.1754113217192364,
+            "n": 29
+          },
+          "speed": {
+            "r": -0.2264822911415388,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 0.12513717655056053,
+            "sd_difference": 0.18932634085941813,
+            "n": 29
+          }
+        },
+        "lateral_random1/-0.1": {
+          "lateral": {
+            "r": 0.1190112712793643,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.12616115730310765,
+            "sd_difference": 0.1647770972428565,
+            "n": 29
+          },
+          "speed": {
+            "r": -0.3026359821326584,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 0.21922908224938556,
+            "sd_difference": 0.2776764701774244,
+            "n": 29
+          }
+        },
+        "lateral_random2/-0.05": {
+          "lateral": {
+            "r": 0.11604713190172765,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.15366671153401973,
+            "sd_difference": 0.18482517501811851,
+            "n": 29
+          },
+          "speed": {
+            "r": -0.33838888532392114,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 0.1416859398334457,
+            "sd_difference": 0.21172850633727178,
+            "n": 29
+          }
+        },
+        "lateral_shuffled/-0.2": {
+          "lateral": {
+            "r": 0.18167157550675542,
+            "sd_baseline": 0.12206735478811144,
+            "sd_treated": 0.23852384081379233,
+            "sd_difference": 0.24741659583342085,
+            "n": 29
+          },
+          "speed": {
+            "r": -0.02972099568225456,
+            "sd_baseline": 0.11653232417979421,
+            "sd_treated": 1.1085903679507478,
+            "sd_difference": 1.1181375121044785,
+            "n": 29
+          }
+        }
+      },
+      "validation_r_summary": {
+        "lateral": {
+          "median": -0.04099506172826958,
+          "min": -0.7313744110938114,
+          "max": 0.5587763342806796,
+          "n_conditions": 88
+        },
+        "speed": {
+          "median": -0.04420573342978206,
+          "min": -0.8317089512103132,
+          "max": 0.642713927085733,
+          "n_conditions": 88
+        }
+      }
+    }
+  },
+  "scope": "Saved-data post hoc audit of ant-classic-005. No inference, rollouts, new seeds, selection or gate changes; recorded status unchanged."
+}
