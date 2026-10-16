@@ -7,7 +7,7 @@ Source: https://numpy.org/doc/1.26/reference/routines.testing.html
 import numpy as np  # Build small arrays whose expected statistics are known exactly.
 import pytest  # Compare floating-point results at explicit tolerances.
 from rl_locomotion_steering_vectors.analysis import paired_effect  # The audit reuses the production paired estimator rather than a copy.
-from scripts.rigor_statistics import mean_heading, odd_even, percentile_interval, post_onset_displacement, shuffled_alignment_null, sign_flip_pvalue  # Helpers under test.
+from scripts.rigor_statistics import heading_series, mean_heading, odd_even, pairs_for_power, percentile_interval, post_onset_displacement, rank_pvalue, shuffled_alignment_null, sign_flip_pvalue, travel_angle, window_means  # Helpers under test.
 
 
 def test_odd_even_separates_sign_dependent_from_sign_independent_response():
@@ -71,3 +71,40 @@ def test_paired_effect_contrasts_two_treated_arms_on_shared_seeds():
                 for seed, value in enumerate(values)]  # Treated arms of one seed share their unsteered onset state.
     result = paired_effect(arm([0.2, 0.1, 0.3]), arm([0.6, 0.5, 0.8]), "lateral", seed=0)  # Control first, primary second.
     assert result["effect"] == pytest.approx(np.mean([0.4, 0.4, 0.5]))  # Primary minus control, paired by seed.
+
+
+def test_odd_even_decomposes_per_seed_arrays_elementwise():
+    """Local: split paired per-seed responses; global: bootstrap odd parts across resets without a new helper."""
+    odd, even = odd_even(np.array([1., -1.]), np.array([-1., -3.]))  # Two resets measured at +alpha and -alpha.
+    assert odd == pytest.approx([1., 1.]) and even == pytest.approx([0., -2.])  # The same exact identity holds seed by seed.
+
+
+def test_travel_angle_recovers_a_rotated_constant_ground_velocity():
+    """Local: synthetic post-onset velocities; global: measure ground-path direction without torso-orientation conventions."""
+    angle = np.deg2rad(4.)  # A small leftward rotation of the direction of travel.
+    episode = {"x_velocity": np.full(300, 6. * np.cos(angle)), "y_velocity": np.full(300, 6. * np.sin(angle)), "length": 300}  # Constant 6 m/s along that direction.
+    assert travel_angle(episode, warmup=100) == pytest.approx(angle)  # Direction of the mean velocity equals the net displacement direction.
+    assert travel_angle({**episode, "length": 34}, warmup=100) is None  # A prefix-only episode has no post-onset path.
+
+
+def test_heading_series_unwraps_across_the_branch_cut_and_window_means_need_full_coverage():
+    """Local: yaw crossing pi and a short episode; global: compare heading time courses without false 2*pi jumps."""
+    yaws = np.linspace(3.0, 3.3, 250)  # Steady rotation through the -pi/pi boundary.
+    observations = np.zeros((250, 105)); observations[:, 1], observations[:, 4] = np.cos(yaws / 2), np.sin(yaws / 2)  # Pure-yaw scalar-first quaternions.
+    series = heading_series(observations, length=250)  # Unwrapped torso yaw per pre-action observation.
+    assert series == pytest.approx(yaws)  # No jump of -2*pi after crossing pi.
+    means = window_means(series, length=250, windows=[(100, 200), (200, 300)])  # The second window extends beyond termination.
+    assert means[0] == pytest.approx(yaws[100:200].mean()) and np.isnan(means[1])  # Incomplete windows are undefined, never partially averaged.
+
+
+def test_rank_pvalue_counts_ties_and_includes_the_observed_direction():
+    """Local: Monte Carlo rank test; global: compare one steering vector with a small set of random directions."""
+    assert rank_pvalue(5., [1., 2., 3.]) == pytest.approx(1 / 4)  # Largest of four exchangeable values: the smallest attainable p.
+    assert rank_pvalue(2., [1., 2., 3.]) == pytest.approx(3 / 4)  # A tie counts as at least as extreme, which is conservative.
+    assert rank_pvalue(9., np.zeros(19)) == pytest.approx(0.05)  # Nineteen reference directions are needed to reach 0.05.
+
+
+def test_pairs_for_power_uses_the_paired_normal_approximation():
+    """Local: textbook sample-size arithmetic; global: check whether thirty confirmation pairs were adequate."""
+    assert pairs_for_power(sd=1., delta=1.) == 8  # ((1.95996 + 0.84162) * 1 / 1)^2 = 7.85, rounded up.
+    assert pairs_for_power(sd=0.25, delta=0.2) == 13  # Ant-like paired SD against the 0.2 m/s lateral threshold: 12.26, rounded up.

@@ -13,6 +13,7 @@ The [independent code and data audit](reports/ant-classic-005-causal-audit.md) r
 **The effect is only partly specific to this vector.** On the same confirmation seeds:
 - Norm-matched random directions shifted world-Y velocity by +0.15 to +0.25 m/s. The primary exceeded each of these, and the constant action bias, by 0.15–0.27 m/s.
 - A label-shuffled direction shifted it by +0.89 m/s, with 9/30 failures. That direction is 60% aligned with the primary, so it is not a label-free control.
+- The [world-Y specificity audit](reports/ant-classic-005-y-shift-audit.md) finds the effect is not specific to the lateral label. In validation, the turning vector, fitted on yaw-rate labels, moves world Y more. About a quarter of the selected shift appears at either sign. On average the direction of travel rotates +3.84° through a bounded heading offset, not a continuing turn. Reproduce it with `uv run --no-sync python scripts/audit_ant005_specificity.py`.
 
 The [scientific-rigor audit](reports/scientific-rigor-audit.md) also confirms the effect under a randomization test and a displacement estimand: +17.4 m of extra world-Y travel. It finds that every HalfCheetah "speed effect" is a sign-independent slowdown.
 
