@@ -70,6 +70,7 @@ def test_rotation_equals_rotated_physical_ant_state():
     """Local: compare with MuJoCo. Global: prove the layout, velocity frames and force frames are right."""
     with gym.make("Ant-v5") as env:  # Unmodified environment defines the true observation.
         env.reset(seed=7)  # Reproducible starting state.
+        env.action_space.seed(7)  # Reproducible random actions (Gymnasium spaces keep their own RNG).
         for _ in range(30):  # Move into a contact-rich gait-like state.
             env.step(env.action_space.sample() * 0.5)  # Moderate random torques keep the Ant upright.
         physics = env.unwrapped  # Direct MuJoCo model/data access.
