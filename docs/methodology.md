@@ -40,6 +40,15 @@ Three random directions per family cannot establish specificity. With k exchange
 - other-label contrast vectors;
 - at least 19 isotropic and at least 19 activation-covariance-shaped random directions, each at both signs, with the odd/even decomposition reported.
 
+The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) adds the isotropic part of this design and a mechanism test. Its fresh resets are disjoint from all splits. It uses 99 isotropic directions, 19 label-shuffle redraws from the production estimator, and the other-label vector, all at ±α. Covariance-shaped Gaussian draws are still missing.
+
+Because the first actor layer depends only on the current observation, a first-layer contrast vector is an observation signature. Before reading one as a motor or concept direction, test a perceived-state explanation:
+- Compute the first-layer response g to a perceived change, here a rotation of the observed world about the vertical axis ([`perception.py`](../src/rl_locomotion_steering_vectors/perception.py)).
+- Evaluate the vector's component along g and its renormalized remainder against the random directions.
+- Apply the perceived change itself, with no activation edit, from the onset step.
+
+In Ant 005 these tests show that the "lateral" vector acts through perceived heading.
+
 For shortlisted candidate vectors, the pipeline fits a constant action-bias comparator from every tenth post-startup fitting observation. It averages the steered-minus-baseline deterministic action displacement at the validation-selected activation strength. The stored bias is divided by `max(abs(value) for value in config.strengths)`, so multiplying it by that positive maximum reproduces the fitted mean displacement before action clipping: `0.5` for the original grid and `0.04` for experiment 004's fine grid ([normalization call](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/src/rl_locomotion_steering_vectors/phases.py#L35-L39), [bias calculation](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/src/rl_locomotion_steering_vectors/experiment.py#L72-L86)). The registered grid supplies the actual tested offsets and signs; an asymmetric grid need not include the positive maximum. Action biases have action dimensions, are stored separately, and are applied after warmup with action-bound clipping. They test whether useful effects also arise from a simple fixed motor-command offset.
 
 Fresh confirmation and replication episodes evaluate locked candidates. Confidence intervals are percentile bootstraps of paired episode differences, not independent resampling of correlated timesteps. Replication here means new reset episodes using the same policy checkpoint. One trained policy cannot establish robustness to the training seed.
