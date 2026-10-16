@@ -70,6 +70,12 @@ It also finds that the effect is only partly specific to this vector:
 - The shuffled control has cosine +0.60 with the primary, so its larger shift is not label-free evidence.
 - Mean torso heading changes +5.23°.
 
+**Further qualification ([world-Y specificity audit](ant-classic-005-y-shift-audit.md)).** This post hoc, saved-data check also leaves the status unchanged. It finds:
+- **Not label-specific.** The turning vector, fitted on yaw-rate labels and nearly orthogonal to this one (cosine +0.114), moves world Y more at every |α| ≤ 0.2: by +0.19 m/s [+0.14, +0.25] more at |α| = 0.1 in validation.
+- **Weak evidence against isotropic noise.** Among six norm-matched isotropic directions, the primary's sign-dependent response ranks first at |α| = 0.1, but the rank p is only 1/7.
+- **Partly generic.** About a quarter of the selected validation shift is sign-independent. Almost every perturbation pushes the Ant toward +Y.
+- **A rotated path, not a continuing turn.** On average the direction of travel rotates by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a turn nor sidestepping.
+
 ## Visual evidence and interpretation
 
 The first three predetermined validation seeds, **510000–510002**, were replayed with and without −0.1 steering. All six episodes complete 1,000 steps without measured inversion/contact. Paired videos are preliminary validation illustrations, not new independent evaluations. The media audit verifies exact replay-array equality, matching initial states and unsteered action prefixes. The tracking camera and finite ground texture can obscure world displacement late in the video; the accompanying XY plot shows **sideways motion on the ground, not torso height or jumping**. For seed 510000, mean lateral velocity changes from +0.073 to +0.547 m/s. See the media index under `runs/ant-classic-005/videos/preliminary/` and the cumulative [paper](paper.md). A completed top-down paired movie is at `runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-preliminary-topdown-paired.mp4`; the scene-only ground improvement preserves the numerical trajectory.

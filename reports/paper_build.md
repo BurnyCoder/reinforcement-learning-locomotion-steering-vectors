@@ -18,6 +18,11 @@ Numerical tables summarize existing results; complete condition rows remain in t
 For each final PDF, render every page with Poppler and inspect clipping, table wrapping, figures, captions and reference readability. Repeat that verification after changing prose or layout, and check Markdown/PDF content and active-link parity. The documentation audit records the verified version; a previous render does not verify newly edited prose. The paper is a timestamped research snapshot, not an assertion of peer review or formal protocol success.
 
 The 2026-10-16 edition adds the [scientific-rigor audit](scientific-rigor-audit.md) qualifications to the abstract and Sections 4, 6 and 8, plus reference [E6]. It has ten pages.
+
+A later 2026-10-16 revision adds the [world-Y specificity audit](ant-classic-005-y-shift-audit.md) to the abstract, Sections 6 and 8, and reference [E7]. It still has ten pages.
+- The first build overflowed to twelve pages, leaving one- and two-line spills on new pages. The abstract and Section 6 additions were shortened until the page boundaries matched the previous edition.
+- Every page was rendered at 1.6× with `uv run --no-sync --with pypdfium2==4.30.0` into `tmp/pdfs/paper-yshift/` and inspected visually. No clipping or broken tables were found.
+- `pypdf` 5.1.0 confirmed that all 54 distinct external Markdown links are active PDF link annotations, and that the two sets are equal.
 - Poppler was not available, so every page was rendered at 1.6× with `uv run --no-sync --with pypdfium2==4.30.0` into `tmp/pdfs/paper-rigor/` and inspected visually. No clipping or broken tables were found.
 - `pypdf` 5.1.0 confirmed that the 52 distinct external Markdown links are all active PDF link annotations.
 
