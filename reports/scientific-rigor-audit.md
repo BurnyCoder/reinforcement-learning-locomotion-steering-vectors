@@ -28,7 +28,7 @@ The methodology's stated hypothesis is that contrast directions beat generic per
 
 | Comparison | Result |
 | --- | --- |
-| Ant lateral vs the three tested isotropic random directions and the action bias, same seeds | Primary is larger. This is partial support from only three random draws. |
+| Ant lateral vs the three tested isotropic random directions and the action bias, same seeds | Primary is larger. This is partial support from only three random draws. Six draws give rank p = 1/7 at \|α\| = 0.1, and the turning contrast vector is stronger ([later audit](ant-classic-005-y-shift-audit.md)). |
 | Ant lateral vs the shuffled-label direction | Not testable, because the two directions are aligned. |
 | HalfCheetah speed vs any control | Not supported. Primaries and controls share the same sign-independent slowdown. |
 
@@ -71,6 +71,7 @@ What this shows:
 - Three random draws are not a null distribution. These intervals are nominal and not multiplicity-adjusted.
 - At |α| = 0.05 the random directions' sign-dependent lateral responses (−0.146 to −0.160 m/s) match the primary's (−0.143). At |α| = 0.1 they are 35–52% of it, in validation.
 - All three random directions, and the shuffled one, have the primary's sign of odd response. Chance alone gives 1 in 8 for three independent draws. This is unexplained and is not counted as evidence.
+- *Later resolution* ([world-Y specificity audit](ant-classic-005-y-shift-audit.md)): the turning family's three isotropic draws, on the same seeds, have mixed odd signs. Four of all six agree with the primary, which is consistent with chance. The same audit finds that the turning contrast vector moves world Y *more* than the lateral one, so the effect is not specific to the lateral label.
 
 ## 3. The shuffled-label control shares the primary's subspace
 

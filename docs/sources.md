@@ -57,6 +57,10 @@ The [documentation audit](../reports/documentation-audit.md) uses independent [N
 The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the production estimators and adds three standard tools.
 - **Randomization test.** A paired sign-flip test, which is what [SciPy's `permutation_test`](https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html) calls `permutation_type="samples"`. Its Monte Carlo p-value is (b+1)/(m+1), following [Phipson & Smyth](https://arxiv.org/abs/1603.05766), so it is never zero.
 - **Odd/even decomposition.** An exact algebraic split of the responses at ±α into sign-dependent and sign-independent parts.
+- **Monte Carlo rank test and paired sample size** (used by the [world-Y specificity audit](../reports/ant-classic-005-y-shift-audit.md)).
+  - The rank test is Barnard's Monte Carlo test as reviewed in [Myllymäki et al., *Global envelope tests*](https://arxiv.org/pdf/1307.0239): the observed statistic is ranked among s+1 values, giving p = (1 + #≥)/(s+1) with ties counted as extreme. This is the same form as the Phipson & Smyth rule.
+  - Sample size uses the paired normal approximation n = ((z₁₋α/₂ + z_power)·σ_d/δ)², following the [CBU statistics wiki](https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/power/onesamp). It slightly underestimates exact paired-t sample sizes. Quantiles come from Python's [`NormalDist.inv_cdf`](https://docs.python.org/3.12/library/statistics.html#statistics.NormalDist.inv_cdf).
+  - Heading time courses use [`numpy.unwrap`](https://numpy.org/doc/1.26/reference/generated/numpy.unwrap.html).
 - **Second-order optimality conditions.** At a local maximizer the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). This motivates the audit's post hoc reward-optimality hypothesis. It is not evidence for that hypothesis.
 
 ## Related work reserved for later experiments
