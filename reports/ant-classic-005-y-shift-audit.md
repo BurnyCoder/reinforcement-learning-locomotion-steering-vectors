@@ -32,7 +32,9 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
    - At −0.1 it would pass the lateral gate: +0.625 m/s, 94.4% speed retention, failures 1→1.
    - The isotropic-random comparison supports specificity only weakly: rank 1 of 7 at |α| = 0.1, p = 1/7.
 2. **About a quarter of the selected shift is sign-independent.** Almost every perturbation, including random directions and the constant action bias, pushes the Ant toward +Y at either sign.
+   - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): every one of these even parts shares a single baseline, so they are not separate pieces of evidence. Resampled jointly, the generic drift is +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] at 0.1. The quarter has the interval [9%, 39%].
 3. **The mechanism is a bounded heading offset.** On average the direction of travel rotates by +3.84°. It is not a sustained turn and not body-frame sidestepping. Individual paths still wander, as the seed-510000 movie shows.
+   - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2): the torso turns +5.23°, more than the path does, so the rotation is not rigid. Seen from the torso, the direction of travel shifts −1.39° [−2.03, −0.85].
 
 ## 1. The turning contrast moves world Y more than the lateral contrast
 
@@ -80,6 +82,8 @@ With six reference directions, p cannot fall below 1/7. Reaching p ≤ 0.05 need
 
 The even part is positive in **17 of 18** non-shuffled entries at |α| ≤ 0.1. Those entries cover both primaries, the six isotropic directions and the action bias. The single exception is the lateral primary at 0.05 (−0.005). Many individual even intervals include zero; the evidence is the consistent sign across directions, not any one interval. Perturbing this policy in almost any direction therefore tends to move it toward +Y, at either sign.
 
+*Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): consistency of sign across directions is not independent evidence. All 18 entries subtract the same ten baseline episodes, whose mean (+0.125 m/s) is below the confirmation baseline (+0.181 m/s). Averaging within seed and resampling seeds jointly gives +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] m/s at 0.1. The generic drift is therefore unsupported at 0.05 and marginal at 0.1.
+
 The baseline already drifts that way: +0.125 m/s in validation and +0.175 m/s in confirmation. For the locked condition, the even part is +0.142 of the +0.545 m/s validation effect, about 26%. The rest is the sign-dependent part, −(−0.403) = +0.403.
 
 Confirmation ran only α = −0.1, so it cannot separate the two parts on fresh resets. The selected random controls' confirmation effects, +0.15 to +0.25 m/s, are consistent with this drift plus their chance-aligned odd parts.
@@ -104,6 +108,11 @@ What the table shows:
 The direction of net post-onset travel rotates by **+3.84°** [+3.01, +4.58]: median +3.75°, 28 of 29 pairs positive, sign-flip p = 5×10⁻⁶. This is the most direct summary of the path shift, because it needs no torso-orientation convention.
 
 A rigid rotation of the baseline path by that angle predicts the observed lateral shift. Baseline travels 267.6 m forward after onset; tan(3.84°) × 267.6 m = 18.0 m, against a measured world-Y displacement change of +17.4 m. The yaw-aligned side-velocity change, +0.059 m/s in the causal audit, is small. Together these say the *gait* is rotated rather than converted into sidestepping. Gait patterns themselves were not measured.
+
+*Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2):
+- The 18.0-vs-17.4 m agreement follows from defining travel angle by displacement. A synthetic pure sidestep matches equally well, so the agreement is not evidence of rotation.
+- The torso turns +5.23° while the path turns +3.84°. Travel direction relative to the torso changes by −1.39° [−2.03, −0.85], so the gait is not rigidly rotated.
+- What remains supported: the +Y shift comes from a heading change, partly offset by a body-relative change in travel direction, not from sidestepping toward +Y.
 
 **Heading conventions.** The mean torso-heading change depends on how unequal episode durations are handled (`heading_change_deg_by_convention`, 29 pairs):
 - +5.23°: circular mean over each arm's own steps, the rigor audit's convention;
