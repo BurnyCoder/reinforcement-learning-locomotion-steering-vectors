@@ -38,8 +38,8 @@ def _rank_figure(fresh: dict) -> str:
     randoms = [abs(v["odd"]) for k, v in table.items() if k.startswith("random")]  # Null sample.
     shuffled = [abs(v["odd"]) for k, v in table.items() if k.startswith("shuffled")]  # Shuffle redraws.
     figure, axis = plt.subplots(figsize=(7.0, 3.6), dpi=160)  # One panel.
-    axis.hist(randoms, bins=20, color=MUTED, edgecolor="white", linewidth=1.0, label=f"isotropic random directions (n = {len(randoms)})")  # Null distribution.
-    axis.plot(shuffled, np.full(len(shuffled), -0.6), linestyle="none", marker="|", markersize=12, color=INK, label=f"label-shuffle redraws (n = {len(shuffled)})")  # Rug.
+    axis.hist(randoms, bins=20, color=MUTED, edgecolor="white", linewidth=1.0, label=f"random directions (n = {len(randoms)})")  # Null distribution.
+    axis.plot(shuffled, np.full(len(shuffled), -0.6), linestyle="none", marker="|", markersize=12, color=INK, label=f"shuffle redraws (n = {len(shuffled)})")  # Rug.
     for name, color, text in (("lateral", BLUE, "lateral (primary)"), ("turning", ORANGE, "turning"), ("heading_axis_renorm", AQUA, "perceived-heading axis"),
                               ("heading_orthogonal_renorm", AQUA, "lateral minus heading part")):  # Labelled directions.
         value = abs(table[name]["odd"])  # |odd| of this direction.
@@ -47,7 +47,7 @@ def _rank_figure(fresh: dict) -> str:
         axis.annotate(text, (value, axis.get_ylim()[1] * 0.92), rotation=90, va="top", ha="right", fontsize=7, color=INK)  # Direct label.
     _style(axis, "|odd world-Y response| at |α| = 0.1, all directions at norm 5.15 (m/s)", "directions")  # Axes.
     axis.set_title("Sign-dependent world-Y response on fresh seeds 540000–540019 (n = 20 pairs)", fontsize=9, color=INK)  # Title states scope.
-    axis.legend(frameon=False, fontsize=7, loc="center right")  # Legend for gray marks.
+    axis.legend(frameon=False, fontsize=7, loc="lower right", bbox_to_anchor=(1.0, 0.15))  # Empty lower-right region, clear of the labelled lines.
     figure.tight_layout()  # Fit labels.
     path = REPORT_DIR / "fresh-odd-rank.png"  # Output path.
     figure.savefig(path)  # Write PNG.
@@ -63,10 +63,11 @@ def _scatter_figure(fresh: dict) -> str:
     for prefix, marker, color, label in groups:  # Gray context, shape-coded.
         points = np.array([[v["odd"], v["even"]] for k, v in table.items() if k.startswith(prefix)])  # (odd, even).
         axis.scatter(points[:, 0], points[:, 1], s=14, marker=marker, facecolors="none" if prefix == "shuffled" else color, edgecolors=color, linewidths=0.8, label=label)  # Marks.
-    for name, color, text in (("lateral", BLUE, "lateral"), ("turning", ORANGE, "turning"), ("heading_parallel", AQUA, "heading part"),
-                              ("heading_orthogonal_renorm", AQUA, "remainder (renorm.)"), ("heading_axis_renorm", AQUA, "heading axis")):  # Labelled directions.
+    for name, color, text, offset, align in (("lateral", BLUE, "lateral", (6, 4), "left"), ("turning", ORANGE, "turning", (6, 4), "left"),
+                                             ("heading_parallel", AQUA, "heading part", (-6, 4), "right"), ("heading_axis_renorm", AQUA, "heading axis", (6, -10), "left"),
+                                             ("heading_orthogonal_renorm", AQUA, "remainder (renorm.)", (-6, 6), "right")):  # Labelled directions with non-overlapping offsets.
         axis.scatter(table[name]["odd"], table[name]["even"], s=60, color=color, edgecolors="white", linewidths=1.5, zorder=3)  # Highlight.
-        axis.annotate(text, (table[name]["odd"], table[name]["even"]), xytext=(5, 4), textcoords="offset points", fontsize=7, color=INK)  # Direct label.
+        axis.annotate(text, (table[name]["odd"], table[name]["even"]), xytext=offset, textcoords="offset points", ha=align, fontsize=7, color=INK)  # Direct label.
     axis.axhline(0, color=INK, linewidth=0.8)  # Zero even part.
     axis.axvline(0, color=INK, linewidth=0.8)  # Zero odd part.
     _style(axis, "odd part (f(+0.1) − f(−0.1))/2 (m/s)", "even part (f(+0.1) + f(−0.1))/2 (m/s)")  # Axes.
