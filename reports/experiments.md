@@ -16,9 +16,9 @@ Verdict on the methodology's initial hypothesis that contrast directions beat ge
 
 | Comparison | Verdict |
 | --- | --- |
-| Ant lateral vs the three tested isotropic random directions | Partly supported; six draws give rank p = 1/7 at \|α\| = 0.1 |
-| Ant lateral vs the shuffled-label control | Untestable |
-| Ant lateral vs the other-label (turning) contrast vector | Not supported: turning moves world Y more |
+| Ant lateral vs isotropic random directions | Borderline: on fresh seeds, rank p = 0.05 among 99 norm-matched directions at \|α\| = 0.1 (validation: six draws, p = 1/7) |
+| Ant lateral vs label-shuffle redraws | Not supported: 7 of 19 fresh redraws match or exceed it (rank p = 0.40) |
+| Ant lateral vs the other-label (turning) contrast vector | Not supported: turning moves world Y more, also on fresh seeds (+0.12 to +0.26 m/s larger odd part) |
 | HalfCheetah speed | Unsupported |
 | HalfCheetah 002 height | Specific in validation only |
 
@@ -36,6 +36,12 @@ The [path-mechanism audit](ant-classic-005-mechanism-audit.md) (2026-10-16, save
 - **The 18.0-vs-17.4 m agreement is arithmetic.** A pure sidestep matches it equally well.
 - **The rotation is not rigid.** The torso turns +5.23°, more than the path, so travel direction relative to the torso shifts −1.39° [−2.03, −0.85].
 - **Pairing gives no variance reduction for world Y** (arm r = −0.40). The intervals stay valid, and a studentized sign-flip test agrees (p = 5×10⁻⁶).
+
+The [independent audit](ant-classic-005-independent-audit.md) (2026-10-16) did not use the audits above. It rebuilt the evidence chain from raw episodes and found no implementation, pairing, leakage or reporting error. It then ran a [pre-registered](ant-classic-005-independent-audit-preregistration.md) experiment on 20 fresh resets (seeds 540000–540019, 5,020 episodes):
+- **Replicated.** Lateral −0.1 gives +0.462 m/s [0.343, 0.587], with 19/20 pairs positive. On these seeds it fails the failure gate (2/20 vs 0/20), as equal-size random perturbations typically do.
+- **Borderline against generic perturbations.** Rank p = 0.05 among 99 norm-matched random directions.
+- **No detectable generic drift.** The mean sign-independent part of the random directions is +0.034 [−0.032, +0.104] m/s. The validation-based +0.108 estimate does not replicate.
+- **Mechanism: perceived heading.** The vector has cosine 0.91 with the first-layer response to a rotated observation. Its heading component alone reproduces the effect; the remainder behaves like a random direction. Rotating only the observation by −9.2° shifts world Y by +0.90 m/s (20/20 pairs) without failures. The policy corrects a heading it believes is rotated toward −Y, which explains why the useful strength is negative.
 
 **Featured: Ant experiment 005.** The locked vector at −0.1 changes world-ground lateral velocity by **+0.40238 m/s**, paired 95% interval **[+0.30803, +0.49127]**, on thirty fresh confirmation episodes while retaining **96.83%** of forward speed. Failure counts are **4/30 in both arms**. This is a measured causal effect in the tested frozen policy; it is not a claim of body-frame sidestepping or a newly discovered internal concept.
 
@@ -71,13 +77,14 @@ These seed sets were assigned before the corresponding phase outcomes. Assignmen
 | --- | --- | --- | --- | --- | --- |
 | hc-height-speed-004 | Reuse 002: diagnostic 100000–100015 and fitting 101000–101063; no refitting | 310000–310009, completed | 320000–320029, completed | 330000–330029, unused | 340000–340009, unused |
 | ant-classic-005 | Diagnostic 500000–500015; fitting 501000–501063 | 510000–510009, completed | 520000–520029, completed | 530000–530029, unused | No application run; a lateral application requires successful replication and its own locked specification |
+| ant-classic-005 independent audit | Reuses 005's fitting episodes and vectors | — | 540000–540019, completed (pre-registered audit experiment, not the formal replication split) | 530000–530029 still unused | None |
 
 ## Policies considered
 
 | Policy | Actor architecture | Training algorithm and objective | Training data | Curriculum | Steering accuracy / useful effect | Episode completion / failure | Domain | Evidence status |
 | --- | --- | --- | --- | --- | --- | --- | --- | --- |
 | Farama-Minari HalfCheetah-v5 TQC medium | Two 256-unit ReLU hidden layers, verified on load | TQC online RL; environment return | Upstream policy-environment interactions; no action demonstrations used here | Not established by this audit | 001 rejected before validation; 002/003 have no passing primary selection. 004's smaller additions pass calibration, but the locked primary fails confirmation. Some controls pass pilot gates | 004 selected −0.02 has zero failures in ten validation episodes, then ten failures in thirty confirmation episodes | Simulated planar locomotion | No replicated primary intervention or application result; complete negative evidence retained |
-| Farama-Minari Ant-v5 SAC medium | Two 256-unit ReLU hidden layers, verified on load | SAC online RL; environment return | Upstream policy-environment interactions; no action demonstrations used here | Not established by this audit | 005 lateral −0.1 gives +0.40238 m/s on fresh held-out episodes and retains 96.83% forward speed | Confirmation failure counts 4/30 in both arms; one identical pair ends before intervention. Fitting completion 56/64 | Simulated quadruped locomotion | Causal lateral effect measured; strict pre-onset criterion blocks formal acceptance, replication and application |
+| Farama-Minari Ant-v5 SAC medium | Two 256-unit ReLU hidden layers, verified on load | SAC online RL; environment return | Upstream policy-environment interactions; no action demonstrations used here | Not established by this audit | 005 lateral −0.1 gives +0.40238 m/s on fresh held-out episodes and retains 96.83% forward speed. The independent audit reproduces +0.462 m/s on 20 further resets; the vector acts through perceived heading | Confirmation failure counts 4/30 in both arms; one identical pair ends before intervention. Fitting completion 56/64 | Simulated quadruped locomotion | Causal lateral effect measured; strict pre-onset criterion blocks formal acceptance, replication and application |
 
 Checkpoint links and training provenance are in [the source audit](../docs/sources.md). Classification accuracy and token fill/completion rates do not apply to these continuous-control policies. Reports instead measure behavioral change, episode completion/failure, quality, and uncertainty.
 
@@ -132,6 +139,8 @@ Before the scientific run, the core implementation passed 23 tests; both checkpo
 | Body-relative travel change | Change of the travel direction measured from the torso: travel-angle change minus torso-heading change. It is zero if the whole gait turns rigidly and equals the path change for pure sidestepping. |
 | Matched horizon | Comparing two arms only over the steps both recorded, so an earlier termination in one arm cannot change the comparison. |
 | Arm correlation | Correlation, across resets, between a reset's baseline and treated outcomes. Pairing narrows intervals only when it is clearly positive. |
+| Perceived-heading direction | The change in first-layer activations when the policy's observation is rotated about the vertical axis, as if the robot faced a different way. The Ant "lateral" vector is 91% aligned with it, so adding the vector changes where the policy thinks it is heading, not a sideways motor command. |
+| Perception intervention | Rotating only what the policy observes (orientation, velocity and contact-force directions) while the simulator stays unchanged. It tests whether a steering effect works through the policy's beliefs about its state. |
 
 ## Entry requirements
 

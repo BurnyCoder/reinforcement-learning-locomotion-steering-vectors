@@ -1,0 +1,12 @@
+{
+  "files": {
+    "manifest.json": "d08283f28e39fada187f7470713687504f6236b2258432b01ff987881efeff1a",
+    "results.json": "8d60b07285aeedf0bbe8f5167f45bebaeec411b80be383d101e3ef5271005844",
+    "selection.json": "676c0b321371a0af1890231388a9d29313b972d3ce09b04c5789e0ae35fd6d4e",
+    "vectors.npz": "3626c79cb49539ef0c5170a6cabdbd9183d3800aeec82ab9196a8804764df36d",
+    "action_biases.npz": "0e708066df685af50dae6c08d09cb7e8d788bbda2a1be9dbc10d2c7d91f026b7",
+    "vector_diagnostics.json": "84fda3cf6a19415c1fa28ff8789b949cd1e0f9905eebf88d473db305bedb634c"
+  },
+  "episode_files": 1180,
+  "episodes_combined_sha256": "d3e355ade798ea6a5d3f366970be15cf9281dbcdaaec27dd94a716472057d3ab"
+}

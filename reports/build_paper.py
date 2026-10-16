@@ -6,6 +6,7 @@ This deliberately supports only the headings, paragraphs, tables, links and imag
 """
 
 import re  # Local: recognize the paper's limited Markdown; global: avoid another document dependency.
+import sys  # Local: read an optional source path; global: render reports beside the paper.
 from pathlib import Path  # Local: resolve companion figures; global: make the script work from the repository root.
 from xml.sax.saxutils import escape  # Local: escape literal text before markup; global: preserve scientific symbols safely.
 
@@ -21,7 +22,9 @@ import logging  # Local: report the actual output; global: make build failures v
 def inline(text: str) -> str:
     """Local: translate used inline markup. Global: preserve prose, units and source attribution."""
     text = text.replace("−", "-").replace("→", " to ").replace("≥", ">=").replace("≤", "<=")  # Local: normalize unsupported font glyphs; global: prevent missing scientific symbols in portable PDF fonts.
-    text = escape(text)  # Local: protect ampersands and angle brackets; global: render literal equations correctly.
+    text = escape(text).replace("≈", "~").replace("∓", "±")  # Local: protect markup characters and map two glyphs missing from Helvetica; global: render literal equations correctly.
+    text = re.sub("[αδθω]+", lambda m: f'<font name="Symbol">{m.group()}</font>', text)  # Local: ReportLab 4 encodes these code points into the standard Symbol font; global: show audit notation without embedding fonts.
+    text = re.sub("[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+", lambda m: f"<super>{m.group().translate(str.maketrans('⁻⁰¹²³⁴⁵⁶⁷⁸⁹', '-0123456789'))}</super>", text)  # Local: superscript exponents via ReportLab <super>; global: keep scientific notation legible.
     text = re.sub(r"\[([^]]+)\]\((https?://[^)]+)\)", r'<a href="\2" color="#174d78">\1</a>', text)  # Local: retain external citations as active links; global: let readers inspect primary evidence.
     text = re.sub(r"\[([^]]+)\]\(([^)]+)\)", r"\1 (\2)", text)  # Local: print repository-relative artifact references; global: avoid machine-specific file links.
     text = re.sub(r"\*\*([^*]+)\*\*", r"<b>\1</b>", text)  # Local: preserve the paper's emphasis; global: make main findings easy to find.
@@ -46,6 +49,7 @@ def build(source: Path) -> Path:
     styles["Heading1"].fontSize, styles["Heading1"].leading = 15, 19  # Local: distinguish major sections; global: aid scanning.
     styles["Heading1"].keepWithNext = styles["Heading2"].keepWithNext = True  # Local: keep headings with their content; global: avoid stranded labels.
     styles.add(ParagraphStyle("Cell", parent=styles["BodyText"], fontSize=8, leading=10.5, spaceAfter=0))  # Local: wrap table cells; global: avoid clipped measurements.
+    styles.add(ParagraphStyle("Item", parent=styles["BodyText"], leftIndent=12, bulletIndent=3, spaceAfter=3))  # Local: indent list items (https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/); global: keep audit lists readable.
     lines, story, index = source.read_text(encoding="utf-8").splitlines(), [], 0  # Local: read the only prose source; global: keep Markdown and PDF synchronized.
     width = A4[0] - 88  # Local: calculate the frame width; global: align text, figures and tables.
     while index < len(lines):  # Local: process every line once; global: do not omit trailing references.
@@ -64,7 +68,7 @@ def build(source: Path) -> Path:
         elif line.startswith("| "):  # Local: recognize a measured-data table; global: preserve each row instead of copying hand-picked cells.
             rows = []  # Local: collect one table; global: retain its source ordering.
             while index < len(lines) and lines[index].strip().startswith("|"):  # Local: consume the contiguous table; global: prevent following prose joining a cell.
-                cells = [cell.strip() for cell in lines[index].strip().strip("|").split("|")]  # Local: split the limited table syntax; global: preserve signed numeric strings.
+                cells = [cell.strip().replace(r"\|", "|") for cell in re.split(r"(?<!\\)\|", lines[index].strip().strip("|"))]  # Local: split on unescaped pipes only (GitHub tables allow \| inside cells); global: preserve signed numeric strings and absolute values.
                 if not all(re.fullmatch(r"[-: ]+", cell) for cell in cells):  # Local: omit the Markdown rule row; global: avoid printing syntax as data.
                     rows.append([Paragraph(inline(cell), styles["Cell"]) for cell in cells])  # Local: wrap every cell; global: retain long labels and intervals.
                 index += 1  # Local: advance within the table; global: keep one-pass parsing deterministic.
@@ -73,6 +77,8 @@ def build(source: Path) -> Path:
             table.setStyle(TableStyle([("BACKGROUND", (0, 0), (-1, 0), colors.HexColor("#e6eef5")), ("VALIGN", (0, 0), (-1, -1), "TOP"), ("LINEBELOW", (0, 0), (-1, 0), .5, colors.HexColor("#718096")), ("BOTTOMPADDING", (0, 0), (-1, -1), 6)]))  # Local: separate the header clearly; global: preserve readable comparisons.
             story.extend([table, Spacer(1, 10)])  # Local: separate the next block; global: avoid cramped results.
             continue  # Local: keep the first following line unconsumed; global: prevent skipped paragraphs.
+        elif line.startswith("- "):  # Local: recognize a one-line list item; global: render report lists as bullets instead of merged prose.
+            story.append(Paragraph(inline(line[2:]), styles["Item"], bulletText="•"))  # Local: ReportLab's bulletText draws the marker; global: no manual glyph placement.
         elif line.startswith("!["):  # Local: recognize a figure reference; global: include measured standalone artwork without altering its pixels.
             match = re.fullmatch(r"!\[([^]]*)\]\(([^)]+)\)", line)  # Local: require the used image syntax; global: fail visibly on malformed scientific figure references.
             if match is None:  # Local: detect invalid input; global: do not silently drop an expected figure.
@@ -83,13 +89,13 @@ def build(source: Path) -> Path:
             story.extend([figure, Paragraph(inline(match[1]), styles["BodyText"]), Spacer(1, 8)])  # Local: pair the figure and source caption; global: keep visual evidence interpretable.
         else:  # Local: collect an ordinary paragraph; global: preserve connected scientific prose.
             paragraph = [line]  # Local: begin with the current text; global: retain every source sentence.
-            while index + 1 < len(lines) and lines[index + 1].strip() and not lines[index + 1].startswith(("#", "|", "![", "<!--")):  # Local: join soft line breaks; global: avoid splitting a logical paragraph into many boxes.
+            while index + 1 < len(lines) and lines[index + 1].strip() and not lines[index + 1].strip().startswith(("#", "|", "![", "<!--", "- ")):  # Local: join soft line breaks; global: avoid splitting a logical paragraph into many boxes.
                 index += 1  # Local: advance to the continuation; global: consume it exactly once.
                 paragraph.append(lines[index].strip())  # Local: retain continuation text; global: preserve the Markdown paragraph content.
             story.append(Paragraph(inline(" ".join(paragraph)), styles["BodyText"]))  # Local: wrap through ReportLab; global: avoid manual line clipping.
         index += 1  # Local: advance after a completed block; global: terminate after the full document.
     target = source.with_suffix(".pdf")  # Local: use the companion filename; global: make both formats easy to locate.
-    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title="Activation steering in frozen RL locomotion policies", author="RL locomotion steering research")  # Local: reserve printable margins; global: publish consistent document metadata.
+    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title=next((text[2:] for text in lines if text.startswith("# ")), source.stem), author="RL locomotion steering research")  # Local: reserve printable margins; global: publish consistent document metadata.
     document.build(story, onFirstPage=footer, onLaterPages=footer)  # Local: paginate the full story; global: use the standard library's layout engine.
     logging.info("Rendered paper source=%s output=%s", source, target)  # Local: record actual artifact paths; global: retain a timestamped build trace.
     return target  # Local: expose the created artifact; global: support later automation without guessed paths.
@@ -97,4 +103,4 @@ def build(source: Path) -> Path:
 
 if __name__ == "__main__":  # Local: run only on explicit script invocation; global: allow importing the formatter for focused checks.
     start_logging(Path("tmp/pdfs/paper"))  # Local: reuse complete terminal and timestamped file logs; global: keep artifact generation auditable.
-    build(Path(__file__).with_name("paper.md"))  # Local: build the adjacent source; global: keep the command independent of the shell's path spelling.
+    build(Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).with_name("paper.md"))  # Local: optional Markdown path; global: reuse the renderer for audit reports.  # Local: build the adjacent source; global: keep the command independent of the shell's path spelling.
