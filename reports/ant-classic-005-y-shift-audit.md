@@ -32,7 +32,7 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
    - At −0.1 it would pass the lateral gate: +0.625 m/s, 94.4% speed retention, failures 1→1.
    - The isotropic-random comparison supports specificity only weakly: rank 1 of 7 at |α| = 0.1, p = 1/7.
 2. **About a quarter of the selected shift is sign-independent.** Almost every perturbation, including random directions and the constant action bias, pushes the Ant toward +Y at either sign.
-3. **The mechanism is a bounded heading offset.** The path is rotated in a straight line, by +3.84° in direction of travel. It is not a sustained turn and not body-frame sidestepping.
+3. **The mechanism is a bounded heading offset.** On average the direction of travel rotates by +3.84°. It is not a sustained turn and not body-frame sidestepping. Individual paths still wander, as the seed-510000 movie shows.
 
 ## 1. The turning contrast moves world Y more than the lateral contrast
 
@@ -56,7 +56,7 @@ Its yaw-rate response is negligible: the recorded turning effect at −0.1 is +0
 
 What this means:
 - Two nearly orthogonal contrast directions, fitted on different labels, both shift world Y. The one fitted on the *wrong* label shifts it more.
-- So the effect does not identify a lateral-specific direction. Contrast directions in the dominant activation subspace generally move heading; the rigor audit measured that subspace's participation ratio at 7.45.
+- So the effect does not identify a lateral-specific direction. At |α| = 0.1 all four contrast-derived directions (two primaries, two shuffles) have larger |odd| world-Y responses (0.338–0.596 m/s) than every isotropic draw (at most 0.209). They lie in the dominant activation subspace, whose participation ratio the rigor audit measured at 7.45.
 - This sharpens the rigor audit's "partly specific" verdict. The vector beats isotropic noise, but not other directions built the same way.
 
 **Falsifier.** The specificity reading would have been strengthened if other-label contrast directions had responded less than the primary. They responded more.
@@ -80,11 +80,11 @@ With six reference directions, p cannot fall below 1/7. Reaching p ≤ 0.05 need
 
 The even part is positive in **17 of 18** non-shuffled entries at |α| ≤ 0.1. Those entries cover both primaries, the six isotropic directions and the action bias. The single exception is the lateral primary at 0.05 (−0.005). Many individual even intervals include zero; the evidence is the consistent sign across directions, not any one interval. Perturbing this policy in almost any direction therefore tends to move it toward +Y, at either sign.
 
-The baseline already drifts that way: +0.125 m/s in validation and +0.175 m/s in confirmation. For the locked condition, the even part is +0.142 of the +0.545 m/s validation effect, about 26%. The rest is the sign-dependent part, −(−0.403).
+The baseline already drifts that way: +0.125 m/s in validation and +0.175 m/s in confirmation. For the locked condition, the even part is +0.142 of the +0.545 m/s validation effect, about 26%. The rest is the sign-dependent part, −(−0.403) = +0.403.
 
 Confirmation ran only α = −0.1, so it cannot separate the two parts on fresh resets. The selected random controls' confirmation effects, +0.15 to +0.25 m/s, are consistent with this drift plus their chance-aligned odd parts.
 
-## 4. Mechanism: a bounded heading offset that rotates a straight path
+## 4. Mechanism: a bounded heading offset that rotates the path
 
 The phase `heading_time_course` uses the thirty confirmation pairs, with locked lateral −0.1 against baseline. Unwrapped torso yaw comes from saved pre-action quaternions. Each bin includes only pairs whose arms both cover it.
 
@@ -124,7 +124,7 @@ The approximation slightly underestimates exact paired-t sample sizes, which doe
 ## 6. Corrections applied
 
 Each is a short qualifying statement linked here. No data, thresholds or statuses changed.
-- [Ant findings](ant-classic-005-findings.md), [scientific-rigor audit](scientific-rigor-audit.md) §2, [experiment register](experiments.md) and [README](../README.md): label non-specificity, the sign-independent drift and the straight-path mechanism.
+- [Ant findings](ant-classic-005-findings.md), [scientific-rigor audit](scientific-rigor-audit.md) §2, [experiment register](experiments.md) and [README](../README.md): label non-specificity, the sign-independent drift and the path-rotation mechanism.
 - [Paper](paper.md) / [PDF](paper.pdf): abstract, §6, §8 and reference [E7].
 - [Methodology](../docs/methodology.md): future specificity nulls must include other-label contrast directions and at least 19 random directions per family at both signs.
 - [Sources](../docs/sources.md): rank test and sample-size formula.
@@ -138,7 +138,7 @@ Two cheap checks were possible because the saved validation grid already crosses
 - outcomes the turning family never targeted;
 - three additional isotropic draws.
 
-The time course was added because a world-Y velocity effect is ambiguous on its own. It can come from a constant heading offset, which gives a straight rotated path, or from a sustained yaw rate, which gives a curving path. These two hypotheses predict different heading trajectories.
+The time course was added because a world-Y velocity effect is ambiguous on its own. It can come from a constant heading offset, which rotates the path, or from a sustained yaw rate, which gives a curving path. These two hypotheses predict different heading trajectories.
 
 **How the turning result was found.** It came from tabulating world-Y odd/even parts for the turning family, whose recorded effects are yaw rates and had therefore never been read for world Y. It was the largest single surprise of this check.
 
