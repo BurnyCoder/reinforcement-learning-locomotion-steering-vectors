@@ -1,6 +1,6 @@
 # Reproduce the Ant steering vector and videos
 
-The [featured experiment](../reports/ant-classic-005-findings.md) uses the frozen upstream Ant SAC checkpoint and the saved `lateral` array at **alpha = −0.1**, applied after step 100 at `actor.latent_pi[1]`. The array has 256 float32 components and already includes the documented activation-RMS scaling. Do not normalize it again. The direction's name describes its extraction label; the observed positive world-Y response occurs at the negative strength.
+The [featured experiment](../reports/ant-classic-005-findings.md) uses the frozen upstream Ant SAC checkpoint and the saved `lateral` array at **alpha = −0.1**, applied after step 100 at `actor.latent_pi[1]`. The array has 256 float32 components and already includes the documented activation-RMS scaling. Do not normalize it again. The direction's name describes its extraction label; the observed positive world-Y response occurs at the negative strength. The [independent audit](../reports/ant-classic-005-independent-audit.md) explains why: the vector is a perceived-heading direction, and the policy corrects the heading it believes it has.
 
 ## Download and use the published vector
 
