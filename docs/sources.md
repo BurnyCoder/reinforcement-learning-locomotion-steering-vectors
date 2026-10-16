@@ -61,6 +61,10 @@ The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the pr
   - The rank test is Barnard's Monte Carlo test as reviewed in [Myllymäki et al., *Global envelope tests*](https://arxiv.org/pdf/1307.0239): the observed statistic is ranked among s+1 values, giving p = (1 + #≥)/(s+1) with ties counted as extreme. This is the same form as the Phipson & Smyth rule.
   - Sample size uses the paired normal approximation n = ((z₁₋α/₂ + z_power)·σ_d/δ)², following the [CBU statistics wiki](https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/power/onesamp). It slightly underestimates exact paired-t sample sizes. Quantiles come from Python's [`NormalDist.inv_cdf`](https://docs.python.org/3.12/library/statistics.html#statistics.NormalDist.inv_cdf).
   - Heading time courses use [`numpy.unwrap`](https://numpy.org/doc/1.26/reference/generated/numpy.unwrap.html).
+- **Weak-null reading of the sign-flip test and shared-seed variance** (used by the [path-mechanism audit](../reports/ant-classic-005-mechanism-audit.md)).
+  - The sign-flip test is exact only under the sharp null. For a zero-mean null the sign-change test of the mean is asymptotically valid (Romano 1990, *JASA* 85:686–692, as reviewed by [Ritzwoller, Romano & Shaikh](https://arxiv.org/abs/2406.09521)).
+  - `sign_flip_pvalue(..., studentized=True)` divides each relabeled mean by its own standard error, following [Chung & Romano 2013](https://arxiv.org/abs/1304.5939).
+  - Common random numbers guarantee variance reduction only for outputs monotone and continuous in the shared inputs ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)). The audit therefore measures the baseline–treated correlation instead of assuming one.
 - **Second-order optimality conditions.** At a local maximizer the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). This motivates the audit's post hoc reward-optimality hypothesis. It is not evidence for that hypothesis.
 
 ## Related work reserved for later experiments
