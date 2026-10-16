@@ -67,6 +67,21 @@ The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the pr
   - Common random numbers guarantee variance reduction only for outputs monotone and continuous in the shared inputs ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)). The audit therefore measures the baseline–treated correlation instead of assuming one.
 - **Second-order optimality conditions.** At a local maximizer the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). This motivates the audit's post hoc reward-optimality hypothesis. It is not evidence for that hypothesis.
 
+The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) adds a perception intervention and pinned SciPy statistics.
+- **Observation layout.** [Gymnasium Ant-v5 `_get_obs`](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py) concatenates `qpos[2:]`, `qvel` and `cfrc_ext[1:]` clipped to the contact-force range. That puts the torso quaternion at obs[1:5], free-joint velocities at obs[13:19] and 13 × 6 contact wrenches at obs[27:105].
+- **Frames.**
+  - MuJoCo's ["c"-quantities](https://mujoco.readthedocs.io/en/3.1.5/computation/index.html) are expressed "in a global frame centered at the subtree center of mass".
+  - [`mjData`](https://mujoco.readthedocs.io/en/3.1.5/APIreference/APItypes.html) lists `cfrc_ext` in rotation:translation order.
+  - The free joint's linear velocity is world-frame and its angular velocity body-frame. `tests/test_perception.py` establishes this with [`mj_objectVelocity`](https://mujoco.readthedocs.io/en/3.1.5/APIreference/APIfunctions.html#mj-objectvelocity), because the pages consulted did not state it.
+  - The same test shows that the observation rotation equals the observation of a physically rotated state.
+- **Statistics.**
+  - SciPy 1.14.1 [`bootstrap`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.bootstrap.html) supplies the BCa and percentile intervals.
+  - [`permutation_test`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.permutation_test.html) with one sample flips signs.
+  - [`wilcoxon`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.wilcoxon.html) gives the signed-rank test.
+  - Rank p-values follow [Phipson & Smyth 2010](https://doi.org/10.2202/1544-6115.1585).
+  - Family-wise control uses [Holm 1979](https://www.jstor.org/stable/4615733).
+- **Rendering.** The paper renderer draws Greek letters with ReportLab's standard Symbol font and exponents with `<super>` [paragraph markup](https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/).
+
 ## Related work reserved for later experiments
 
 [Policy Gradient Steering](https://arxiv.org/abs/2607.27574v1) is a candidate escalation when natural contrast exists but classic vectors do not control the behavior. The published experiment pipeline does not integrate it; paused local prototype work is not a completed experiment. Continuous-action log probabilities and any trust-region/regularization machinery must be checked against the actual SAC/TQC distribution; categorical-language-model code is not directly interchangeable.
