@@ -22,6 +22,11 @@ The 2026-10-16 edition adds the [scientific-rigor audit](scientific-rigor-audit.
 A later 2026-10-16 revision adds the [world-Y specificity audit](ant-classic-005-y-shift-audit.md) to the abstract, Sections 6 and 8, and reference [E7]. It still has ten pages.
 - The first build overflowed to twelve pages, leaving one- and two-line spills on new pages. The abstract and Section 6 additions were shortened until the page boundaries matched the previous edition.
 - Every page was rendered at 1.6× with `uv run --no-sync --with pypdfium2==4.30.0` into `tmp/pdfs/paper-yshift/` and inspected visually. No clipping or broken tables were found.
+
+A third 2026-10-16 revision adds the [path-mechanism audit](ant-classic-005-mechanism-audit.md) to Sections 6 and 8 and reference [E8]. It still has ten pages.
+- The builder has no list support, so the Section 8 corrections are written as prose.
+- Pages 6, 8, 9 and 10, which contain the changed text or follow it, were rendered at 1.6× into `tmp/pdfs/paper-mechanism/` and inspected visually. No clipping or broken tables were found.
+- `pypdf` 5.1.0 confirmed that all 56 distinct external Markdown links are active PDF link annotations, and that the two sets are equal.
 - `pypdf` 5.1.0 confirmed that all 54 distinct external Markdown links are active PDF link annotations, and that the two sets are equal.
 - Poppler was not available, so every page was rendered at 1.6× with `uv run --no-sync --with pypdfium2==4.30.0` into `tmp/pdfs/paper-rigor/` and inspected visually. No clipping or broken tables were found.
 - `pypdf` 5.1.0 confirmed that the 52 distinct external Markdown links are all active PDF link annotations.

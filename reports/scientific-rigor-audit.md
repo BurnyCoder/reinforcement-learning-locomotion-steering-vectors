@@ -172,6 +172,8 @@ Each is a short qualifying statement linked to this report. No data, thresholds 
 
 Both agree with the recorded interval. Controls were compared on shared seeds because pairing removes reset variability; separate intervals would overstate overlap.
 
+*Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §4): for Ant world Y, pairing does not remove reset variability. Baseline and treated episode means are nearly uncorrelated after onset (median r = −0.04 over 88 validation conditions). The paired intervals remain valid, but they are not narrowed by pairing. The sign-flip test should be read as an asymptotic test of zero mean, because the sharp null is false for any nonzero perturbation. Its studentized version also gives p = 5×10⁻⁶.
+
 **How the shuffled problem was found.** It came from computing cosines among saved vectors. This is a cheap check that earlier audits did not record. The 300-reshuffle null established that the alignment is structural rather than an unlucky draw for Ant lateral. The probability of |cos| ≥ 0.599 under that null is 8%, and typical |cos| is 0.30.
 
 **How the degradation problem was found.** Tabulating effects at ±α showed that both signs slow HalfCheetah. The odd/even split states this exactly and without a model.

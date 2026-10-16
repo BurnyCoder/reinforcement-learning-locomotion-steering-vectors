@@ -31,6 +31,12 @@ The [world-Y specificity audit](ant-classic-005-y-shift-audit.md) (2026-10-16, s
 
 Thirty pairs were enough to detect the threshold (about 13 needed), but a specificity rank test needs at least 19 random directions, and only six exist.
 
+The [path-mechanism audit](ant-classic-005-mechanism-audit.md) (2026-10-16, saved data, post hoc) finds no error that invalidates the claim. Over the steps both arms recorded the effect is +0.392 m/s [+0.299, +0.477]. It corrects the two bullets above:
+- **The 17-of-18 count shares one baseline.** Resampled jointly, the generic drift is +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] at 0.1. The quarter has the interval [9%, 39%].
+- **The 18.0-vs-17.4 m agreement is arithmetic.** A pure sidestep matches it equally well.
+- **The rotation is not rigid.** The torso turns +5.23°, more than the path, so travel direction relative to the torso shifts −1.39° [−2.03, −0.85].
+- **Pairing gives no variance reduction for world Y** (arm r = −0.40). The intervals stay valid, and a studentized sign-flip test agrees (p = 5×10⁻⁶).
+
 **Featured: Ant experiment 005.** The locked vector at −0.1 changes world-ground lateral velocity by **+0.40238 m/s**, paired 95% interval **[+0.30803, +0.49127]**, on thirty fresh confirmation episodes while retaining **96.83%** of forward speed. Failure counts are **4/30 in both arms**. This is a measured causal effect in the tested frozen policy; it is not a claim of body-frame sidestepping or a newly discovered internal concept.
 
 Its recorded status is nevertheless `confirmation_failed`, solely because an additional strict rule forbids any episode ending before steering: seed 520025 ends identically at step 34 in both arms. The effect, movement preservation, and allowed quality increases pass. Equal aggregate failure counts do not mean identical failed-seed identities. No replication or application was run. See [005 findings and three attached videos](ant-classic-005-findings.md), its [complete bundle](ant-classic-005/README.md), the [separate within-project causal/code audit](ant-classic-005-causal-audit.md), and the standalone [research paper](paper.md) / [PDF](paper.pdf).
@@ -123,6 +129,9 @@ Before the scientific run, the core implementation passed 23 tests; both checkpo
 | Shuffled-control alignment | Cosine between a label-shuffled control and its primary. A large value means the control re-tests part of the primary direction instead of being a label-free null. |
 | Travel angle | Direction of an episode's net ground displacement after steering starts. Its change measures how much the whole path is rotated, without relying on torso orientation. |
 | Rank test | Compares one direction's response with k random directions: p = (1 + number at least as large) / (k + 1). With k = 6 the smallest possible p is 1/7, so at least 19 are needed to reach 0.05. |
+| Body-relative travel change | Change of the travel direction measured from the torso: travel-angle change minus torso-heading change. It is zero if the whole gait turns rigidly and equals the path change for pure sidestepping. |
+| Matched horizon | Comparing two arms only over the steps both recorded, so an earlier termination in one arm cannot change the comparison. |
+| Arm correlation | Correlation, across resets, between a reset's baseline and treated outcomes. Pairing narrows intervals only when it is clearly positive. |
 
 ## Entry requirements
 
