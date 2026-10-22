@@ -93,7 +93,9 @@ The main session also re-simulated validation seed 510000 in a fresh process for
 
 ## Hugging Face
 
-The corrected card (`docs/huggingface-model-card.md`) adds the fresh-seed result, the weak specificity, the perceived-heading mechanism, corrected audit naming and the best-model provenance. It is uploaded as the repository `README.md`. The same commit refreshes `paper/` (rebuilt paper, build notes and assets) and `documentation/` (current methodology, sources and video docs, and the experiment and audit reports, including the October audits). It also adds a correction note to each `experiments/*/README.md` mirror and uploads the regenerated run reports. Data, vectors, logs and `documentation-audit/` are unchanged. Uploaded files are downloaded back and compared by SHA256.
+The corrected card (`docs/huggingface-model-card.md`) adds the fresh-seed result, the weak specificity, the perceived-heading mechanism, corrected audit naming and the best-model provenance. It is uploaded as the repository `README.md`. The same commit refreshes `paper/` (rebuilt paper, build notes and assets) and `documentation/` (current methodology, sources and video docs, and the experiment and audit reports, including the October audits). It also adds a correction note to each `experiments/*/README.md` mirror and uploads the regenerated run reports. Data, vectors, logs and `documentation-audit/` are unchanged. Markdown mirrors have their relative links pinned to GitHub merge commit `7c5d0a5`, following the earlier mirrors' convention; all 114 pinned links returned HTTP 200.
+
+**Receipt.** Hugging Face commit [`31987a0`](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/commit/31987a0337761b098f9ff41ff062d5ce58be47f7) holds all 42 staged files. Each was downloaded back at that revision and matched its staged SHA256; the [staging manifest](fact-check-2026-10-22/hf-stage-manifest.json) and [verification result](fact-check-2026-10-22/hf-verify-result.json) record this. A later commit refreshes only this report's mirror so that it includes this receipt.
 
 ## Not verified
 
