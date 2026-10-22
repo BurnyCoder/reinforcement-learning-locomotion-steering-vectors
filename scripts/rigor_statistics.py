@@ -5,15 +5,16 @@ fixed-horizon displacement, heading and shuffled-control alignment.
 Global: test whether the recorded experiments support their interpretations,
 reusing the production estimators instead of copying them.
 Sources: https://arxiv.org/abs/1603.05766 (Phipson & Smyth, (b+1)/(m+1) p-values),
-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.permutation_test.html
+https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.permutation_test.html
 (paired "samples" permutations are within-pair sign flips),
 https://gymnasium.farama.org/environments/mujoco/ant/ (observation starts with z, then w,x,y,z quaternion),
-https://arxiv.org/pdf/1307.0239 (Barnard's Monte Carlo test: exact level from the observed statistic's rank among s+1),
+https://arxiv.org/pdf/1307.0239 (Myllymäki et al. 2017, "Global envelope tests for spatial processes", JRSS-B 79:381-404,
+which reviews Barnard's 1963 Monte Carlo test: exact level from the observed statistic's rank among s+1),
 https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/power/onesamp (paired normal-approximation sample size; it slightly underestimates exact-t n),
 https://numpy.org/doc/1.26/reference/generated/numpy.unwrap.html, https://docs.python.org/3.12/library/statistics.html#statistics.NormalDist.inv_cdf.
 """
 import math  # Round sample sizes up to whole pairs.
-from statistics import NormalDist  # Standard-library normal quantiles; avoids a SciPy dependency.
+from statistics import NormalDist  # Standard-library normal quantiles are sufficient for the power approximation.
 import numpy as np  # Vectorized resampling, circular means and cosines.
 from rl_locomotion_steering_vectors.analysis import _contrast, _speed_bins  # Reuse the exact production contrast and effort strata.
 from rl_locomotion_steering_vectors.runtime import quaternion_yaw, wrapped_angle_difference  # Reuse the audited quaternion-to-yaw conversion and circular difference.

@@ -8,7 +8,7 @@ Only original compact scientific files are compared; revised narratives, new aud
 """
 
 import argparse  # Local: accept an explicit revision; global: make a publication check repeatable.
-from concurrent.futures import ThreadPoolExecutor  # Local: overlap independent downloads; global: keep the audit bounded to four requests.
+from concurrent.futures import ThreadPoolExecutor  # Local: overlap independent downloads; global: keep at most four requests in flight.
 import hashlib  # Local: identify exact bytes; global: distinguish preservation from numerical similarity.
 import json  # Local: compare scientific values; global: allow harmless JSON whitespace differences.
 import logging  # Local: record progress; global: preserve complete timestamped audit output.

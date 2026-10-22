@@ -32,7 +32,7 @@ def main() -> None:
     replay.add_argument("--run-dir", type=Path, required=True)  # Read checkpoint identity from the existing manifest.
     replay.add_argument("--vector", default="speed")  # Vector keys match vectors.npz.
     replay.add_argument("--alpha", type=float, required=True)  # Always make strength explicit for visual evidence.
-    replay.add_argument("--seed", type=int, default=40000)  # Demonstration seeds are outside statistical selection/evaluation splits.
+    replay.add_argument("--seed", type=int, default=40000)  # Outside the recorded splits, but equal to the first application seed `demonstrate` reserves for offset-0 runs; choose another seed for a run that may still be applied.
     replay.add_argument("--off-at", type=int)  # Turn steering off later to demonstrate policy-function recovery.
     application = commands.add_parser("demonstrate", help="Test a replicated speed or lateral intervention against its calibrated target on fresh episodes")  # A concrete application follows held-out causal replication.
     application.add_argument("--run-dir", type=Path, required=True)  # Restore the frozen run specification rather than recalibrating.
