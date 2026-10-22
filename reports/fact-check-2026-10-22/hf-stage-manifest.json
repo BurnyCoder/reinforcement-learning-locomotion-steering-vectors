@@ -1,0 +1,254 @@
+[
+ {
+  "target": "README.md",
+  "source": "docs/huggingface-model-card.md",
+  "links_pinned_to": null,
+  "sha256": "703cd89c8756debb87b7fb6a0542c13a4df8cd7cd0c08165b0fc6bd518c0f751"
+ },
+ {
+  "target": "documentation/ant-videos.md",
+  "source": "docs/ant-videos.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "b1502845afc81fc3ce4438f9dc50bb5c650fa006c1a735a583617c262b87443b"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-causal-audit.md",
+  "source": "reports/ant-classic-005-causal-audit.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "da71b04d53f26f46a58bd7cdbb2d692145f2614b898dc46f373eccd625624149"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-diagnostics.md",
+  "source": "reports/ant-classic-005-diagnostics.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "45417e4bc95c9811cf092c1fd10b8744db23d817894e2bef0c4c6795e922fc09"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-findings.md",
+  "source": "reports/ant-classic-005-findings.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "8ce12a388bb534c6a57251fb2f440151a9262f2173f3ecfda528875064fc009d"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-independent-audit-preregistration.md",
+  "source": "reports/ant-classic-005-independent-audit-preregistration.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "c353a75f326ed365a9128cf6ad6574459a68acb2289c40ebf0f6911fd3c3368d"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-independent-audit.md",
+  "source": "reports/ant-classic-005-independent-audit.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "5ffa5ab9f948cc637abccef484b64bb5f4b8fc69d612cb6ce58a76f6b6b45ad4"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-mechanism-audit.md",
+  "source": "reports/ant-classic-005-mechanism-audit.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "a81f99bc4bb7fcd724156b2f3b36433de40389519aaf512111791fe38fe0571f"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-preregistration.md",
+  "source": "reports/ant-classic-005-preregistration.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "2f4d669532e04c7f65608e98ae6d7ece6680a0c38cf73e1062765478024f98d5"
+ },
+ {
+  "target": "documentation/experiments/ant-classic-005-y-shift-audit.md",
+  "source": "reports/ant-classic-005-y-shift-audit.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "4c79c3ae4b20332da1bbc9f342f4e0bb5bc8b14ef0a49e44e98430e4a368e78e"
+ },
+ {
+  "target": "documentation/experiments/experiments.md",
+  "source": "reports/experiments.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "bf448b3f2090eb82bd373ea6a2d7cc74545e25ba8ab501facc1f48993373f330"
+ },
+ {
+  "target": "documentation/experiments/fact-check-2026-10-22.md",
+  "source": "reports/fact-check-2026-10-22.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "98814be70f2e496f489d0b886e14f3e6e98e929a98ee9ac45d906c12adb83388"
+ },
+ {
+  "target": "documentation/experiments/hc-classic-001-diagnostics.md",
+  "source": "reports/hc-classic-001-diagnostics.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "08d0d3acf3b3fc4e121574409d92a2e4f0099278aea84fe4930619c0a7b7242b"
+ },
+ {
+  "target": "documentation/experiments/hc-height-speed-003-findings.md",
+  "source": "reports/hc-height-speed-003-findings.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "21a4c0301e500edb0cdaed2acfa66472d06fd2205a010a1868661901aca73ff9"
+ },
+ {
+  "target": "documentation/experiments/hc-height-speed-004-findings.md",
+  "source": "reports/hc-height-speed-004-findings.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "154d9a199d237a005471555af6582aa1553e822e016f73944b0c38762eb9e3b6"
+ },
+ {
+  "target": "documentation/experiments/hc-height-speed-004-preregistration.md",
+  "source": "reports/hc-height-speed-004-preregistration.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "d8d81565e54b0471d63bb0f836f042bc520c311a2e1909ef39d628aa1b3b21b2"
+ },
+ {
+  "target": "documentation/experiments/hc-running-002-findings.md",
+  "source": "reports/hc-running-002-findings.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "07fd014bd806a6ed63fc7b3c27d705965ca5a4d228e31bb19a31b6569e9cd8cf"
+ },
+ {
+  "target": "documentation/experiments/hc-running-002-validation-inspection.md",
+  "source": "reports/hc-running-002-validation-inspection.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "f207de3b1011f8eda2b3f5e70922754d3249d5789ea0adfe4b7930db9e48313d"
+ },
+ {
+  "target": "documentation/experiments/scientific-rigor-audit.md",
+  "source": "reports/scientific-rigor-audit.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "4989120a76d14c429a4d48121b929b73752f508247dbde17d3e3cf1d6d9e39ac"
+ },
+ {
+  "target": "documentation/methodology.md",
+  "source": "docs/methodology.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "a8c57886568d5448cff460de85f026146994cb875e84edf2e725f44114f2bf42"
+ },
+ {
+  "target": "documentation/sources.md",
+  "source": "docs/sources.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "63ec0cccbd9fe3753c8ac5ed6c09d2bd87efe7b144c7b07297b00e6da8f80ed0"
+ },
+ {
+  "target": "experiments/ant-classic-005/README.md",
+  "source": "reports/ant-classic-005/README.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "a665c29d1fdde5026b23fca1f53b44d8d1f2edf6b2ec1247a7d0a04d5258ae0f"
+ },
+ {
+  "target": "experiments/ant-classic-005/report.md",
+  "source": "reports/ant-classic-005/report.md",
+  "links_pinned_to": null,
+  "sha256": "29f51097dd9cf87eb588fa61c923ecb88089fcbf641ca8380681447b3008d8a9"
+ },
+ {
+  "target": "experiments/ant-classic-005/report.pdf",
+  "source": "reports/ant-classic-005/report.pdf",
+  "links_pinned_to": null,
+  "sha256": "d5c61d29534d64d0cbc4dd0e32b3fe54aa2d4065e370613c70e49dd4ea4bd1b4"
+ },
+ {
+  "target": "experiments/hc-classic-001/README.md",
+  "source": "reports/hc-classic-001/README.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "0b03c0ccea1168b9ad735fa369e043ef3813f54311c64fb17f3d24085359c193"
+ },
+ {
+  "target": "experiments/hc-classic-001/report.md",
+  "source": "reports/hc-classic-001/report.md",
+  "links_pinned_to": null,
+  "sha256": "f519635a9810e886b4ebd3254589051781782d8ad2b8891d83d89761ceac2686"
+ },
+ {
+  "target": "experiments/hc-classic-001/report.pdf",
+  "source": "reports/hc-classic-001/report.pdf",
+  "links_pinned_to": null,
+  "sha256": "037987fc71d91f5e95464a3a1e4df3d714daf13fdbfb837ea8065ce39abd36ac"
+ },
+ {
+  "target": "experiments/hc-height-speed-003/README.md",
+  "source": "reports/hc-height-speed-003/README.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "28d25c92db18bc64d5940a88bdc441b4ef8e6e60058139047270f8e636870e94"
+ },
+ {
+  "target": "experiments/hc-height-speed-003/report.md",
+  "source": "reports/hc-height-speed-003/report.md",
+  "links_pinned_to": null,
+  "sha256": "c465ccc6e4bf49ae5d27e005b718b5a0ff15e9d6e674b94a41a29d4bfb0edaee"
+ },
+ {
+  "target": "experiments/hc-height-speed-003/report.pdf",
+  "source": "reports/hc-height-speed-003/report.pdf",
+  "links_pinned_to": null,
+  "sha256": "9a2f412ee8ef0409bc51615108ab2204d405dfb4184582975fbac5e13d160894"
+ },
+ {
+  "target": "experiments/hc-height-speed-004/README.md",
+  "source": "reports/hc-height-speed-004/README.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "fdb2f9a7e9a51400bc4aa850dccdedbe0c95097740d2900af958311b26ce599e"
+ },
+ {
+  "target": "experiments/hc-height-speed-004/report.md",
+  "source": "reports/hc-height-speed-004/report.md",
+  "links_pinned_to": null,
+  "sha256": "e474a62cd6ab90f7dd9b594ea6481d2e6aabed9b6d6e664758671e15657c477e"
+ },
+ {
+  "target": "experiments/hc-height-speed-004/report.pdf",
+  "source": "reports/hc-height-speed-004/report.pdf",
+  "links_pinned_to": null,
+  "sha256": "0b106d06ad8a9cd5ef5e6a8d7b2713355d18e17e9c735eeedbf14f9b093bd9ea"
+ },
+ {
+  "target": "experiments/hc-running-002/README.md",
+  "source": "reports/hc-running-002/README.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "64924495c2b6bcccd6f53c235c230eb543c8e0f595b373fee33e4c78a133d52a"
+ },
+ {
+  "target": "experiments/hc-running-002/report.md",
+  "source": "reports/hc-running-002/report.md",
+  "links_pinned_to": null,
+  "sha256": "20f37ec0a5e0dd9c35e5dca57f3f00683bfeff8c7f9412067d7c7dbf3b506b37"
+ },
+ {
+  "target": "experiments/hc-running-002/report.pdf",
+  "source": "reports/hc-running-002/report.pdf",
+  "links_pinned_to": null,
+  "sha256": "c478ee30b18d7616107f8c5ef6a49a5b7f8f3d2ac58770627e2f2a20cd5dcd65"
+ },
+ {
+  "target": "paper/build_paper.py",
+  "source": "reports/build_paper.py",
+  "links_pinned_to": null,
+  "sha256": "a5868b21630bbeabaea10dce55bf7c129e55d20c65653944265943cb88952446"
+ },
+ {
+  "target": "paper/paper.md",
+  "source": "reports/paper.md",
+  "links_pinned_to": null,
+  "sha256": "9548bb14062023bf3e42fe46f83b3b9d3eb67b2a709a47db3b7013bc77fbbde8"
+ },
+ {
+  "target": "paper/paper.pdf",
+  "source": "reports/paper.pdf",
+  "links_pinned_to": null,
+  "sha256": "88e4118f0141216cc1221ac85a45d14f4a28ea07d2b9c42894c9fbf0188a1352"
+ },
+ {
+  "target": "paper/paper_assets/ant-lateral-validation.png",
+  "source": "reports/paper_assets/ant-lateral-validation.png",
+  "links_pinned_to": null,
+  "sha256": "8f4c0a5f0dd294d1b3646dcd0520f821e6d7fc63521e983af350e4de94481500"
+ },
+ {
+  "target": "paper/paper_assets/ant-topdown-validation.png",
+  "source": "reports/paper_assets/ant-topdown-validation.png",
+  "links_pinned_to": null,
+  "sha256": "2db53073120480e2d97876d47e6dce15668f7f347c49c90c5ffe7100f4f2bfeb"
+ },
+ {
+  "target": "paper/paper_build.md",
+  "source": "reports/paper_build.md",
+  "links_pinned_to": "7c5d0a565eabd53c96b7917ed3ac628b08002f0b",
+  "sha256": "fbbd6429f9140a00b0b0de8e8ebb82c9ca2a6f61b50c626a739202fe6a8bf11e"
+ }
+]
