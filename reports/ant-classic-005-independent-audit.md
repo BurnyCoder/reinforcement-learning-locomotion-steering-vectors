@@ -1,6 +1,6 @@
 # Independent audit: Ant 005 world-+Y path shift from the "lateral" steering vector
 
-Audit date 2026-10-16. Scope: the featured claim that adding the saved `lateral` vector at α = −0.1 after the frozen Ant SAC actor's first ReLU moves the ground path toward world +Y (+0.402 m/s [0.308, 0.491] on 30 confirmation pairs). The audit did not read or use the earlier audits. Its evidence comes from the raw episodes in `runs/ant-classic-005/episodes`, the source code, and 5,020 new episodes on fresh seeds. Those episodes were collected under a [protocol pushed beforehand](ant-classic-005-independent-audit-preregistration.md) (commit `ea11e75`, 14:25:40 UTC; collection began at 14:25:59 UTC). Machine-readable results are in [`audit.json`](ant-classic-005-independent-audit/audit.json), the treatments in [`directions.npz`](ant-classic-005-independent-audit/directions.npz), and complete timestamped logs sit in the same folder.
+Audit date 2026-10-16. Scope: the featured claim that adding the saved `lateral` vector at α = −0.1 after the frozen Ant SAC actor's first ReLU moves the ground path toward world +Y (+0.402 m/s [0.308, 0.491] on 30 confirmation pairs). The audit did not read or use the earlier audits. Its evidence comes from the raw episodes in `runs/ant-classic-005/episodes`, the source code, and 5,020 new episodes on fresh seeds. Those episodes were collected under a [protocol pushed beforehand](ant-classic-005-independent-audit-preregistration.md) (commit `ea11e75`, 14:25:40 UTC). The audit run started at 14:25:59 UTC, and its first fresh-seed episode was logged at 14:26:32 UTC. Machine-readable results are in [`audit.json`](ant-classic-005-independent-audit/audit.json), the treatments in [`directions.npz`](ant-classic-005-independent-audit/directions.npz), and complete timestamped logs sit in the same folder.
 
 ## Verdict
 
@@ -11,7 +11,7 @@ No error invalidates the causal finding. The world-+Y shift is real, correctly m
 | Causal world-Y increase at lateral −0.1 | **Sound, replicated** | Fresh seeds: +0.462 m/s, BCa 95% CI [0.343, 0.587], 19/20 pairs positive, sign-flip p < 0.001 (P1) |
 | Published numbers (README featured section) | **Accurate** | 11 of 11 recomputed from raw episodes; all 94 saved effects and intervals reproduce exactly |
 | Implementation, pairing, leakage, chronology | **No defect found** | Bitwise vector refit, matched prefixes, exact re-simulation, selection locked before confirmation |
-| Path change is a rotated path, not a sidestep or continuing turn | **Correct** | Torso heading +5.5°, travel direction +4.2°, no yaw trend (fresh) |
+| Path change is a rotated path, not a sidestep toward +Y or a continuing turn | **Correct** | Torso heading +5.5°, travel direction +4.2°, no yaw trend (fresh); gait-axis velocity even drifts slightly toward −Y (−0.115 m/s) |
 | Better than a generic perturbation of equal size | **Borderline** | Rank p = 0.05 among 99 isotropic random directions; 4 of 99 match or exceed it (P2) |
 | Specific to the lateral label | **Not supported** | The turning vector is stronger; 7 of 19 label-shuffle redraws match or exceed it (S1) |
 | Mechanism | **Perceived heading (new, supported)** | cos(lateral, g) = 0.914. The heading component carries the effect (M1), and rotating the observation alone reproduces it with zero failures (M2) |
@@ -24,7 +24,7 @@ All checks below ran on saved data (phase `verify_integrity`), and all passed.
 
 | Check | Result |
 | --- | --- |
-| Seed splits (diagnostic, fitting, validation, confirmation, replication, audit) | Disjoint |
+| Seed splits (diagnostic, fitting, validation, confirmation, replication, audit) | Disjoint. The check covered recorded splits only; the audit seeds include the run's convention-reserved application cohort 540000–540009 (see §7) |
 | Refit all ten vectors with the production estimator on the 64 fitting episodes | Bitwise identical to `vectors.npz` |
 | Independent reimplementation of the lateral contrast from the written rule | Max abs difference 5.5×10⁻⁸; cosine 1.000000 |
 | Saved fitting activations vs offline first-ReLU evaluation of saved observations | Max abs difference 1.4×10⁻⁶ |
@@ -50,7 +50,7 @@ The hook adds the vector after `actor.latent_pi[1]` exactly once per forward pas
 | Random-direction controls | +0.15 to +0.25 m/s | +0.155, +0.253, +0.155 |
 | Primary minus each random control and the action bias | 0.15–0.27 m/s | 0.150, 0.247, 0.248, 0.268 |
 | Shuffled-label control | +0.89 m/s, 9/30 failures | +0.890, 9/30 |
-| Shuffled–primary alignment | 60% | cosine 0.599 |
+| Shuffled–primary alignment | cosine 0.60 | cosine 0.599 |
 
 The recomputation also reproduces all 88 validation and 6 confirmation effects and intervals with zero difference. It summarizes episodes independently and replicates the original bootstrap draws.
 
@@ -83,13 +83,13 @@ The heading settles to a bounded offset within the first 100–200 steps after o
 
 ## 5. Fresh-seed experiment
 
-Seeds 540000–540019 were never used before. The design ran 124 directions at α = ±0.1, plus ±δ_eq perception arms and one shared baseline: 251 arms and 5,020 episodes, all deterministic, with onset at step 100 and a 1,000-step horizon. The unit is one reset. f is treated-minus-baseline mean post-onset world-Y velocity. The odd part is (f(+0.1) − f(−0.1))/2 and the even part is (f(+0.1) + f(−0.1))/2. The pre-registered decisions are:
+Seeds 540000–540019 belong to no recorded split and had never been run. Seeds 540000–540009 are, however, the application cohort that `demonstrate` reserves by convention for this run (seed offset 500000 + 40000), so a future 005 application must use other seeds (§7). The design ran 124 directions at α = ±0.1, plus ±δ_eq perception arms and one shared baseline: 251 arms and 5,020 episodes, all deterministic, with onset at step 100 and a 1,000-step horizon. The unit is one reset. f is treated-minus-baseline mean post-onset world-Y velocity. The odd part is (f(+0.1) − f(−0.1))/2 and the even part is (f(+0.1) + f(−0.1))/2. The pre-registered decisions are:
 
 | ID | Pre-registered test | Result | Decision |
 | --- | --- | --- | --- |
 | P1 | Lateral −0.1 replicates | +0.462 m/s [0.343, 0.587]; 19/20 positive; sign-flip p ≤ 2×10⁻⁴ (Monte Carlo floor); Wilcoxon p = 4×10⁻⁶; speed retention 96.4% | **Not falsified** (Holm p = 4×10⁻⁴) |
 | P2 | Lateral \|odd\| vs 99 isotropic directions of equal norm | \|odd\| = 0.397 [0.351, 0.437]; random quantiles 50/90/95/99% = 0.152 / 0.327 / 0.393 / 0.456; 4 random directions ≥ lateral | Rank p = 0.05; Holm-adjusted 0.05. **Not falsified, but exactly at the threshold** |
-| S1 | Label specificity | turning \|odd\| 0.586, larger by 0.12–0.26 (joint-seed 95% CI); 7 of 19 shuffle redraws ≥ lateral (rank p = 0.40) | **Not label-specific** |
+| S1 | Label specificity | turning \|odd\| 0.586, larger by 0.19 (joint-seed 95% CI 0.12–0.26); 7 of 19 shuffle redraws ≥ lateral (rank p = 0.40) | **Not label-specific** |
 | S2 | Generic even part, 99 random directions | +0.034 [−0.032, +0.104] m/s; odd-part sanity mean −0.009 [−0.048, +0.032] | No detectable generic +Y drift; sanity check passes |
 | M1 | Perceived-heading component carries the effect | heading part odd −0.520 (lateral −0.397); remainder odd +0.063; additivity gap CI [−0.127, +0.007]; remainder at full norm ranks p = 0.21 among random; pure heading axis at full norm odd −0.506, rank p = 0.01 | **Not falsified** |
 | M2 | Rotate only the observation by ∓9.22° (no activation edit) | −δ: +0.904 [0.816, 0.998], 20/20 pairs; +δ: −0.913 [−0.999, −0.818], 20/20; odd −0.908 [−0.948, −0.866]; even −0.005; 0/20 failures in both arms | **Supported** |
@@ -106,13 +106,15 @@ The first actor layer is a function of the current observation only, so any cont
 
 The policy was trained to run along +X and corrects its heading. Adding +α·lateral reports a heading rotated toward +Y, so the policy steers toward −Y; −α reports −Y, so it steers toward +Y. This accounts for the observed sign reversal relative to the label, the bounded heading offset, the heading component's sufficiency (M1), and the rigid path rotation produced by perception alone (M2).
 
-Rotating perception by 9.2° yields an 8° real heading change. The policy thus compensates for most of a perceived offset. The equal-size activation edit yields only 4–5°, so the linearized equivalence δ_eq overstates the vector's perceived rotation by about 2.3×. The turning vector acts mainly through perceived yaw rate: cos 0.74 with the ω_z gradient, 0.05 with g.
+Rotating perception by −9.2° changes the real torso heading by +7.8° and the travel direction by +8.1° (§4). The policy thus compensates for most of a perceived offset. The equal-size activation edit changes them by only +5.5° and +4.2°. The linearized equivalence δ_eq therefore overstates the vector's perceived rotation by 1.4–1.9× when measured by heading, and by 2.3× when measured by the odd world-Y response (0.908 vs 0.397). The turning vector acts mainly through perceived yaw rate: cos 0.74 with the ω_z gradient, 0.05 with g.
 
 **E1 (exploratory).** A linear model with projections onto g and the ω_z gradient does not predict random directions' responses: leave-one-out R² = −0.01. Isotropic directions barely project onto these axes (projection SD ≈ 0.32, vs 4.7 for lateral), so their responses come from elsewhere. The model predicts turning's response closely (−0.599 vs −0.586 observed). It underpredicts the heading directions, because the g coefficient is not identified from random data (bootstrap CI [−0.12, +0.16]). This is reported as exploratory, not evidence.
 
 ## 7. Deviations, limitations and remaining threats
 
 **Deviations from the protocol.** The first full run used 12 workers and stopped after 300 episodes because MuJoCo could not allocate memory: about 5.5 GB of RAM was free and the page file was limited by a nearly full disk. The run resumed with 6 workers. Episodes are deterministic per seed, as the bit-identical re-simulation shows, and completed files were kept. The worker count cannot change any result.
+
+**Reserved-seed overlap (found in the 2026-10-22 [fact-check](fact-check-2026-10-22.md)).** `demonstrate` reserves seeds `seed_offset + 40000` onward for a run's application cohort (`fresh_application_seeds` in `demonstration.py`), which is 540000–540009 for Ant 005. The audit's fresh seeds include them. Its integrity check covered only recorded splits, and the application cohort is not recorded in the manifest, so the overlap went unnoticed. The audit results are unaffected, but those resets are no longer fresh for an Ant 005 application, which would need another cohort.
 
 **Gaps.** The methodology recommends covariance-shaped random directions. Here the 19 shuffle redraws are the only data-shaped null, and they span cosines −0.37 to +0.83 with the primary. The original control's 0.60 was one draw.
 
@@ -135,7 +137,7 @@ Rotating perception by 9.2° yields an 8° real heading change. The policy thus 
 
 **Issues and fixes.**
 - `uv add scipy` failed while replacing the locked editable install. Adding with `--no-sync` and syncing without reinstalling the project fixed it.
-- The physical-rotation test established the frames empirically with `mj_objectVelocity`. The free joint's linear velocity is world-frame and its angular velocity body-frame; cfrc_ext is world-oriented. The MuJoCo pages fetched for this audit did not state the free-joint velocity frames.
+- The physical-rotation test established the frames empirically with `mj_objectVelocity`. The free joint's linear velocity is world-frame and its angular velocity body-frame; cfrc_ext is world-oriented. The MuJoCo pages fetched for this audit did not state the free-joint velocity frames, but the [MuJoCo 3.1.5 overview](https://mujoco.readthedocs.io/en/3.1.5/overview.html#floating-objects) does and agrees with the empirical result.
 - The memory failure was fixed by lowering the worker count.
 - Figure labels overlapped and were re-placed after visual inspection.
 
