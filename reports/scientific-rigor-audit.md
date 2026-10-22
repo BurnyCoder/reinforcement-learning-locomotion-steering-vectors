@@ -22,7 +22,7 @@ The [audit script](../scripts/audit_scientific_rigor.py) runs named phases over 
 **Three interpretations need correction:**
 1. The label-shuffled control is **not a label-free null**. By construction it shares the primary's dominant activation subspace.
 2. The speed gate counts **generic degradation** as a useful speed change. Every HalfCheetah "speed effect" is a slowdown that a reward-trained policy shows under almost any perturbation.
-3. The Ant lateral effect is only **partly specific** to the contrast vector. Norm-matched isotropic random directions produce 35–112% of its sign-dependent lateral response at |α| ≤ 0.1.
+3. The Ant lateral effect is only **partly specific** to the contrast vector. Its three norm-matched isotropic random directions produce 35–112% of its sign-dependent lateral response at |α| ≤ 0.1. (*Later correction*, [fact-check](fact-check-2026-10-22.md): across all six isotropic draws the range is −13% to 112%, with mixed signs.)
 
 The methodology's stated hypothesis is that contrast directions beat generic perturbations. The evidence for it:
 
@@ -91,8 +91,8 @@ Why this happens:
 - The primary contrast lies in the same subspace, so large overlap is the expected outcome, not an accident.
 
 Consequences:
-- The shuffled Ant direction's larger effect (+0.890 m/s, 9/30 failures) partly re-tests a direction 60% aligned with the primary.
-- The 004 shuffled control that passed confirmation pilot gates (−13.92% speed) is 58% aligned with the locked primary.
+- The shuffled Ant direction's larger effect (+0.890 m/s, 9/30 failures, at twice the primary's strength) partly re-tests a direction with cosine 0.60 to the primary.
+- The 004 shuffled control that passed confirmation pilot gates (−13.92% speed) has cosine 0.58 with the locked primary.
 - The 002 effort shuffled control is nearly the primary reversed.
 
 So shuffled-label results cannot support "labels do not matter", nor serve as independent evidence of generic-direction effects. The isotropic random directions are the cleaner generic control. They are also a lenient one: they do not share the activation distribution's shape.
@@ -119,7 +119,7 @@ For every HalfCheetah primary, the forward-speed even component exceeds the odd 
 - 003: +0.03%;
 - 004: +0.40%.
 
-No intervention ever sped HalfCheetah up. The 004 random controls show the rectified pattern of a ceiling: one sign slows, the other does nothing (e.g. random 1 at 0.035: +0.2% vs −10.0%).
+No intervention raised HalfCheetah speed by more than about 0.4%. A few controls gave tiny but detectable speed-ups (e.g. 004 action bias −0.035: +0.068 m/s [+0.045, +0.088]; *corrected* by the [fact-check](fact-check-2026-10-22.md) from "never sped up"). The 004 random controls show the rectified pattern of a ceiling: one sign slows, the other does nothing (e.g. random 1 at 0.035: +0.2% vs −10.0%).
 
 So the 004 calibration "passes" and the locked −31.89% confirmation slowdown are degradation of a near-optimal gait, not evidence of a steerable speed direction. This does not change 004's `confirmation_failed` status. It does change what its positive calibration settings mean: they are not "useful speed effects" in the sense of controllable speed.
 
@@ -172,7 +172,7 @@ Each is a short qualifying statement linked to this report. No data, thresholds 
 
 Both agree with the recorded interval. Controls were compared on shared seeds because pairing removes reset variability; separate intervals would overstate overlap.
 
-*Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §4): for Ant world Y, pairing does not remove reset variability. Baseline and treated episode means are nearly uncorrelated after onset (median r = −0.04 over 88 validation conditions). The paired intervals remain valid, but they are not narrowed by pairing. The sign-flip test should be read as an asymptotic test of zero mean, because the sharp null is false for any nonzero perturbation. Its studentized version also gives p = 5×10⁻⁶.
+*Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §4): for Ant world Y, pairing does not remove reset variability. Baseline and treated episode means are nearly uncorrelated after onset (median r = −0.04 over 88 validation conditions). The paired intervals remain valid, but they are not narrowed by pairing. The sign-flip test should be read as an asymptotic test of zero mean, because the sharp null is false for any nonzero perturbation. Its studentized version also reaches the 200,000-flip floor, p = 5×10⁻⁶.
 
 **How the shuffled problem was found.** It came from computing cosines among saved vectors. This is a cheap check that earlier audits did not record. The 300-reshuffle null established that the alignment is structural rather than an unlucky draw for Ant lateral. The probability of |cos| ≥ 0.599 under that null is 8%, and typical |cos| is 0.30.
 
