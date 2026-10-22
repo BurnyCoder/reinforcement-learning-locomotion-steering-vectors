@@ -1,7 +1,8 @@
 """Local: render measured run artifacts. Global: keep Markdown and PDF conclusions aligned.
 
 Sources: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and
-https://matplotlib.org/stable/api/_as_gen/matplotlib.pyplot.errorbar.html.
+https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.plot.html and
+https://matplotlib.org/stable/api/_as_gen/matplotlib.axes.Axes.vlines.html (interval bars).
 """
 
 import json  # Local: read structured artifacts; global: report saved evidence without rerunning selection.
@@ -156,7 +157,7 @@ def _sections(manifest, results):
     if missing:  # Local: report the actual evidence gap once; global: keep stopped experiments concise.
         sections.append(("Unmeasured stages", "No recorded measurements: " + ", ".join(missing) + ". No causal steering outcome is inferred for these stages.", None))  # Local: state what was not measured; global: avoid turning a diagnostic result into an intervention result.
     sections.append(("Reproduction and provenance", _provenance_text(manifest), None))  # Local: compact the human-readable metadata; global: retain the full manifest unchanged on disk.
-    sections.append(("Sources", "CAA method: https://arxiv.org/abs/2312.06681\nBaukit hooks: https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py\nEnvironment and measurement references: docs/sources.md in the repository.\nReporting: https://docs.reportlab.com/reportlab/userguide/ and https://matplotlib.org/stable/users/index.html", None))  # Local: identify scientific and implementation sources; global: separate adaptations from upstream claims.
+    sections.append(("Sources", "CAA method: https://arxiv.org/abs/2312.06681\nBaukit hooks: https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py\nEnvironment and measurement references: docs/sources.md in the repository.\nReporting: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and https://matplotlib.org/stable/users/index.html", None))  # Local: identify scientific and implementation sources; global: separate adaptations from upstream claims.
     return sections  # Local: expose shared content; global: maintain agreement between report formats.
 
 
