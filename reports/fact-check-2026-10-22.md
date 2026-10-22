@@ -68,7 +68,7 @@ The main session also re-simulated validation seed 510000 in a fresh process for
 - **Methodology.** The Baukit `Trace` anchor now spans hook registration to removal (`nethook.py#L50-L108`). The sb3-contrib v2.4.0 TQC actor source is added.
 - **Sources.**
   - Added the Minari Ant medium page (SB3 SAC, 10⁷ steps).
-  - The upstream upload is `run_0/best_model.zip`, the `EvalCallback` best model, not the final model. This is why `num_timesteps` is below the configured length.
+  - The upstream upload is `run_0/best_model.zip`, the `EvalCallback` best model, not the final model. Consistent with this, `num_timesteps` is below the training lengths on the Minari pages (6×10⁶ and 10⁷).
   - Corrected the steering-vectors anchors (`L99-L107`, `L188-L212`).
   - Pinned the SciPy links to 1.14.1.
   - Cited the [MuJoCo 3.1.5 overview](https://mujoco.readthedocs.io/en/3.1.5/overview.html#floating-objects) for free-joint velocity frames, which the earlier audit verified only empirically.
