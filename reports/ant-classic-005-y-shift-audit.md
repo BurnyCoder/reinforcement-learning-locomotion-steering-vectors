@@ -22,7 +22,7 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
 **No methodological error invalidates the claim.** The claim holds as a causal, held-out, world-frame effect for this one frozen policy. The supporting checks:
 - **Pairing.** Arms share onset-state hashes, use deterministic actions and have identical prefixes.
 - **Order of steps.** Selection was locked before confirmation, and the seed splits are disjoint.
-- **Statistics.** The sign-flip p-value is 5×10⁻⁶, and 28 of 30 pairs are positive.
+- **Statistics.** The sign-flip p-value is 5×10⁻⁶, the floor of its 200,000 Monte Carlo flips, and 28 of 30 pairs are positive.
 - **Measurement.** World Y comes from root `qpos`, and the replays are bit-exact.
 - **Figures and movies.** The top-down movie camera uses azimuth 90 and elevation −90 ([render_topdown.py:47](../scripts/render_topdown.py#L47)), so +X is right and +Y is up. The last frame of the fixed-camera movie shows the steered trail rising toward +Y while the baseline stays level. The XY plot uses equal axes.
 
@@ -32,7 +32,7 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
    - At −0.1 it would pass the lateral gate: +0.625 m/s, 94.4% speed retention, failures 1→1.
    - The isotropic-random comparison supports specificity only weakly: rank 1 of 7 at |α| = 0.1, p = 1/7.
 2. **About a quarter of the selected shift is sign-independent.** Almost every perturbation, including random directions and the constant action bias, pushes the Ant toward +Y at either sign.
-   - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): every one of these even parts shares a single baseline, so they are not separate pieces of evidence. Resampled jointly, the generic drift is +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] at 0.1. The quarter has the interval [9%, 39%].
+   - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): every one of these even parts shares a single baseline, so they are not separate pieces of evidence. Resampled jointly, the generic drift is +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] at 0.1. The quarter (26%) has an interval of about [8%, 39%].
 3. **The mechanism is a bounded heading offset.** On average the direction of travel rotates by +3.84°. It is not a sustained turn and not body-frame sidestepping. Individual paths still wander, as the seed-510000 movie shows.
    - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2): the torso turns +5.23°, more than the path does, so the rotation is not rigid. Seen from the torso, the direction of travel shifts −1.39° [−2.03, −0.85].
 
@@ -105,11 +105,12 @@ What the table shows:
 - If the onset yaw rate of +0.0174 rad/s had persisted, heading would have drifted about 45° by step 1000.
 - The intervention therefore shifts the heading the closed-loop policy holds. It does not make the Ant turn continuously.
 
-The direction of net post-onset travel rotates by **+3.84°** [+3.01, +4.58]: median +3.75°, 28 of 29 pairs positive, sign-flip p = 5×10⁻⁶. This is the most direct summary of the path shift, because it needs no torso-orientation convention.
+The direction of net post-onset travel rotates by **+3.84°** [+3.01, +4.58]: median +3.75°, 28 of 29 pairs positive, sign-flip p = 5×10⁻⁶ (the 200,000-flip floor). This is the most direct summary of the path shift, because it needs no torso-orientation convention.
 
 A rigid rotation of the baseline path by that angle predicts the observed lateral shift. Baseline travels 267.6 m forward after onset; tan(3.84°) × 267.6 m = 18.0 m, against a measured world-Y displacement change of +17.4 m. The yaw-aligned side-velocity change, +0.059 m/s in the causal audit, is small. Together these say the *gait* is rotated rather than converted into sidestepping. Gait patterns themselves were not measured.
 
 *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2):
+- The distances above are 30-pair means that include zero for seed 520025, while the angle uses 29 pairs. On those 29 pairs the figures are 276.8 m, 18.6 m predicted and 18.0 m measured ([fact-check](fact-check-2026-10-22.md)).
 - The 18.0-vs-17.4 m agreement follows from defining travel angle by displacement. A synthetic pure sidestep matches equally well, so the agreement is not evidence of rotation.
 - The torso turns +5.23° while the path turns +3.84°. Travel direction relative to the torso changes by −1.39° [−2.03, −0.85], so the gait is not rigidly rotated.
 - What remains supported: the +Y shift comes from a heading change, partly offset by a body-relative change in travel direction, not from sidestepping toward +Y.
@@ -125,7 +126,7 @@ Treated seed 520010 ends at step 193 after 21.5% inverted steps; while the Ant i
 
 The threshold test was adequately powered (`design_power`, two-sided normal approximation at 80% power):
 - The validation paired SD of 0.168 m/s, known before confirmation, implies about 6 pairs to detect the 0.2 m/s threshold.
-- The confirmation SD of 0.256 m/s implies 13.
+- The confirmation SD of 0.256 m/s (30 pairs) implies 13.
 - Thirty pairs were used.
 
 The approximation slightly underestimates exact paired-t sample sizes, which does not change this conclusion. Specificity was not testable, as Section 2 shows.

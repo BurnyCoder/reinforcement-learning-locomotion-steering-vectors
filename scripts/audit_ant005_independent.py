@@ -2,7 +2,7 @@
 
 Usage (from the repository root):
     uv run --no-sync python scripts/audit_ant005_independent.py --stop-after directions   # saved-data checks + treatments
-    uv run --no-sync python scripts/audit_ant005_independent.py --workers 12              # full audit incl. fresh seeds
+    uv run --no-sync python scripts/audit_ant005_independent.py --workers 6               # full audit incl. fresh seeds (12 workers exhausted memory)
 
 Phases: verify_integrity → reanalyze_saved → build_directions → collect_fresh → analyze_fresh → write_outputs.
 Protocol: reports/ant-classic-005-independent-audit-preregistration.md
@@ -29,7 +29,7 @@ def main() -> None:
     """Local: parse options and call the phases. Global: one reproducible audit entry point."""
     parser = argparse.ArgumentParser(description=__doc__.splitlines()[0])  # One-line summary.
     parser.add_argument("--stop-after", choices=("directions",), help="stop before fresh collection")  # Pre-registration boundary.
-    parser.add_argument("--workers", type=int, default=12, help="rollout worker processes")  # CPU parallelism.
+    parser.add_argument("--workers", type=int, default=6, help="rollout worker processes")  # CPU parallelism; 12 MuJoCo workers exhausted memory on the audit machine, 6 completed.
     args = parser.parse_args()  # Parsed options.
     start_logging(REPORT_DIR)  # Log file in the committed report folder.
     torch.set_num_threads(1)  # Match the original per-worker inference setting.

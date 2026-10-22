@@ -15,7 +15,7 @@ from dotenv import load_dotenv  # Reuse the established .env parser.
 @dataclass(frozen=True)
 class Config:
     """Local: pilot defaults; global: immutable fitting and evaluation specification."""
-    torch_threads: int = 1  # Small MLP inference avoids thread startup overhead.
+    torch_threads: int = 1  # Main-process threads (pipeline, replay, demonstrate); rollout workers always use one. Small MLP inference avoids thread startup overhead.
     rollout_workers: int = 4  # Isolated CPU processes amortize checkpoint loading across conditions.
     max_steps: int = 1000  # Match the upstream Gymnasium time limit.
     warmup: int = 100  # Steering begins after an identical unsteered prefix.

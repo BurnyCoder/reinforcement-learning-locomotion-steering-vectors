@@ -4,7 +4,7 @@ Local: NumPy reductions reconstruct the published estimators and fitting diagnos
 Global: a separate oracle checks production results without importing their calculations.
 Sources: https://numpy.org/doc/1.26/reference/generated/numpy.mean.html
 https://numpy.org/doc/1.26/reference/generated/numpy.quantile.html
-https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html
+https://numpy.org/doc/1.26/reference/random/generated/numpy.random.Generator.integers.html
 """
 import numpy as np  # Reuse documented array operations instead of implementing numerical primitives.
 
@@ -110,7 +110,7 @@ def paired_summary(before, after, behavior, bootstrap_seed):
     summaries = [[episode_summary(group[seed]) for seed in seeds] for group in (left, right)]  # Keep physical failures in both arms.
     means = [{key: float(np.mean([item[key] for item in group])) for key in group[0]} for group in summaries]  # Equal episode weights define the published means.
     delta = np.array([treated[behavior] - baseline[behavior] for baseline, treated in zip(*summaries)])  # Bootstrap the differences rather than unpaired groups.
-    indices = np.random.default_rng(bootstrap_seed).integers(0, len(seeds), size=(2000, len(seeds)))  # Same paired-index construction as SciPy's documented paired bootstrap.
+    indices = np.random.default_rng(bootstrap_seed).integers(0, len(seeds), size=(2000, len(seeds)))  # Same seeded index draw as the recorded percentile bootstrap (analysis.paired_effect), resampling whole pairs.
     return {"effect": float(delta.mean()), "ci95": np.quantile(delta[indices].mean(axis=1), [.025, .975]).tolist(), "baseline_mean": means[0][behavior], "treated_mean": means[1][behavior], "baseline_means": means[0], "treated_means": means[1], "n_pairs": len(seeds), "seeds": seeds, "bootstrap": {"method": "paired episode percentile", "resamples": 2000, "seed": bootstrap_seed}}  # All stored numerical estimates can be compared field by field.
 
 
