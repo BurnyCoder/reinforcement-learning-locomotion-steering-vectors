@@ -3,7 +3,7 @@
 The high-minus-low estimator adapts https://arxiv.org/abs/2312.06681 to
 episode-balanced locomotion windows; it is not a causal estimator until intervened.
 Numerical reductions reuse https://numpy.org/doc/1.26/reference/generated/numpy.mean.html.
-Bootstrap index pairing follows https://docs.scipy.org/doc/scipy/reference/generated/scipy.stats.bootstrap.html.
+Paired bootstrap indices (whole pairs) come from https://numpy.org/doc/1.26/reference/random/generated/numpy.random.Generator.integers.html.
 """
 
 from __future__ import annotations  # Keep annotations independent of runtime evaluation.
@@ -239,7 +239,7 @@ account for adaptive searches, and obtain independent replication.
     treated_rows = [_summary(right[key], warmup) for key in seeds]  # Summarize matching treatment episodes with the same onset and no exclusions.
     before = {name: float(np.mean([row[name] for row in baseline_rows])) for name in baseline_rows[0]}  # Equal reset weights define reported population means.
     after = {name: float(np.mean([row[name] for row in treated_rows])) for name in treated_rows[0]}  # Use the exact same metric set for treatment.
-    differences = np.asarray([changed[behavior] - original[behavior] for original, changed in zip(baseline_rows, treated_rows)])  # Pairing removes shared reset variability.
+    differences = np.asarray([changed[behavior] - original[behavior] for original, changed in zip(baseline_rows, treated_rows)])  # Pairing matches each reset's onset state; it narrows intervals only when the arms stay correlated after onset (not for Ant world Y).
     effect = float(differences.mean())  # Report the signed physical-unit treatment-minus-baseline effect.
     indices = np.random.default_rng(seed).integers(0, len(seeds), size=(2000, len(seeds)))  # Reuse episode indices jointly as prescribed by paired bootstrap.
     interval = np.quantile(differences[indices].mean(axis=1), [0.025, 0.975]).tolist()  # A percentile interval keeps the estimator explicit and reproducible.
