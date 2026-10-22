@@ -53,3 +53,9 @@ These observations shaped hypotheses M1 and M2, so they count as exploratory. Th
 | E1 (exploratory) | Do perceptual gradients predict any direction's response? | OLS of random directions' odd parts on projections onto ĝ_yaw and ĝ_ωz; leave-one-out R²; predictions for held-out labelled directions | Exploratory, not a test |
 
 Other effects are reported with intervals but no new decision rules: failures, forward-speed retention, the production gates, and each arm separately. Each control's cosine with the primary is reported. Any deviation from this protocol will be listed in the audit report.
+
+## Errata (2026-10-22, appended; the text above is unchanged)
+
+Found by the [independent fact-check](fact-check-2026-10-22.md):
+- cos(lateral, g) is **0.914**, not 0.915. This is the value in [`directions.json`](ant-classic-005-independent-audit/directions.json) (0.91419), and the pre-collection log `20261016T142401748156Z.log` also shows 0.9142.
+- The seeds are disjoint from every recorded split, as stated. However, 540000–540009 are the application cohort that `demonstrate` reserves by convention for Ant 005 (seed offset 500000 + 40000). This cohort is not recorded in the manifest, so the overlap was missed.

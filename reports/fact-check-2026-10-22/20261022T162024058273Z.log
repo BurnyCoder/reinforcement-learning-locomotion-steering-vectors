@@ -1,0 +1,25 @@
+2026-10-22 16:20:24,093Z INFO torch=2.5.1+cpu threads=1
+2026-10-22 16:20:24,094Z INFO Preparing halfcheetah revision=b4ce04da6f246f06ae4c4258b8ab39624e6600b4
+2026-10-22 16:20:24,511Z INFO Prepared halfcheetah sha256=8231919095d5a35a2b799e865e968feca535d5af3f40a4b092947c70a976b7e1 actor=Sequential(
+  (0): Linear(in_features=17, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+)
+2026-10-22 16:20:25,723Z INFO Episode model=halfcheetah seed=40100 alpha=0 deterministic=True length=1000 return=15592.142 terminated=False
+2026-10-22 16:20:25,725Z INFO halfcheetah unsteered rollout seed=40100 steps=1000 seconds=1.213
+2026-10-22 16:20:26,926Z INFO Episode model=halfcheetah seed=40101 alpha=0 deterministic=True length=1000 return=15575.166 terminated=False
+2026-10-22 16:20:26,926Z INFO halfcheetah unsteered rollout seed=40101 steps=1000 seconds=1.201
+2026-10-22 16:20:28,173Z INFO Episode model=halfcheetah seed=40102 alpha=0 deterministic=True length=1000 return=15525.452 terminated=False
+2026-10-22 16:20:28,173Z INFO halfcheetah unsteered rollout seed=40102 steps=1000 seconds=1.247
+2026-10-22 16:20:28,173Z INFO Preparing ant revision=de5978d34b0118341df2b0a30232c5d2bfcb148e
+2026-10-22 16:20:28,303Z INFO Prepared ant sha256=dea0e6dbb847776ac9e91dc8b7df5ba975742924eb55831d2da08a0abc786ca2 actor=Sequential(
+  (0): Linear(in_features=105, out_features=256, bias=True)
+  (1): ReLU()
+  (2): Linear(in_features=256, out_features=256, bias=True)
+  (3): ReLU()
+)
+2026-10-22 16:20:30,034Z INFO Episode model=ant seed=510000 alpha=0 deterministic=True length=1000 return=6177.625 terminated=False
+2026-10-22 16:20:30,041Z INFO ant seed=510000 arm=baseline fields=18 mismatched=[] mean_y_after_onset=0.073219
+2026-10-22 16:20:32,087Z INFO Episode model=ant seed=510000 alpha=-0.1 deterministic=True length=1000 return=6146.010 terminated=False
+2026-10-22 16:20:32,114Z INFO ant seed=510000 arm=lateral__-0.1000 fields=18 mismatched=[] mean_y_after_onset=0.546865

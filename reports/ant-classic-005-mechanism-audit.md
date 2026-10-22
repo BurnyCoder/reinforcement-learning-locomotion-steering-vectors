@@ -56,9 +56,11 @@ The phase `heading_vs_travel` uses the 29 confirmation pairs with post-onset dat
 
 | Per-pair change, degrees | Mean | 95% interval | Pairs > 0 | Sign-flip p |
 | --- | ---: | --- | ---: | ---: |
-| Travel direction | +3.84 | [+3.01, +4.58] | 28/29 | 5×10⁻⁶ |
-| Torso heading (circular mean) | +5.23 | [+4.33, +6.09] | 28/29 | 5×10⁻⁶ |
+| Travel direction | +3.84 | [+3.01, +4.58] | 28/29 | 5×10⁻⁶ (floor) |
+| Torso heading (circular mean) | +5.23 | [+4.33, +6.09] | 28/29 | 5×10⁻⁶ (floor) |
 | Travel relative to torso | **−1.39** | **[−2.03, −0.85]** | 6/29 | 2.5×10⁻⁵ |
+
+"Floor" marks the smallest p attainable with 200,000 Monte Carlo sign flips, 1/200,001: no flip was as extreme, so the exact p is smaller.
 
 About 73% of the torso-heading change appears as path rotation. The rest is a small change in the direction of travel *relative to the body*, toward the side opposite +Y.
 
@@ -83,7 +85,7 @@ The phase `common_mode_even_parts` averages the nine non-shuffled directions wit
 
 What this means:
 - "Almost every perturbation pushes the Ant toward +Y" is not supported at |α| = 0.05 and is marginal at 0.1, on ten post hoc resets.
-- For the selected condition, the sign-independent share of the +0.545 m/s validation effect is 26%, with a ratio interval of [9%, 39%]. "About a quarter" is the point estimate of a poorly determined quantity.
+- For the selected condition, the sign-independent share of the +0.545 m/s validation effect is 26%, with a ratio interval of about [8%, 39%] (the recorded bootstrap seed gives [8.5%, 38.6%]; the lower bound ranges from 6.5% to 8.9% across bootstrap seeds). "About a quarter" is the point estimate of a poorly determined quantity.
 - Confirmation tested only −0.1, so the even part cannot be estimated on fresh resets.
 
 ## 4. Pairing does not reduce variance for world Y, and what that means for the tests
@@ -98,7 +100,7 @@ The phase `arm_correlation` correlates each reset's baseline and treated episode
 
 A shared onset state does not keep the 900 post-onset steps aligned. A perturbation of the closed loop sends the trajectory down a different path, so each episode mean behaves as an independent draw. Common random numbers are guaranteed to reduce variance only when outputs respond monotonically and continuously to the shared inputs ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)). Chaotic contact dynamics give no such guarantee.
 
-For the locked primary, the paired-difference SD is 0.249 m/s. Two independent arms would give √(0.122² + 0.173²) = 0.212. Two consequences follow.
+For the locked primary, over the 29 pairs with post-onset data, the paired-difference SD is 0.249 m/s. Two independent arms would give √(0.122² + 0.173²) = 0.212. With all 30 pairs, the values are 0.256 and 0.237. Two consequences follow.
 
 **What stays valid.** The paired bootstrap resamples whole pairs, so the recorded interval is still a valid interval for the mean effect; it is simply not narrowed by pairing. The rigor audit's reason for comparing controls on shared seeds, "pairing removes reset variability", is wrong for these outcomes. Its other reason still holds: comparing separate intervals for overlap is not a test.
 
@@ -131,7 +133,7 @@ Each is a short qualifying edit that links here. No data, thresholds or statuses
 - **Rotation check.** Writing travel angle as atan2(ΔY, ΔX) showed that the 18.0-vs-17.4 m agreement follows from the definition. The synthetic-sidestep construction turns that algebra into a falsification test the check fails to make. A heading-based estimand was then the natural replacement, because torso yaw is the one measurement that differs between the two mechanisms.
 - **Heading vs travel.** The y-shift audit reported +3.84° travel and +5.23° heading side by side without differencing them. Their per-pair difference is the direct test of "rigid".
 - **Even parts.** Writing the even part as ½(T₊ + T₋) − B showed the common −B term. Averaging within seed, then bootstrapping seeds, is the simplest analysis that propagates it. The alternative, a mixed model with a direction random effect, would add assumptions and code for ten seeds.
-- **Pairing.** The confirmation paired SD (0.256 in the y-shift audit's power section) exceeds the baseline SD (0.122) by more than √2. That prompted the arm correlation, and it also changed which null the sign-flip test addresses.
+- **Pairing.** The confirmation paired SD (0.256 over 30 pairs, as in the y-shift audit's power section) exceeds the baseline SD (0.124 over 30 pairs; 0.122 over 29) by more than √2. That prompted the arm correlation, and it also changed which null the sign-flip test addresses.
 
 **Not done.** No new rollouts. A fresh-seed test would still be needed to settle specificity and the even part, as specified in the [y-shift audit](ant-classic-005-y-shift-audit.md#limitations). It should also report heading-relative travel change and arm correlations.
 

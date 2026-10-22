@@ -1,0 +1,26 @@
+2026-10-22 16:39:13,807Z INFO phase=control_margins
+2026-10-22 16:39:15,203Z INFO margin primary-minus lateral_bias__+0.5000 = 0.2680 ci95=[0.202, 0.331]
+2026-10-22 16:39:15,893Z INFO margin primary-minus lateral_random0__-0.0500 = 0.2469 ci95=[0.169, 0.317]
+2026-10-22 16:39:16,563Z INFO margin primary-minus lateral_random1__-0.1000 = 0.1496 ci95=[0.079, 0.215]
+2026-10-22 16:39:17,277Z INFO margin primary-minus lateral_random2__-0.0500 = 0.2477 ci95=[0.166, 0.327]
+2026-10-22 16:39:18,031Z INFO margin primary-minus lateral_shuffled__-0.2000 = -0.4880 ci95=[-0.58, -0.386]
+2026-10-22 16:39:18,034Z INFO phase=pairing_and_rotation
+2026-10-22 16:39:19,005Z INFO n=30 sd_base=0.124 sd_steered=0.202 sd_diff=0.2560 r=-0.184 base_x=267.6m dY=17.41m rigid_pred=17.98m
+2026-10-22 16:39:19,005Z INFO n=29 sd_base=0.122 sd_steered=0.173 sd_diff=0.2488 r=-0.403 base_x=276.8m dY=18.01m rigid_pred=18.60m
+2026-10-22 16:39:19,011Z INFO phase=fresh_failures
+2026-10-22 16:39:19,496Z INFO fresh baseline failures=0/20 mean_world_y=0.169
+2026-10-22 16:39:20,006Z INFO fresh lateral__-0.1000 failures=2/20 mean_world_y=0.631
+2026-10-22 16:39:20,521Z INFO fresh heading_orthogonal__-0.1000 failures=2/20 mean_world_y=0.179
+2026-10-22 16:39:21,031Z INFO fresh heading_orthogonal__+0.1000 failures=2/20 mean_world_y=0.305
+2026-10-22 16:39:21,525Z INFO fresh heading_orthogonal_renorm__-0.1000 failures=8/20 mean_world_y=0.038
+2026-10-22 16:39:21,970Z INFO fresh heading_orthogonal_renorm__+0.1000 failures=14/20 mean_world_y=0.604
+2026-10-22 16:39:22,491Z INFO fresh perceived_heading__-0.160876rad failures=0/20 mean_world_y=1.072
+2026-10-22 16:39:22,997Z INFO fresh perceived_heading__+0.160876rad failures=0/20 mean_world_y=-0.744
+2026-10-22 16:39:22,997Z INFO phase=max_speedup_004
+2026-10-22 16:39:23,002Z INFO 004 positive speed changes=11 largest=[(0.404, 'speed_bias', -0.035, 0.0679, [0.0448, 0.0876]), (0.289, 'speed_bias', -0.04, 0.0486, [-0.0216, 0.0987]), (0.21, 'speed_random1', 0.03, 0.0353, [0.0298, 0.0411])]
+2026-10-22 16:39:23,002Z INFO phase=reshuffle_null
+2026-10-22 16:39:26,593Z INFO reshuffle ant-classic-005 lateral mean_abs_cos=0.282 draws=300
+2026-10-22 16:39:28,213Z INFO reshuffle ant-classic-005 turning mean_abs_cos=0.243 draws=300
+2026-10-22 16:39:31,632Z INFO reshuffle hc-running-002 speed mean_abs_cos=0.461 draws=300
+2026-10-22 16:39:35,881Z INFO reshuffle hc-running-002 effort mean_abs_cos=0.435 draws=300
+2026-10-22 16:39:37,759Z INFO reshuffle hc-running-002 height mean_abs_cos=0.533 draws=300

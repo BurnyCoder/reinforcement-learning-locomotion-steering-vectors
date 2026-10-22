@@ -10,7 +10,8 @@ https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco
 c-frame quantities use "a global frame centered at the subtree center of mass"
 https://mujoco.readthedocs.io/en/3.1.5/computation/index.html ; cfrc_ext layout is
 rotation:translation https://mujoco.readthedocs.io/en/3.1.5/APIreference/APItypes.html#mjdata ;
-free-joint velocity frames are verified empirically with mj_objectVelocity in tests/test_perception.py.
+free-joint linear velocity is global-frame and angular velocity body-frame
+https://mujoco.readthedocs.io/en/3.1.5/overview.html#floating-objects , also verified with mj_objectVelocity in tests/test_perception.py.
 Quaternion composition: https://en.wikipedia.org/wiki/Quaternion#Hamilton_product
 """
 from __future__ import annotations  # Keep annotations lightweight.

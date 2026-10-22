@@ -2,7 +2,9 @@
 
 Sources: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and
 https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/ describe the layout APIs.
-This deliberately supports only the headings, paragraphs, tables, links and images used here.
+This deliberately supports only the Markdown used here: headings, paragraphs, one-line bullets,
+tables (with escaped pipes), links, images, bold, inline code, explicit page breaks,
+Greek letters via the Symbol font and superscript exponents.
 """
 
 import re  # Local: recognize the paper's limited Markdown; global: avoid another document dependency.
@@ -22,7 +24,7 @@ import logging  # Local: report the actual output; global: make build failures v
 def inline(text: str) -> str:
     """Local: translate used inline markup. Global: preserve prose, units and source attribution."""
     text = text.replace("−", "-").replace("→", " to ").replace("≥", ">=").replace("≤", "<=")  # Local: normalize unsupported font glyphs; global: prevent missing scientific symbols in portable PDF fonts.
-    text = escape(text).replace("≈", "~").replace("∓", "±")  # Local: protect markup characters and map two glyphs missing from Helvetica; global: render literal equations correctly.
+    text = escape(text).replace("≈", "~").replace("∓", "-/+")  # Local: protect markup characters and spell out two glyphs missing from Helvetica (∓ keeps its sign order); global: render literal equations correctly.
     text = re.sub("[αδθω]+", lambda m: f'<font name="Symbol">{m.group()}</font>', text)  # Local: ReportLab 4 encodes these code points into the standard Symbol font; global: show audit notation without embedding fonts.
     text = re.sub("[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+", lambda m: f"<super>{m.group().translate(str.maketrans('⁻⁰¹²³⁴⁵⁶⁷⁸⁹', '-0123456789'))}</super>", text)  # Local: superscript exponents via ReportLab <super>; global: keep scientific notation legible.
     text = re.sub(r"\[([^]]+)\]\((https?://[^)]+)\)", r'<a href="\2" color="#174d78">\1</a>', text)  # Local: retain external citations as active links; global: let readers inspect primary evidence.
@@ -95,7 +97,7 @@ def build(source: Path) -> Path:
             story.append(Paragraph(inline(" ".join(paragraph)), styles["BodyText"]))  # Local: wrap through ReportLab; global: avoid manual line clipping.
         index += 1  # Local: advance after a completed block; global: terminate after the full document.
     target = source.with_suffix(".pdf")  # Local: use the companion filename; global: make both formats easy to locate.
-    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title=next((text[2:] for text in lines if text.startswith("# ")), source.stem), author="RL locomotion steering research")  # Local: reserve printable margins; global: publish consistent document metadata.
+    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title=next((text[2:] for text in lines if text.startswith("# ")), source.stem), author="Libor Burian")  # Local: reserve printable margins; global: publish consistent document metadata with the named author.
     document.build(story, onFirstPage=footer, onLaterPages=footer)  # Local: paginate the full story; global: use the standard library's layout engine.
     logging.info("Rendered paper source=%s output=%s", source, target)  # Local: record actual artifact paths; global: retain a timestamped build trace.
     return target  # Local: expose the created artifact; global: support later automation without guessed paths.
@@ -103,4 +105,4 @@ def build(source: Path) -> Path:
 
 if __name__ == "__main__":  # Local: run only on explicit script invocation; global: allow importing the formatter for focused checks.
     start_logging(Path("tmp/pdfs/paper"))  # Local: reuse complete terminal and timestamped file logs; global: keep artifact generation auditable.
-    build(Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).with_name("paper.md"))  # Local: optional Markdown path; global: reuse the renderer for audit reports.  # Local: build the adjacent source; global: keep the command independent of the shell's path spelling.
+    build(Path(sys.argv[1]) if len(sys.argv) > 1 else Path(__file__).with_name("paper.md"))  # Local: optional Markdown path, defaulting to the adjacent paper.md; global: reuse the renderer for audit reports.

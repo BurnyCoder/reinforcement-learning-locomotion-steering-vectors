@@ -4,7 +4,7 @@ The frozen Ant policy shows a causal change in **world-ground lateral velocity**
 
 The recorded status is `confirmation_failed`: a strict implementation rule rejects any episode ending before intervention. Seed **520025 ends at step 34 in both arms**, before steering begins at step 100. The failure count is **4/30 in both arms**, and all allowed increases in aggregate quality metrics are satisfied. Equal counts do not mean identical failed-seed identities or absence of intervention-induced failures. The shared pre-onset failure itself cannot have been caused by an intervention that had not started.
 
-**Published evidence:** [downloadable vectors and controls](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz), [pinned manifest, selection and numerical results](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005), and the [independent causal/code audit](ant-classic-005-causal-audit.md). The downloaded vector archive was checked against its local SHA256. No extra policy training or behavioral cloning was used.
+**Published evidence:** [downloadable vectors and controls](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz), [pinned manifest, selection and numerical results](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005), and the [within-project causal/code audit](ant-classic-005-causal-audit.md). The downloaded vector archive was checked against its local SHA256. No extra policy training or behavioral cloning was used.
 
 ## Watch the same paired trajectory in three views
 
@@ -26,7 +26,7 @@ The movies and rendering audits are also preserved in the [pinned Hugging Face m
 
 ## Acceptance status and complete records
 
-No thresholds, selection, or data exclusions were changed after confirmation. All thirty pairs remain counted. No replication or application run was performed. The [complete bundle](ant-classic-005/README.md) preserves 88 validation and six confirmation conditions, the fixed selection, vectors, action-bias comparator, and PDF. The [locally dated protocol record](ant-classic-005-preregistration.md) and [fitting inspection](ant-classic-005-diagnostics.md) preserve earlier decisions. Their timestamp limits and later narrative corrections are recorded in the [documentation audit](documentation-audit.md); they are not independent registrations.
+No thresholds, selection, or data exclusions were changed after confirmation. All thirty pairs remain counted. No formal replication (seeds 530000–530029) or application run was performed; a later pre-registered audit on fresh seeds 540000–540019 reproduced the effect (see below). The [complete bundle](ant-classic-005/README.md) preserves 88 validation and six confirmation conditions, the fixed selection, vectors, action-bias comparator, and PDF. The [locally dated protocol record](ant-classic-005-preregistration.md) and [fitting inspection](ant-classic-005-diagnostics.md) preserve earlier decisions. Their timestamp limits and later narrative corrections are recorded in the [documentation audit](documentation-audit.md); they are not independent registrations.
 
 ## Hypothesis, policy, and fitting
 
@@ -57,16 +57,16 @@ The larger passing primary lateral effect at −0.1 was locked for confirmation.
 
 Effect size, interval, forward-speed retention, and the maximum five-percentage-point increases in failure/inversion/contact all pass. The additional requirement that both arms have **zero prefix-only episodes** alone makes `quality_pass` false for the primary. Seed 520025 ends at step 34 identically in baseline, primary, and every selected control, as verified in the [prefix audit](ant-classic-005/prefix-failure-audit.json). Its behavioral summary is zero in both arms under the project convention, while it still counts as a failure. Every pair remains counted; other episode summaries average available post-onset steps. For this shared early pair, retaining zero scales the observed paired effect by 29/30 relative to the other 29 pairs; this is not a generally validated missing-data correction or a fixed-horizon locomotion outcome.
 
-The selected action bias gives **+0.13439 m/s**, below the lateral threshold. Random controls give **+0.15550**, **+0.25282**, and **+0.15472 m/s**; the shuffled control gives **+0.89039 m/s**. None passes the complete gate because every arm includes the shared prefix failure; some also fail size or increase failure. The shuffled control has nine failures versus four at baseline, so its larger effect does not establish equally competent control. The primary's positive effect should be distinguished from both a formal protocol pass and a claim of superiority to all generic directions.
+Each control was confirmed at its own validation-selected strength ([selection](ant-classic-005/selection.json)). The selected action bias (+0.5) gives **+0.13439 m/s**, below the lateral threshold. Random controls 0, 1 and 2 (−0.05, −0.1 and −0.05) give **+0.15550**, **+0.25282**, and **+0.15472 m/s**; the shuffled control, at −0.2 or twice the primary's strength, gives **+0.89039 m/s**. None passes the complete gate because every arm includes the shared prefix failure; some also fail size or increase failure. The shuffled control has nine failures versus four at baseline, so its larger effect does not establish equally competent control. The primary's positive effect should be distinguished from both a formal protocol pass and a claim of superiority to all generic directions.
 
 **Later qualification ([scientific-rigor audit](scientific-rigor-audit.md)).** The audit leaves the recorded status unchanged. It finds that the effect is robust:
-- a sign-flip randomization test gives p = 5×10⁻⁶;
+- a sign-flip randomization test gives p ≈ 5×10⁻⁶, the smallest value attainable with its 200,000 sign flips (none was as extreme);
 - 28 of 30 pairs are positive;
 - post-onset world-Y displacement rises +17.4 m, interval [12.8, 21.7] m, a measure that avoids the prefix-only zero-fill convention.
 
 It also finds that the effect is only partly specific to this vector:
-- On the same seeds, the primary exceeds each isotropic random control by 0.15–0.25 m/s and the action bias by 0.27 m/s.
-- In validation, those random directions produce 35–112% of the primary's sign-dependent lateral response at |α| ≤ 0.1.
+- On the same seeds, the primary exceeds each isotropic random control by 0.15–0.25 m/s and the action bias by 0.27 m/s. Only random 1 ran at the primary's strength (−0.1); it trails by 0.150 m/s [0.079, 0.215]. Random 0 and 2 ran at −0.05, half the offset.
+- In validation, the three lateral-family random directions produce 35–112% of the primary's sign-dependent lateral response at |α| ≤ 0.1. Across all six isotropic draws the range is −13% to 112%, with mixed signs.
 - The shuffled control has cosine +0.60 with the primary, so its larger shift is not label-free evidence.
 - Mean torso heading changes +5.23°.
 
@@ -74,18 +74,18 @@ It also finds that the effect is only partly specific to this vector:
 - **Not label-specific.** The turning vector, fitted on yaw-rate labels and nearly orthogonal to this one (cosine +0.114), moves world Y more at every |α| ≤ 0.2: by +0.19 m/s [+0.14, +0.25] more at |α| = 0.1 in validation.
 - **Weak evidence against isotropic noise.** Among six norm-matched isotropic directions, the primary's sign-dependent response ranks first at |α| = 0.1, but the rank p is only 1/7.
 - **Partly generic.** About a quarter of the selected validation shift is sign-independent. Almost every perturbation pushes the Ant toward +Y.
-- **A rotated path, not a continuing turn.** On average the direction of travel rotates by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a turn nor sidestepping.
+- **A rotated path, not a continuing turn.** On average the direction of travel rotates by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a continuing turn nor sidestepping toward +Y (body-relative travel even drifts slightly toward −Y; see below).
 
 **Second-pass corrections ([mechanism audit](ant-classic-005-mechanism-audit.md)).** The status is again unchanged. The audit confirms the effect over the steps both arms recorded: +0.392 m/s [+0.299, +0.477]. It corrects two statements above and one statistical rationale:
-- **The quarter is uncertain.** The sign-independent share has the interval [9%, 39%]. "Almost every perturbation" rested on one shared baseline. Resampled jointly, the generic drift is not supported at |α| = 0.05 and is marginal at 0.1.
+- **The quarter is uncertain.** The sign-independent share is 26%, with a bootstrap interval of about [8%, 39%]; its lower bound moves between 6.5% and 8.9% across bootstrap seeds. "Almost every perturbation" rested on one shared baseline. Resampled jointly, the generic drift is not supported at |α| = 0.05 and is marginal at 0.1.
 - **The rotation is not rigid.** The torso turns +5.23°, more than the +3.84° path change. Seen from the torso, travel direction shifts −1.39° [−2.03, −0.85]. The displacement-based "rotation check" cannot tell rotation from sidestepping.
-- **Pairing does not narrow the interval.** Arms decorrelate after onset (r = −0.40 for world Y), so pairing does not reduce variance. The recorded interval stays valid, and a studentized sign-flip test also gives p = 5×10⁻⁶.
+- **Pairing does not narrow the interval.** Arms decorrelate after onset (r = −0.40 for world Y), so pairing does not reduce variance. The recorded interval stays valid, and a studentized sign-flip test also reaches its 200,000-flip floor, p ≈ 5×10⁻⁶.
 
 **Independent audit with fresh seeds ([report](ant-classic-005-independent-audit.md), [protocol](ant-classic-005-independent-audit-preregistration.md)).** The status is unchanged. This audit did not use the audits above.
 - **Evidence chain.** It recomputed every saved number from raw episodes, refit the vectors bitwise and re-simulated pairs exactly. It found no implementation, pairing, leakage or reporting error.
-- **Replication.** On 20 fresh resets (540000–540019), lateral −0.1 gives +0.462 m/s [0.343, 0.587], with 19/20 pairs positive. Failures rise from 0/20 to 2/20, which is typical of equal-size random perturbations.
+- **Replication.** On 20 fresh resets (540000–540019), lateral −0.1 gives +0.462 m/s [0.343, 0.587], with 19/20 pairs positive. Failures rise from 0/20 to 2/20, which is typical of equal-size random perturbations and exceeds the five-point quality allowance. These resets are not the formal replication split, and 540000–540009 are the application cohort that `demonstrate` reserves by convention for this run, so a future 005 application needs other seeds.
 - **Specificity.** The vector's sign-dependent response ranks at p = 0.05 among 99 norm-matched random directions. That is exactly the threshold, so this specificity is weak. It is not label-specific: turning is stronger, and 7 of 19 shuffle redraws match it.
-- **Mechanism: perceived heading.** The vector has cosine 0.91 with the first-layer response to a rotated observation. Its heading component reproduces the effect, while the remainder ranks like a random direction. Rotating only the observation by −9.2° moves world Y by +0.90 m/s in 20/20 pairs, with zero failures and a rigidly rotated path. The useful strength is negative because the vector reports a heading rotated toward +Y at positive strength, and the policy corrects it.
+- **Mechanism: perceived heading.** The vector has cosine 0.91 with the first-layer response to a rotated observation. Its heading component reproduces the effect, while the remainder's sign-dependent response ranks like a random direction (p = 0.21); rescaled to the full vector's norm, that remainder fails 8/20 and 14/20 episodes at −0.1 and +0.1, far more than the 2/20 of the unscaled remainder. Rotating only the observation by −9.2° moves world Y by +0.90 m/s in 20/20 pairs, with zero failures and a rigidly rotated path. The useful strength is negative because the vector reports a heading rotated toward +Y at positive strength, and the policy corrects it.
 
 ## Visual evidence and interpretation
 

@@ -4,7 +4,7 @@ Sources: Baukit https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c
 SB3 https://stable-baselines3.readthedocs.io/en/v2.4.1/modules/sac.html;
 MuJoCo https://mujoco.readthedocs.io/en/3.1.5/APIreference/APItypes.html;
 Gymnasium https://github.com/Farama-Foundation/Gymnasium/tree/v1.0.0/gymnasium/envs/mujoco;
-Hub https://huggingface.co/docs/huggingface_hub/v0.26.2/en/package_reference/file_download;
+Hub https://huggingface.co/docs/huggingface_hub/v1.30.0/en/package_reference/file_download;
 video https://imageio.readthedocs.io/en/stable/examples.html.
 """
 

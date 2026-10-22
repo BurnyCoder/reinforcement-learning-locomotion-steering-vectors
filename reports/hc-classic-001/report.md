@@ -1,6 +1,6 @@
 # RL locomotion steering: hc-classic-001
 
-Report generated: 2026-09-07T23:08:33+00:00
+Report generated: 2026-10-22T16:33:40+00:00
 
 ## Outcome
 
@@ -55,6 +55,6 @@ Full exact seed lists, checkpoint metadata and the original specification remain
 CAA method: https://arxiv.org/abs/2312.06681
 Baukit hooks: https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py
 Environment and measurement references: docs/sources.md in the repository.
-Reporting: https://docs.reportlab.com/reportlab/userguide/ and https://matplotlib.org/stable/users/index.html
+Reporting: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and https://matplotlib.org/stable/users/index.html
 
 Full artifacts: [manifest](manifest.json), [results](results.json), [extraction diagnostics](vector_diagnostics.json).
