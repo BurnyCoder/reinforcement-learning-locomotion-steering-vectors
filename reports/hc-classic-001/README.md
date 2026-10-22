@@ -11,4 +11,4 @@ The corresponding local run is `runs/hc-classic-001`. Original fitting trajector
 
 The manifest's `6fb6381` revision was recorded retrospectively: its commit occurred during the logged run, so it does not independently establish invocation-time source identity. See the [diagnostic report](../hc-classic-001-diagnostics.md) and [documentation audit](../documentation-audit.md). PDF/vector bytes match the local run artifacts; generated report Markdown matches after normalizing CRLF/LF line endings. Compacted source JSON preserves all values, not original whitespace bytes.
 
-The PDF was regenerated from saved evidence and both pages were rendered with Poppler and visually inspected. See the [experiment register](../experiments.md) for the follow-up hypothesis.
+The PDF was regenerated from saved evidence and both pages were rendered with Poppler and visually inspected. On 2026-10-22 it was regenerated again, together with `report.md`, to replace a broken ReportLab link in the Sources section. Only that line and the generation timestamp changed ([fact-check](../fact-check-2026-10-22.md)). See the [experiment register](../experiments.md) for the follow-up hypothesis.

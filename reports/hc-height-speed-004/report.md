@@ -1,6 +1,6 @@
 # RL locomotion steering: hc-height-speed-004
 
-Report generated: 2026-09-08T00:07:11+00:00
+Report generated: 2026-10-22T16:34:21+00:00
 
 ## Outcome
 
@@ -148,7 +148,7 @@ Full exact seed lists, checkpoint metadata and the original specification remain
 CAA method: https://arxiv.org/abs/2312.06681
 Baukit hooks: https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py
 Environment and measurement references: docs/sources.md in the repository.
-Reporting: https://docs.reportlab.com/reportlab/userguide/ and https://matplotlib.org/stable/users/index.html
+Reporting: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and https://matplotlib.org/stable/users/index.html
 
 Full artifacts: [manifest](manifest.json), [results](results.json), [extraction diagnostics](vector_diagnostics.json).
 
