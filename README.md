@@ -115,6 +115,30 @@ flowchart TD
 
 The thin pipeline coordinates reusable configuration, checkpoint/rollout, analysis, storage, and reporting modules. The first actor ReLU receives the intervention through the existing [Baukit tracing utility](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py). Ordinary Stable-Baselines3 prediction continues to handle action inference. The intervention is removed after use, and tests check that the original policy function is restored.
 
+## Technologies
+
+Versions are those locked in `uv.lock`; `pyproject.toml` pins the simulation and policy stack exactly.
+
+| Technology | Version | Role in this project |
+| --- | --- | --- |
+| [Python](https://docs.python.org/3.12/) and [uv](https://docs.astral.sh/uv/guides/projects/) | 3.12 | Interpreter, local `.venv`, locked install, and the `locomotion-steering` entry point |
+| [PyTorch](https://docs.pytorch.org/docs/2.5/) and [Torchvision](https://docs.pytorch.org/vision/0.20/) | 2.5.1, 0.20.1 | Actor inference on CPU wheels from the PyTorch CPU index; Torchvision is required because Baukit imports it |
+| [Stable-Baselines3](https://stable-baselines3.readthedocs.io/en/v2.4.1/) and [SB3-Contrib](https://sb3-contrib.readthedocs.io/en/v2.4.0/modules/tqc.html) | 2.4.1, 2.4.0 | Load the Ant SAC and HalfCheetah TQC checkpoints and run ordinary prediction |
+| [cloudpickle](https://github.com/cloudpipe/cloudpickle) | 3.1.0 | Serializer for non-JSON objects in [SB3 checkpoints](https://github.com/DLR-RM/stable-baselines3/blob/v2.4.1/stable_baselines3/common/save_util.py) |
+| [Gymnasium](https://gymnasium.farama.org/v1.0.0/environments/mujoco/) and [MuJoCo](https://mujoco.readthedocs.io/en/3.1.5/python.html) | 1.0.0, 3.1.5 | `HalfCheetah-v5` and `Ant-v5` simulation, simulator-state hashing, and video rendering |
+| [Baukit](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py) | Git commit `9d51abd` | `Trace` forward hook that adds a vector to the first actor ReLU and is removed afterwards |
+| [Hugging Face Hub](https://huggingface.co/docs/huggingface_hub/v1.30.0/en/package_reference/file_download) | 1.30.0 | Revision-pinned checkpoint download with `hf_hub_download`; the Hub also hosts the published vectors |
+| [NumPy](https://numpy.org/doc/1.26/) | 1.26.4 | Arrays, compressed NPZ artifacts, seeded random draws, and the paired bootstrap |
+| [SciPy](https://docs.scipy.org/doc/scipy-1.14.1/reference/stats.html) | 1.14.1 | Bootstrap intervals, sign-flip permutation tests, and Wilcoxon tests in the audits |
+| [Matplotlib](https://matplotlib.org/stable/) | 3.11.1 | Strength-response and trajectory plots |
+| [ReportLab](https://docs.reportlab.com/) | 4.5.1 | Run-report and paper PDFs |
+| [ImageIO](https://imageio.readthedocs.io/en/stable/) with [imageio-ffmpeg](https://github.com/imageio/imageio-ffmpeg), and [Pillow](https://pillow.readthedocs.io/en/stable/) | 2.37.4, 0.6.0, 12.3.0 | H.264 MP4 encoding and frame labels for replay and demonstration videos; Pillow arrives as a transitive dependency |
+| [python-dotenv](https://github.com/theskumar/python-dotenv) | 1.2.3 | `.env` configuration |
+| [pytest](https://docs.pytest.org/en/stable/) | 8.4.2 | Test suite, in the `dev` dependency group |
+| Python standard library: [`logging`](https://docs.python.org/3.12/library/logging.html), [`concurrent.futures`](https://docs.python.org/3.12/library/concurrent.futures.html), [`hashlib`](https://docs.python.org/3.12/library/hashlib.html) | 3.12 | Timestamped logs, spawned rollout workers, and artifact and source hashes |
+
+[Sources and reuse decisions](docs/sources.md) explain why each library was chosen and how this project adapts it.
+
 ## Reproduce and inspect
 
 | Artifact | Purpose |
