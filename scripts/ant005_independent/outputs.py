@@ -81,7 +81,7 @@ def _scatter_figure(fresh: dict) -> str:
 
 
 def _timecourse_figure(saved: dict, fresh: dict) -> str:
-    """Local: per-window torso-yaw change with 95% CIs. Global: bounded heading offset versus continuing turn."""
+    """Local: per-window torso-yaw change with 95% CIs. Global: describe finite recorded horizons without claiming long-run boundedness."""
     series = (("confirmation, lateral −0.1", saved["kinematics_confirmation"], BLUE, "-"), ("fresh, lateral −0.1", fresh["K1"]["primary_minus"], BLUE, "--"),
               ("fresh, perceived rotation −δ", fresh["K1"]["perception_minus_delta"], AQUA, "-"))  # Series.
     figure, axes = plt.subplots(1, 2, figsize=(8.4, 3.4), dpi=160)  # Two separate scales, two panels.

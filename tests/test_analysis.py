@@ -117,6 +117,16 @@ def test_paired_effect_rejects_unpaired_inputs(change):
         paired_effect(baseline, treated, "speed")  # Refuse to silently discard mismatched episodes.
 
 
+def test_mean_speed_gate_does_not_require_a_persistent_change():
+    """A brief change can pass the historical mean gate; the gate is not a duration test."""
+    baseline = [episode(seed, [2] * 9) for seed in range(3)]
+    treated = [episode(seed, [3] + [2] * 8) for seed in range(3)]
+    result = paired_effect(baseline, treated, "speed")
+    assert result["gate"]
+    assert result["effect"] == pytest.approx(1 / 9)
+    np.testing.assert_array_equal(baseline[0]["x_velocity"][200:], treated[0]["x_velocity"][200:])
+
+
 def test_quality_gate_rejects_contact_increase_and_counts_failures():
     """Local: retain failure episodes. Global: disruptive speed changes are not useful control."""
     baseline = [summary(i) for i in range(30)]  # Clean locomotion is the quality reference.

@@ -60,7 +60,7 @@ These historical summaries use steps both arms recorded. They have their own eli
 
 {{kinematics_table}}
 
-The path and torso acquire a bounded heading offset under the tested conditions. That supports heading involvement, not a universal statement about rigid gait rotation or a body-relative sideways command.
+The recorded path and torso headings change over the observed horizons. These finite trajectories and their fitted window trends do not establish that the offset remains bounded at longer horizons or that turning has ceased. They support heading involvement without identifying a unique mechanism, rigid gait rotation, or a body-relative sideways command. The [kinematics follow-up](fact-check-2026-10-29/kinematics-follow-up.md) documents angle and trend conventions and their boundary-case corrections.
 
 ## Learnings, failure history and limits
 

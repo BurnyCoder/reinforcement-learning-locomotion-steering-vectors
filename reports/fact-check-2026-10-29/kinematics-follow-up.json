@@ -1,0 +1,36 @@
+{
+  "absolute_tolerance": 1e-10,
+  "cohorts": [
+    {
+      "cohort": "original confirmation",
+      "maximum_absolute_difference": 0.0,
+      "mean_fields_checked": 24,
+      "pairs_checked": 30,
+      "retained_pairs": 27
+    },
+    {
+      "cohort": "primary_minus",
+      "maximum_absolute_difference": 0.0,
+      "mean_fields_checked": 24,
+      "pairs_checked": 20,
+      "retained_pairs": 20
+    },
+    {
+      "cohort": "heading_parallel_minus",
+      "maximum_absolute_difference": 0.0,
+      "mean_fields_checked": 24,
+      "pairs_checked": 20,
+      "retained_pairs": 20
+    },
+    {
+      "cohort": "perception_minus_delta",
+      "maximum_absolute_difference": 0.0,
+      "mean_fields_checked": 24,
+      "pairs_checked": 20,
+      "retained_pairs": 20
+    }
+  ],
+  "comparison": "Current numerical helper versus saved published means and denominators",
+  "date": "2026-10-29",
+  "model_execution": false
+}

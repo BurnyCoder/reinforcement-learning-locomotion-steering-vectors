@@ -51,6 +51,8 @@ def build(root, destination, value, source_record):
     """Reuse renderers while keeping all inputs outside the generated-output list."""
     from scripts.build_ant_publication import generate as ant
     outputs = render_experiments(root, destination)
+    from scripts.check_kinematics_followup import generate as kinematics_followup
+    outputs.extend(kinematics_followup(root, destination))
     inputs=validate_inputs(root,root/'reports/ant-publication/inputs.json',restore=False)
     outputs.extend(ant(root,inputs,destination))
     value['publication'] = publication(root, destination)
