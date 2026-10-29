@@ -1,0 +1,13 @@
+{
+  "created_utc": "2026-10-29T00:24:49.953762+00:00",
+  "scope": "Independent standard-library size/SHA256 check of every locally registered original input; no publication validation function, simulator or model imported",
+  "command": "PowerShell Python here-string piped to .venv/Scripts/python.exe -; complete code recorded in this chat tool call",
+  "git_head": "fc8cf6337e92fbbe0fba9746671e0afd55b8149c",
+  "manifest_sha256": "07b735f1ea4e8e92c31f2d5315d192bee4e505ef0aa5a4aff4c81769ddd18f86",
+  "hub_revision": "b262002001df6af2fd87dce82cc385f6b132e184",
+  "files_checked": 6595,
+  "episode_npz_files": 6200,
+  "bytes_checked": 1754665906,
+  "mismatches": [],
+  "passed": true
+}
