@@ -4,7 +4,10 @@ Sources: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and
 https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/ describe the layout APIs.
 This deliberately supports only the Markdown used here: headings, paragraphs, one-line bullets,
 tables (with escaped pipes), links, images, bold, inline code, explicit page breaks,
-Greek letters via the Symbol font and superscript exponents.
+Greek letters via the Symbol font and superscript exponents. Other HTML comments
+are generation bookkeeping and are omitted. ReportLab's invariant Canvas mode
+fixes PDF dates/identifiers so the same source and assets produce identical bytes:
+https://docs.reportlab.com/reportlab/userguide/ch2_graphics/ .
 """
 
 import re  # Local: recognize the paper's limited Markdown; global: avoid another document dependency.
@@ -52,7 +55,8 @@ def build(source: Path) -> Path:
     styles["Heading1"].keepWithNext = styles["Heading2"].keepWithNext = True  # Local: keep headings with their content; global: avoid stranded labels.
     styles.add(ParagraphStyle("Cell", parent=styles["BodyText"], fontSize=8, leading=10.5, spaceAfter=0))  # Local: wrap table cells; global: avoid clipped measurements.
     styles.add(ParagraphStyle("Item", parent=styles["BodyText"], leftIndent=12, bulletIndent=3, spaceAfter=3))  # Local: indent list items (https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/); global: keep audit lists readable.
-    lines, story, index = source.read_text(encoding="utf-8").splitlines(), [], 0  # Local: read the only prose source; global: keep Markdown and PDF synchronized.
+    markdown = re.sub(r"<!--.*?-->", lambda match: match.group() if match.group() == "<!-- pagebreak -->" else "", source.read_text(encoding="utf-8"), flags=re.DOTALL)  # Local: omit single/multiline generator comments but retain explicit page breaks; global: publish prose without template bookkeeping.
+    lines, story, index = markdown.splitlines(), [], 0  # Local: parse the cleaned prose source; global: keep Markdown findings and PDF synchronized.
     width = A4[0] - 88  # Local: calculate the frame width; global: align text, figures and tables.
     while index < len(lines):  # Local: process every line once; global: do not omit trailing references.
         line = lines[index].strip()  # Local: recognize block syntax; global: tolerate harmless source indentation.
@@ -97,7 +101,7 @@ def build(source: Path) -> Path:
             story.append(Paragraph(inline(" ".join(paragraph)), styles["BodyText"]))  # Local: wrap through ReportLab; global: avoid manual line clipping.
         index += 1  # Local: advance after a completed block; global: terminate after the full document.
     target = source.with_suffix(".pdf")  # Local: use the companion filename; global: make both formats easy to locate.
-    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title=next((text[2:] for text in lines if text.startswith("# ")), source.stem), author="Libor Burian")  # Local: reserve printable margins; global: publish consistent document metadata with the named author.
+    document = SimpleDocTemplate(str(target), pagesize=A4, leftMargin=44, rightMargin=44, topMargin=40, bottomMargin=42, title=next((text[2:] for text in lines if text.startswith("# ")), source.stem), author="Libor “Burny” Burian", invariant=1)  # Local: SimpleDocTemplate forwards invariant=1 to Canvas; global: fix PDF metadata/IDs for byte comparisons and preserve requested author attribution.
     document.build(story, onFirstPage=footer, onLaterPages=footer)  # Local: paginate the full story; global: use the standard library's layout engine.
     logging.info("Rendered paper source=%s output=%s", source, target)  # Local: record actual artifact paths; global: retain a timestamped build trace.
     return target  # Local: expose the created artifact; global: support later automation without guessed paths.
