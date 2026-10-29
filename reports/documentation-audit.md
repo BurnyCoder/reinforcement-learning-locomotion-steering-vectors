@@ -133,3 +133,28 @@ The substantive review covered calculation independence, pairing and aggregation
 This revision corrects descriptions of the existing research. It does not relax acceptance criteria, remove failed pairs, reinterpret validation controls as confirmed discoveries, or consume new confirmation seeds. Original outcome files remain available in Git/Hugging Face history and unchanged in the local runs. The next scientific step is outside this audit; any new hypothesis requires its own protocol and fresh evaluation evidence.
 
 Evidence that was never recorded cannot be recovered by confident prose. The unresolved limits above remain explicit after publication. Sources are attached to claims where they can support them; interpretations are labeled as interpretations instead of being made to look established by an unrelated citation.
+
+## README restructure verification — 2026-10-29
+
+The [concise README revision](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/commit/f58173562a6db548218903c63863688b50b4e89f) moves advanced workflows into [usage documentation](../docs/usage.md), places historical visuals immediately after the overview, and generates separate confirmation and audit tables. Explicit HTML markers isolate the README result template from surrounding prose and the Hugging Face template. The paper, model card, figures, explorer data, original inputs and failed outcome statuses remain unchanged. The media verifier now derives its expected embedded-player count from the README at the same pinned revision as the rendered page, while still checking every original movie attachment.
+
+The following commands were executed for this revision; linked logs contain their observed output rather than copied numerical summaries:
+
+| Executed check | Recorded evidence |
+| --- | --- |
+| `uv run --locked --no-sync pytest -q` | [Complete suite log](readme-restructure/20261029T012634Z-tests.log): passed. Focused renderer and media-verifier tests were added before their helpers, failed on the missing behavior, then passed after implementation; their results are also covered by this full run. |
+| `uv run --locked --no-sync python scripts/build_ant_publication.py` | [Build log](readme-restructure/20261029T012340Z-build.log): verified saved input hashes and regenerated outputs without scientific collection. |
+| `uv run --locked --no-sync python scripts/build_ant_publication.py --check` | [Repeat-build log](readme-restructure/20261029T012756Z-check.log): every generated output matched. The rebuilt PDFs are byte-identical; their earlier visual review was not independently repeated in this README-only change. |
+| `uv run --locked --no-sync python reports/readme-restructure/check_links.py` | [Link receipt](readme-restructure/20261029T013012Z-links.json): local targets, Markdown fragments and image headers passed; README external links returned successful HEAD responses. Source/script hashes and checking limits are recorded. |
+| `uv run --locked --no-sync locomotion-steering --help` and source inspection of CLI arguments | Existing subcommands and documented options agree. No simulator `run`, `replay`, `retarget` or `demonstrate` command was executed for this change. |
+| `git diff --check` and inspection of the changed-file list | Passed; immutable scientific evidence, dependency pins and generated publications other than the README are unchanged. |
+
+The [media receipt](readme-restructure/media.json) and [terminal output](readme-restructure/20261029T013233Z-media.log) record the pinned README identity, its rendered/source player-count agreement and public movie headers. This was a media-only check, not a rerun of the complete Hugging Face preservation audit. Its essential invocation was:
+
+```powershell
+uv run --locked --no-sync python -c "import json; from scripts.verify_documentation_publication import verify_media; print(json.dumps(verify_media('f58173562a6db548218903c63863688b50b4e89f'), indent=2))"
+```
+
+Visual inspection used GitHub's actual branch rendering in the Codex browser. The earlier browser connection failed to discover its backend; the available computer-use browser interface succeeded. Screenshots record the [overview/trajectory figure](readme-restructure/readme-overview.png), [loaded video](readme-restructure/readme-video.png), [confirmation table](readme-restructure/readme-confirmation.png), [audit table](readme-restructure/readme-audit.png) and its [horizontally scrolled cost/failure columns](readme-restructure/readme-audit-costs.png), [evaluation rewards](readme-restructure/readme-rewards.png), and Mermaid's [input stages](readme-restructure/readme-architecture.png) and [outcomes](readme-restructure/readme-architecture-outcomes.png). Narrow-panel tables use GitHub's horizontal scrolling. This checks presentation and media availability, not fresh locomotion efficacy or complete movie replay identity.
+
+One substantive review found and corrected a trajectory caption that confused validation with confirmation, and a missing seed-guidance anchor. It also checked cohort separation, interval-method labels, all named negative ablations, the opposite-sign remainder interpretation, generator isolation, safe media failures and test coverage. No new policy training, experiment, selection, or acceptance criterion is introduced. The measured dependency stack remains the committed lockfile; the prior preregistration and upstream-license limitations remain explicit.
