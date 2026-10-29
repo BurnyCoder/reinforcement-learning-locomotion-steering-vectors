@@ -38,13 +38,14 @@ OPERATIONAL_RECEIPT = "reports/ant-publication/publication-verification.json"
 def document_files(root: Path = ROOT) -> list[tuple[Path, str]]:
     """Use named sources only; matching-looking drafts and weights never enter staging."""
     files = [("docs/huggingface-model-card.md", "README.md")]
-    files.extend((f"reports/{name}", f"paper/{name}") for name in ("paper.md", "paper.pdf", "build_paper.py"))
+    files.extend((f"reports/{name}", f"paper/{name}") for name in ("paper.md", "paper.pdf", "build_paper.py", "paper_build.md"))
     reports = (
         "ant-classic-005-causal-audit.md", "ant-classic-005-diagnostics.md",
         "ant-classic-005-findings.md", "ant-classic-005-independent-audit-preregistration.md",
         "ant-classic-005-independent-audit.md", "ant-classic-005-independent-audit.pdf",
         "ant-classic-005-mechanism-audit.md", "ant-classic-005-preregistration.md",
         "ant-classic-005-y-shift-audit.md", "experiments.md", "ant-publication-completion.md",
+        "fact-check-2026-10-22.md",
     )
     files.extend((f"reports/{name}", f"documentation/experiments/{name}") for name in reports)
     files.extend((f"docs/{name}", f"documentation/{name}") for name in ("methodology.md", "sources.md", "ant-publication.md"))
