@@ -1,0 +1,15 @@
+## 4. HalfCheetah: negative results and informative controls
+
+The first attempt stopped with `{{hc001_status}}`. Its fitting-only inspection found sensitivity to recovery windows and unwrapped posture history; no validation or confirmation effect was measured. A later speed-floor proposal was informed by those observations, so it is an adaptive design choice rather than independent confirmation of the original hypothesis [E1].
+
+Run 002 retained {{hc002_eligible}}/{{hc002_total}} fitting windows, with {{hc002_slow}} additional windows removed by its speed floor. Its {{hc002_validation}} validation settings produced {{hc002_primary_pass}} primary gate passes and {{hc002_control_pass}} control passes; the outcome is `{{hc002_status}}`. The height contrast also correlates with speed in fitting data, so its extraction label does not establish a speed-independent internal concept. Episode-level physical-failure classification was revised during exploratory validation; both the earlier pooled-quality estimates and the final analysis remain saved [E2].
+
+Run 003 reused the exact 002 height family as a proposed speed intervention. Its {{hc003_validation}} fresh validation comparisons yielded {{hc003_primary_pass}} primary passes and {{hc003_control_pass}} control passes, with `{{hc003_status}}`. Run 004 then tested a finer grid: {{hc004_primary_pass}} primary strengths passed among {{hc004_validation}} total validation comparisons. The frozen primary choice was strength {{hc004_alpha}}. This reuse is a new evaluation of an already extracted direction, not another independent fitting study [E3, E4].
+
+On {{hc004_n}} confirmation pairs, the locked primary changes forward speed by **{{hc004_effect}} m/s**, paired percentile 95% interval **{{hc004_ci}}**. Failures change from {{hc004_baseline_failures}} to {{hc004_failures}}. The outcome remains **`{{hc004_status}}`**; alternative validation strengths were not substituted after observing confirmation. Every selected primary/control arm is shown below [E4].
+
+{{hc004_table}}
+
+The shuffled and random controls demonstrate that passing a pilot gate is not unique to the extracted primary. A pass can permit failures under the registered difference threshold. Across {{hc_evaluations}} HalfCheetah evaluation settings, the maximum forward-speed increase was {{hc_max_speed_increase}}%. Predominantly sign-independent slowdowns do not establish bidirectional speed control, near-optimality or a unique degradation mechanism. No primary completed successful confirmation and replication; no application is established. [Full original conditions and extraction](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/verification.json) · [all-experiment register](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/experiments.md).
+
+<!-- pagebreak -->
