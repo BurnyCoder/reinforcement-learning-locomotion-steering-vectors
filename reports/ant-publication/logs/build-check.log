@@ -1,0 +1,7 @@
+2026-10-29 00:26:45,707Z INFO Verified 6595 exact input files
+2026-10-29 00:26:52,774Z INFO Assembled validation: 89 conditions, 10 seeds
+2026-10-29 00:26:54,282Z INFO Assembled confirmation: 7 conditions, 30 seeds
+2026-10-29 00:27:32,154Z INFO Assembled fresh_audit: 251 conditions, 20 seeds
+2026-10-29 00:27:36,989Z INFO Rendered paper source=C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\tmp\ant-publication\check-_6ij686l\reports\paper.md output=C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\tmp\ant-publication\check-_6ij686l\reports\paper.pdf
+2026-10-29 00:27:37,292Z INFO Rendered paper source=C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\tmp\ant-publication\check-_6ij686l\reports\ant-classic-005-independent-audit.md output=C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\tmp\ant-publication\check-_6ij686l\reports\ant-classic-005-independent-audit.pdf
+2026-10-29 00:27:38,276Z INFO All 365 publication outputs match their saved-data regeneration

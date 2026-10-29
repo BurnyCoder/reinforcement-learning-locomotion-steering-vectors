@@ -1,0 +1,37 @@
+Executed in the repository root using the existing locked Python environment:
+
+@'
+import hashlib
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+import subprocess
+
+root = Path.cwd().resolve()
+manifest_path = root / 'reports/ant-publication/inputs.json'
+manifest_bytes = manifest_path.read_bytes()
+manifest = json.loads(manifest_bytes)
+seen, mismatches = set(), []
+total_bytes = 0
+for record in manifest['files']:
+    path = (root / record['local_path']).resolve()
+    if not path.is_relative_to(root) or path in seen:
+        raise RuntimeError('Duplicate or out-of-project input: ' + record['local_path'])
+    seen.add(path)
+    if not path.is_file():
+        mismatches.append({'path': record['local_path'], 'problem': 'missing'})
+        continue
+    with path.open('rb') as source:
+        observed = hashlib.file_digest(source, 'sha256').hexdigest()
+    size = path.stat().st_size
+    total_bytes += size
+    if size != record['size'] or observed != record['sha256']:
+        mismatches.append({'path': record['local_path'], 'expected_sha256': record['sha256'], 'observed_sha256': observed, 'expected_bytes': record['size'], 'observed_bytes': size})
+if manifest_path.read_bytes() != manifest_bytes:
+    raise RuntimeError('Input manifest changed during verification')
+receipt = {'created_utc': datetime.now(timezone.utc).isoformat(), 'scope': 'Independent standard-library size/SHA256 check of every locally registered original input; no publication validation function, simulator or model imported', 'command': 'PowerShell Python here-string piped to .venv/Scripts/python.exe -; complete code recorded in this chat tool call', 'git_head': subprocess.check_output(['git', 'rev-parse', 'HEAD'], text=True).strip(), 'manifest_sha256': hashlib.sha256(manifest_bytes).hexdigest(), 'hub_revision': manifest['revision'], 'files_checked': len(seen), 'episode_npz_files': sum('/episodes/' in r['local_path'] and r['local_path'].endswith('.npz') for r in manifest['files']), 'bytes_checked': total_bytes, 'mismatches': mismatches, 'passed': not mismatches}
+(root / 'reports/ant-publication/local-input-verification.json').write_text(json.dumps(receipt, indent=2) + '\n', encoding='utf-8')
+print(json.dumps(receipt, indent=2))
+if mismatches:
+    raise SystemExit(1)
+'@ | .venv/Scripts/python.exe -

@@ -1,5 +1,7 @@
 # Building the research paper
 
+Current Ant publication and both affected PDFs are rebuilt with `uv run --locked --no-sync python scripts/build_ant_publication.py`; use `--check` to verify saved-data regeneration. See [the publication workflow](../docs/ant-publication.md) and [verification record](ant-publication/verification.md). The instructions and edition notes below describe the standalone renderer and historical builds; the current saved-data workflow also regenerates numerical prose, tables, figures and explorer inputs.
+
 `paper.md` is the single prose source. From the repository root, after the normal `uv sync` setup, run:
 
 ```powershell
