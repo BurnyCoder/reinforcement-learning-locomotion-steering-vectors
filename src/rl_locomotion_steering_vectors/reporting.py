@@ -178,7 +178,7 @@ def _write_markdown(path, title, timestamp, sections, images):
         lines.extend(["## Validation strength response", ""])  # Local: identify the chart split; global: keep plotted calibration distinct from held-out evidence.
     for behavior, image in images:  # Local: reference actual generated files; global: make the report portable with its run directory.
         lines.extend([f"![Validation strength response for {behavior}]({image.name})", ""])  # Local: embed a relative artifact link; global: keep a copied run self-contained.
-    path.write_text("\n".join(lines), encoding="utf-8")  # Local: save UTF-8 text; global: retain complete measured content without truncation.
+    path.write_text("\n".join(lines), encoding="utf-8", newline="\n")  # Match committed LF bytes on Windows and Unix for reproducible saved-data checks.
 
 
 def _write_pdf(path, title, timestamp, sections, images):
@@ -200,7 +200,7 @@ def _write_pdf(path, title, timestamp, sections, images):
             story.extend([Spacer(1, 6), table, Spacer(1, 8)])  # Local: space table boundaries; global: separate evidence from surrounding prose.
     for behavior, image in images:  # Local: append the exact exported figures; global: maintain identical plotted data across formats.
         story.extend([Paragraph(escape(f"Validation strength response: {behavior}"), styles["Heading2"]), Image(str(image), width=490, height=252)])  # Local: preserve the figure aspect ratio; global: avoid distorted curves.
-    document = SimpleDocTemplate(str(path), pagesize=A4, rightMargin=40, leftMargin=40, topMargin=38, bottomMargin=40, title=title, author="RL locomotion steering research")  # Local: reserve consistent page margins; global: create portable metadata.
+    document = SimpleDocTemplate(str(path), pagesize=A4, rightMargin=40, leftMargin=40, topMargin=38, bottomMargin=40, title=title, author="Libor “Burny” Burian")  # Keep PDF author metadata consistent with the paper's named author.
     document.build(story, onFirstPage=_page_number, onLaterPages=_page_number)  # Local: delegate pagination to Platypus; global: render all rows without manual page clipping.
 
 
@@ -212,14 +212,16 @@ def _page_number(canvas, document):
     canvas.restoreState()  # Local: restore drawing settings; global: keep footer behavior independent.
 
 
-def write_report(run_dir: Path) -> Path:
+def write_report(run_dir: Path, *, timestamp: str | None = None, notice: str | None = None) -> Path:
     """Local: render one saved run. Global: expose the reporting phase to the orchestration CLI."""
     run_dir = Path(run_dir)  # Local: normalize caller path input; global: keep a single public interface.
     manifest = json.loads((run_dir / "manifest.json").read_text(encoding="utf-8"))  # Local: read exact run provenance; global: fail visibly if required evidence is absent.
     results = json.loads((run_dir / "results.json").read_text(encoding="utf-8"))  # Local: read saved analysis; global: never silently generate substitute results.
     sections = _sections(manifest, results)  # Local: compose shared evidence; global: synchronize both output formats.
+    if notice:
+        sections.insert(0, ("Interpretation erratum", notice, None))
     images = _strength_plots(run_dir, results.get("validation", []))  # Local: plot measured validation only; global: avoid held-out selection leakage.
-    timestamp = datetime.now(timezone.utc).isoformat(timespec="seconds")  # Local: capture rendering time; global: make repeated report exports identifiable.
+    timestamp = timestamp or datetime.now(timezone.utc).isoformat(timespec="seconds")  # Explicit dates allow deterministic saved-data publication; ordinary run exports retain their render time.
     title = f"RL locomotion steering: {run_dir.name}"  # Local: name the run; global: distinguish experiment artifacts.
     _write_markdown(run_dir / "report.md", title, timestamp, sections, images)  # Local: save reviewable text; global: retain a reproducible companion artifact.
     _write_pdf(run_dir / "report.pdf", title, timestamp, sections, images)  # Local: save the shareable report; global: use the same evidence as Markdown.

@@ -1,5 +1,7 @@
 # Validation inspection: speed vector at alpha −0.05
 
+**Historical observation record:** The [2026-10-29 check](fact-check-2026-10-29/report.md) preserves this inspection and the superseded pooled-quality estimates. It independently checks final episode-level failures, but does not replay the policy or independently revalidate the contact-debugging assertions below.
+
 **Historical exploratory validation inspection, recorded 2026-09-08 local time (Europe/Berlin). This inspection itself did not change vectors, selection or analysis.** It describes the superseded 74-condition analysis. A subsequent, explicitly recorded correction during validation changed the derived episode-failure measurement before selection or confirmation; see the [old/new comparison audit](hc-running-002/quality-analysis-audit.json) and [documentation audit](documentation-audit.md).
 
 The recorded aggregate slowdown is real, but the mean contact fraction conceals one severe physical failure. Nine of ten validation episodes sustain slower forward running without recorded head/torso contact. The remaining episode rotates and then stalls on its head for the final 20 simulated seconds. This condition should not be described as uniformly competent locomotion merely because it passes the existing pilot gate.

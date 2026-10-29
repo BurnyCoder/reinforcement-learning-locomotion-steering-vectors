@@ -2,7 +2,9 @@
 
 Sources: NumPy unwrap https://numpy.org/doc/1.26/reference/generated/numpy.unwrap.html ;
 arctan2 https://numpy.org/doc/1.26/reference/generated/numpy.arctan2.html ;
-yaw extraction reuses runtime.quaternion_yaw (scalar-first ZYX yaw).
+yaw extraction reuses runtime.quaternion_yaw (scalar-first ZYX yaw). Saved observations
+are action inputs; each heading is paired with the ensuing transition's displacement
+velocity. This discrete-time convention is not an instantaneous post-step body velocity.
 """
 from __future__ import annotations  # Keep annotations lightweight.
 

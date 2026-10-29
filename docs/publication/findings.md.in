@@ -16,7 +16,7 @@ The implementation adapts [contrastive activation addition](https://arxiv.org/ab
 
 {{cohort_table}}
 
-The original run evaluated {{n_validation}} validation conditions and selected the lateral strength {{alpha}} before confirmation. {{n_confirmation}} conditions were confirmed; each comparator retained its own validation-selected strength. The fitting data determine vectors, validation determines strength, and confirmation estimates the locked outcomes. The later audit has separate provenance and must not be pooled with confirmation or described as the unused formal replication split.
+The original run evaluated {{n_validation}} validation conditions and selected the lateral strength {{alpha}} before confirmation. {{n_confirmation}} conditions were evaluated in confirmation; each comparator retained its own validation-selected strength. The fitting data determine vectors, validation determines strength, and confirmation estimates the locked outcomes. The later audit has separate provenance and must not be pooled with confirmation or described as the unused formal replication split.
 
 ## Original confirmation results
 
@@ -34,7 +34,9 @@ The status is **`{{status}}`**. Every pair is retained. An episode ending before
 
 ## Later audit and mechanism limits
 
-The separately preregistered audit contains {{audit_episodes}} episodes across {{audit_conditions}} arms on {{fresh_n}} resets. It reproduces **{{fresh_effect}} m/s {{fresh_ci}}**, with {{fresh_positive}} positive pairs, while treatment failures increase from {{fresh_baseline_failures}} to {{fresh_failures}}. The rank p-value against {{random_n}} isotropic directions is {{random_p}}; against {{shuffle_n}} shuffled-label redraws it is {{shuffle_p}}. The turning-label direction is stronger. These findings do not establish lateral-label specificity.
+The separately preregistered audit contains {{audit_episodes}} episodes across {{audit_conditions}} arms on {{fresh_n}} resets. It reproduces **{{fresh_effect}} m/s {{fresh_ci}}**, with {{fresh_positive}} positive pairs, while treatment failures increase from {{fresh_baseline_failures}} to {{fresh_failures}}. The comparison rank against {{random_n}} isotropic directions is {{random_p}}; against {{shuffle_n}} shuffled-label redraws it is {{shuffle_p}}. The turning-label direction is stronger. These findings do not establish lateral-label specificity.
+
+{{rank_qualification}}
 
 Projection ablations and the observation intervention support a heading-related account. At a negative observation rotation of {{perception_angle}} degrees, the measured world-Y effect is {{perception_effect}} m/s {{perception_ci}}. That intervention changes observation channels only, while the simulator state remains unedited. Because contact channels were already clipped before rotation, it computes `clip(R clip(f))`, not generally `clip(R f)`. Quaternion and world linear-velocity rotations do not fix that loss of force magnitude. Exact physical-state equivalence and unique heading mediation remain unestablished.
 

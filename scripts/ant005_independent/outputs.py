@@ -56,7 +56,7 @@ def _rank_figure(fresh: dict) -> str:
 
 
 def _scatter_figure(fresh: dict) -> str:
-    """Local: odd versus even parts. Global: separate steering from sign-independent drift."""
+    """Plot sign dependence versus sign independence without assigning semantic mechanisms."""
     table = fresh["directions"]  # Per-direction parts.
     figure, axis = plt.subplots(figsize=(5.6, 4.2), dpi=160)  # One panel.
     groups = (("random", "o", MUTED, "random"), ("shuffled", "^", INK, "label-shuffle redraw"))  # Context groups.

@@ -41,7 +41,7 @@ class Fresh:
         return np.array([self.rows[condition][s][key] - self.rows["baseline"][s][key] for s in FRESH_SEEDS])  # Seed order fixed.
 
     def parts(self, name: str) -> tuple[np.ndarray, np.ndarray]:
-        """Local: per-seed odd and even parts of one direction. Global: separate steering from generic disruption."""
+        """Measure sign dependence and independence; this algebra does not identify their mechanism."""
         return odd_even(self.diff(condition_name(name, -ALPHA)), self.diff(condition_name(name, ALPHA)))  # (odd, even) per seed.
 
     def failures(self, condition: str) -> int:

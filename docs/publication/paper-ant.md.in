@@ -28,7 +28,9 @@ The later preregistered audit contains {{audit_episodes}} episodes across {{audi
 
 {{hypothesis_table}}
 
-The rank comparison uses {{random_n}} isotropic directions at matched norm. Its p = {{random_p}} sits at the decision threshold. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity. P1's Monte Carlo estimate is {{fresh_p}}, at the procedure's floor; it is not an upper confidence bound on the exact p-value. Original decisions are retained [E9].
+The rank comparison uses {{random_n}} isotropic directions at matched norm and gives {{random_p}}. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity. P1's Monte Carlo estimate is {{fresh_p}}, at the procedure's floor; it is not an upper confidence bound on the exact p-value. Exact sign-flip calibration requires symmetry under sign changes, not merely zero mean. Original decisions are retained [E9].
+
+{{rank_qualification}}
 
 ![Ablation and observation-comparator effects, separate audit cohort.](ant-publication/figures/ablations.png)
 

@@ -1,0 +1,452 @@
+{
+  "date": "2026-10-29",
+  "completed_utc": "2026-10-29T05:17:03.316873+00:00",
+  "status": "local_validation_complete",
+  "no_models_executed": true,
+  "checks": [
+    {
+      "command": "python -m pytest tests/test_saved_claims.py tests/test_analysis.py tests/test_storage.py tests/test_ant_publication.py tests/test_ant_publication_documents.py tests/test_ant_document_publication.py tests/test_publication_audit.py tests/test_build_paper.py tests/test_ant_site.py -q",
+      "interpreter": ".venv/Scripts/python.exe",
+      "exit_code": 0,
+      "log_sha256": "6c68608b3c66ecbecaa4023e1db15ed992d844470192cfb581810920430af783",
+      "output": "........................................................................ [ 71%]\n.............................                                            [100%]\n101 passed in 24.85s\n"
+    },
+    {
+      "command": "python scripts/build_publication.py --check",
+      "interpreter": ".venv/Scripts/python.exe",
+      "exit_code": 0,
+      "log_sha256": "f851816b58c409efd221f1f10f6b63c7c0f68f81e032ba23f222af291ba72462",
+      "output": "2026-10-29 05:12:26,740Z INFO Verified 9611 immutable files\n2026-10-29 05:12:38,487Z INFO Checked hc-running-002 validation: 120 conditions\n2026-10-29 05:12:42,221Z INFO Checked hc-height-speed-003 validation: 40 conditions\n2026-10-29 05:12:48,509Z INFO Checked hc-height-speed-004 validation: 72 conditions\n2026-10-29 05:12:49,773Z INFO Checked hc-height-speed-004 confirmation: 6 conditions\n2026-10-29 05:13:01,379Z INFO Checked ant-classic-005 validation: 88 conditions\n2026-10-29 05:13:03,741Z INFO Checked ant-classic-005 confirmation: 6 conditions\n2026-10-29 05:13:53,990Z INFO Checked audit: 250 arms, 124 directions, 20 resets\n2026-10-29 05:13:58,353Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-classic-001\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-classic-001\\report.pdf\n2026-10-29 05:13:59,876Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-running-002\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-running-002\\report.pdf\n2026-10-29 05:14:00,372Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-height-speed-003\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-height-speed-003\\report.pdf\n2026-10-29 05:14:00,957Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-height-speed-004\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\hc-height-speed-004\\report.pdf\n2026-10-29 05:14:01,834Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\ant-classic-005\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\ant-classic-005\\report.pdf\n2026-10-29 05:14:19,921Z INFO Verified 6595 exact input files\n2026-10-29 05:14:26,629Z INFO Assembled validation: 89 conditions, 10 seeds\n2026-10-29 05:14:28,079Z INFO Assembled confirmation: 7 conditions, 30 seeds\n2026-10-29 05:15:08,936Z INFO Assembled fresh_audit: 251 conditions, 20 seeds\n2026-10-29 05:15:12,840Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\paper.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\paper.pdf\n2026-10-29 05:15:13,093Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\ant-classic-005-independent-audit.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\ant-classic-005-independent-audit.pdf\n2026-10-29 05:16:28,443Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\fact-check-2026-10-29\\report.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-qo53rdgt\\reports\\fact-check-2026-10-29\\report.pdf\n2026-10-29 05:16:29,273Z INFO Verified 387 deterministic publication outputs\n"
+    },
+    {
+      "command": "python scripts/audit_saved_claims.py --check",
+      "interpreter": ".venv/Scripts/python.exe",
+      "exit_code": 0,
+      "log_sha256": "c7e1cb9664d99be9f1a27edafc64d231b7041edb58750dd84c84cc1c9794052b",
+      "output": "2026-10-29 05:06:22,920Z INFO Verified 9611 immutable files\n2026-10-29 05:06:32,067Z INFO Checked hc-running-002 validation: 120 conditions\n2026-10-29 05:06:34,710Z INFO Checked hc-height-speed-003 validation: 40 conditions\n2026-10-29 05:06:39,103Z INFO Checked hc-height-speed-004 validation: 72 conditions\n2026-10-29 05:06:40,232Z INFO Checked hc-height-speed-004 confirmation: 6 conditions\n2026-10-29 05:06:48,201Z INFO Checked ant-classic-005 validation: 88 conditions\n2026-10-29 05:06:49,783Z INFO Checked ant-classic-005 confirmation: 6 conditions\n2026-10-29 05:07:31,093Z INFO Checked audit: 250 arms, 124 directions, 20 resets\n2026-10-29 05:08:42,703Z INFO Independent comparisons complete: 0 discrepancies; details in C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\fact-check-2026-10-29\\verification.json\n"
+    },
+    {
+      "command": "python scripts/build_ant_publication.py --check",
+      "interpreter": ".venv/Scripts/python.exe",
+      "exit_code": 0,
+      "log_sha256": "6e24f2d23487833e0a844f07f438004d307c06ee3a6bf5f0fe1df90e9edb77d2",
+      "output": "2026-10-29 05:06:33,408Z INFO Verified 6595 exact input files\n2026-10-29 05:06:40,213Z INFO Assembled validation: 89 conditions, 10 seeds\n2026-10-29 05:06:41,701Z INFO Assembled confirmation: 7 conditions, 30 seeds\n2026-10-29 05:07:17,615Z INFO Assembled fresh_audit: 251 conditions, 20 seeds\n2026-10-29 05:07:22,501Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\ant-publication\\check-omnqhp06\\reports\\paper.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\ant-publication\\check-omnqhp06\\reports\\paper.pdf\n2026-10-29 05:07:22,764Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\ant-publication\\check-omnqhp06\\reports\\ant-classic-005-independent-audit.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\ant-publication\\check-omnqhp06\\reports\\ant-classic-005-independent-audit.pdf\n2026-10-29 05:07:29,035Z INFO All 365 publication outputs match their saved-data regeneration\n"
+    },
+    {
+      "command": "python -m pytest tests/test_saved_claims.py -q",
+      "interpreter": ".venv/Scripts/python.exe",
+      "exit_code": 0,
+      "log_sha256": "340fd06040384a248df03470a72f2b9131716555491056e5454d47b878a4af80",
+      "output": "..........                                                               [100%]\n10 passed in 7.84s\n"
+    }
+  ],
+  "static_checks": [
+    {
+      "command": "python scripts/check_ant_site.py",
+      "exit_code": 0,
+      "conditions": 347,
+      "trajectory_pairs": 6120
+    },
+    {
+      "command": "node --check site/app.js",
+      "exit_code": 0
+    },
+    {
+      "command": "local Markdown destination check",
+      "links": 477,
+      "missing": []
+    },
+    {
+      "command": "git diff --check",
+      "exit_code": 0
+    }
+  ],
+  "browser": {
+    "date": "2026-10-29",
+    "url": "http://127.0.0.1:8765/",
+    "observations": [
+      {
+        "cohort": "validation",
+        "vector": "lateral",
+        "condition": "lateral__-0.5000",
+        "effect": "+0.289m/s",
+        "failure": "9 / 10"
+      },
+      {
+        "cohort": "validation",
+        "vector": "lateral",
+        "condition": "lateral__+0.5000",
+        "effect": "-0.132m/s",
+        "failure": "0 / 10"
+      },
+      {
+        "cohort": "validation",
+        "vector": "lateral_bias",
+        "condition": "lateral_bias__-0.5000",
+        "effect": "+0.007m/s",
+        "failure": "0 / 10"
+      },
+      {
+        "cohort": "validation",
+        "vector": "lateral_bias",
+        "condition": "lateral_bias__+0.5000",
+        "effect": "+0.142m/s",
+        "failure": "0 / 10"
+      },
+      {
+        "cohort": "confirmation",
+        "vector": "lateral",
+        "condition": "lateral__-0.1000",
+        "effect": "+0.402m/s",
+        "failure": "4 / 30"
+      },
+      {
+        "cohort": "confirmation",
+        "vector": "lateral",
+        "condition": "lateral__-0.1000",
+        "effect": "+0.402m/s",
+        "failure": "4 / 30"
+      },
+      {
+        "cohort": "confirmation",
+        "vector": "lateral_shuffled",
+        "condition": "lateral_shuffled__-0.2000",
+        "effect": "+0.890m/s",
+        "failure": "9 / 30"
+      },
+      {
+        "cohort": "confirmation",
+        "vector": "lateral_shuffled",
+        "condition": "lateral_shuffled__-0.2000",
+        "effect": "+0.890m/s",
+        "failure": "9 / 30"
+      },
+      {
+        "cohort": "fresh_audit",
+        "vector": "lateral",
+        "condition": "lateral__-0.1000",
+        "effect": "+0.462m/s",
+        "failure": "2 / 20"
+      },
+      {
+        "cohort": "fresh_audit",
+        "vector": "lateral",
+        "condition": "lateral__+0.1000",
+        "effect": "-0.331m/s",
+        "failure": "2 / 20"
+      },
+      {
+        "cohort": "fresh_audit",
+        "vector": "perceived_heading",
+        "condition": "perceived_heading__-0.160876rad",
+        "effect": "+0.903m/s",
+        "failure": "0 / 20"
+      },
+      {
+        "cohort": "fresh_audit",
+        "vector": "perceived_heading",
+        "condition": "perceived_heading__+0.160876rad",
+        "effect": "-0.913m/s",
+        "failure": "0 / 20"
+      }
+    ],
+    "prefix_only_example": "Seed 520025 · Baseline: 34 recorded transitions, ended before intervention, failed. Selected: 34 recorded transitions, ended before intervention, failed.",
+    "missing_data_error": "The evidence could not be loaded: Failed to fetch Serve this directory over HTTP or open the published GitHub Pages site. The source reports remain available below.",
+    "page_errors": [],
+    "mobile_overflow": false
+  },
+  "pdf_review": [
+    {
+      "pdf": "reports/ant-classic-005/report.pdf",
+      "pages": 6,
+      "sha256": "0a367a039a8aa453a90e127d864953012b4595da621c94772b6020f678caea02",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/ant-classic-005-independent-audit.pdf",
+      "pages": 5,
+      "sha256": "6976126d4b8023302511355a0ca2723c23de59c3a6ca58e32a6fcab1072d768e",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/fact-check-2026-10-29/report.pdf",
+      "pages": 3,
+      "sha256": "5e8ae1185856036c114751a8098caf1e8b2ccdee77a36a8526f1d5645fc050cf",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/hc-classic-001/report.pdf",
+      "pages": 2,
+      "sha256": "bb72cad146be475ac1bd84a235a3a284997c35f12af1201075402d87348ee2bb",
+      "visually_reviewed_pages": [
+        1,
+        2
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/hc-height-speed-003/report.pdf",
+      "pages": 4,
+      "sha256": "b636f412a99bb77bf4b2c7e117204dfbff948e5eb3abfbe241bb5f323c26e42f",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/hc-height-speed-004/report.pdf",
+      "pages": 5,
+      "sha256": "bb2d9cdd0fe16f45a0dc99fcf45c41dd024f8997e0c58faab6ca97bdccdc7312",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/hc-running-002/report.pdf",
+      "pages": 7,
+      "sha256": "f083a7e2290f36b1dc839923beeb1528b45c9a271aa1565b0cf94c6aa0fd573c",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    },
+    {
+      "pdf": "reports/paper.pdf",
+      "pages": 11,
+      "sha256": "06cd01fb8faf5cee1e7e9c567e01321d866dc5a0d5a7d10213093f319bd6cf18",
+      "visually_reviewed_pages": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11
+      ],
+      "result": "No clipping, overlaps, missing tables or erroneous figure scales found in rendered page review."
+    }
+  ],
+  "pdf_pages_reviewed": 43,
+  "figures": [
+    {
+      "path": "reports/ant-classic-005/strength_response_1.png",
+      "sha256": "8f4c0a5f0dd294d1b3646dcd0520f821e6d7fc63521e983af350e4de94481500",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-classic-005/strength_response_2.png",
+      "sha256": "2ca91c9293e92b91b40c87efe7a38bdca25b0496e6d1603423b6ea62704723c3",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-classic-005-independent-audit/fresh-odd-even.png",
+      "sha256": "5e7392ba25c799dca99c3d4127cd1d42a8b6f1129ce2fc9bd48cc309241bb2a1",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-classic-005-independent-audit/fresh-odd-rank.png",
+      "sha256": "e96eef1bc5423213e6f1f62a74845fb2a72f62081c095995ce7a11dff998fa9c",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-classic-005-independent-audit/timecourse.png",
+      "sha256": "da1d301a9e5ccdc715cbddf29b553becdf0fd37764937a95e45384781910208f",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/explorer-live-failure.png",
+      "sha256": "bdf693e1382f49d21c3ea49e4a1cfa7d2e99044fd930e523467abcbbe8efa062",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/explorer-live.png",
+      "sha256": "75af0bc5c02fa18182b8995a5b6715cdb0ee69c9adb648407da3fd2243534921",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/explorer-mobile.png",
+      "sha256": "2a65cbcd2ad21b42ea3d6470b42ed75865232f329f2cc6f8ec4c0be64cf3de5d",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/ablations.png",
+      "sha256": "7203ddbebaf7bcd0b97b9fab62b0e449dcfd2588acf1bad712a533456ec29806",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/architecture.png",
+      "sha256": "3b610c787f9a9f9cd19c7a8bee7bb93c93817d1205c2c10293a9ddb4de7168d4",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/confirmation.png",
+      "sha256": "5b43ddec9a317f32810c4a1271661b6fd251a65e5365d3a91e79bae712a12258",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/reward.png",
+      "sha256": "570502c45091eb42afe523366275bcb44071bb8ef39e3ca57ea5962aa161cb73",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/specificity.png",
+      "sha256": "b0d9bd53218e2fcf70dd6531af3320c58b9a34d4ea2a50785aafbd4e6d10bbb8",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/strength-response.png",
+      "sha256": "131e1589968e85561181a73b3d5f791b916affd88906f5bbaee2facf6098108f",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/ant-publication/figures/trajectories.png",
+      "sha256": "80cefc22951d17462c138c0c0c30d6533026ae531f1fc8cc51ef2a3089a8a5d9",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/hc-height-speed-003/strength_response_1.png",
+      "sha256": "22a38754880b9aaa2705566bb74181601d80ed19c02ced323a0eb715394c3e33",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/hc-height-speed-004/strength_response_1.png",
+      "sha256": "2f560b9d093338b3656f12ffcc0197d0d52f2d3b6c9b0a049683ce658a85eff9",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/hc-running-002/strength_response_1.png",
+      "sha256": "08a45e0e6a0e7de536a54282c1a67eb29d84f9a446acfed4b7d0459364f76b7d",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/hc-running-002/strength_response_2.png",
+      "sha256": "236fb70036797292db0af20c5a18985e202c073fde466a234ffec50a53402c6b",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/hc-running-002/strength_response_3.png",
+      "sha256": "175e1ea0cd804fbea684876efe102a57369aa9ed385b79e809a4fa5250b646ea",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/paper_assets/ant-lateral-validation.png",
+      "sha256": "8f4c0a5f0dd294d1b3646dcd0520f821e6d7fc63521e983af350e4de94481500",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/paper_assets/ant-topdown-validation.png",
+      "sha256": "2db53073120480e2d97876d47e6dce15668f7f347c49c90c5ffe7100f4f2bfeb",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-architecture-outcomes.png",
+      "sha256": "e3e632e5a97718bed9cb7f156f2071157b57c5c1aa3b28eb4a0526b4d1934b74",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-architecture.png",
+      "sha256": "e29315790cbcd76f133dc493a5da152042e8024d675d32a962ead3dd2600401f",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-audit-costs.png",
+      "sha256": "41ca34c63b15f3172296b9a062fdf0badee24870446adbe84d008259cc287068",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-audit.png",
+      "sha256": "d9a2f6def7de09ef06b3532b5b8b869a0520f352cf3b492abc2c50138e295258",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-confirmation.png",
+      "sha256": "8f64d2be8b9a5eeda127709b698afd02fcb7301b415b5a7c90f2bd19efb0b7e2",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-overview.png",
+      "sha256": "c5de7944372e960e2c5a076103698b118ac3f8b77cc37ca46ec9976bd26a5793",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-rewards.png",
+      "sha256": "0e9aa129297964bd5d551cc7a4a9d8412c129194762a552fa31a568df1c4180a",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    },
+    {
+      "path": "reports/readme-restructure/readme-video.png",
+      "sha256": "61dc1a72aca579941dc8955e06048400120e17a07853e171dd95ae7bb2200171",
+      "disposition": "Visual review; current plots checked against saved-data reconstruction, archived screenshots retain historical wording qualified in report.md."
+    }
+  ],
+  "media": {
+    "receipt": "media.json",
+    "sha256": "b6c851ab1bd74fab88496a0b53ad956500893b34ab48b6c2eade48dfe371bbd2",
+    "movies": 27,
+    "saved_replay_comparisons": 12,
+    "scope": "Metadata and existing NPZ comparison only. No frame playback, policy execution or simulator replay. Array equality does not independently bind every movie frame to a state."
+  },
+  "substantive_review": {
+    "scope": "Independent estimators, raw-input preservation, paired membership, extraction, provenance, statistical assumptions, publishing allowlist, report generation, browser and media boundaries.",
+    "findings": [
+      "Interpretation corrections and historical errata are recorded in report.md.",
+      "Fixed LF Markdown output and template normalization for deterministic Git checkouts.",
+      "Fixed temporary report builds omitting the extraction-diagnostics link by staging that evidence file; regression compares every experiment output.",
+      "No credentials found in changed text by credential-pattern scan; .env is untracked."
+    ]
+  },
+  "failure_history": [
+    "Initial targeted tests failed while new reference modules and stricter measurement checks were being implemented; regression cases pass.",
+    "An early screened run had 98 passes and one stale-paper assertion; regeneration resolved it.",
+    "New HalfCheetah paper-generation tests initially lacked saved-result fixtures; fixtures now include the required evidence.",
+    "The LF newline regression first failed on Windows, then passed after explicit LF serialization.",
+    "A renderer attempt encountered OSError 22 writing an existing findings file; immediate unchanged-byte write and subsequent builds succeeded; cause not established.",
+    "The first complete deterministic check found five Markdown differences: temporary builds omitted vector_diagnostics.json and therefore omitted its link. Staging was corrected and the complete check rerun.",
+    "Poppler emitted unavailable display-font mapping warnings; all rendered pages were inspected and no missing glyphs were observed."
+  ],
+  "limitations": [
+    "No policies, inference, gradients, training, simulator episodes or new video replays.",
+    "E1 fitted regression, power analyses, studentized sign-flip calculations and neural response-axis derivation remain unresolved as independent reproductions.",
+    "Frame-to-state movie correspondence is attributed to preserved receipts and saved-array equality, not independently established for every frame.",
+    "Historical screenshots and plots are preserved; corrected interpretations are in report.md.",
+    "Publication upload/deployment verification is recorded separately after the source PR is merged."
+  ]
+}

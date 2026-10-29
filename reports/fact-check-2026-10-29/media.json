@@ -1,0 +1,929 @@
+{
+  "date": "2026-10-29",
+  "scope": "Metadata and existing NPZ comparison only. No frame playback, policy execution or simulator replay. Array equality does not independently bind every movie frame to a state.",
+  "movies": [
+    {
+      "path": "runs/ant-classic-005/videos/fixed-camera/lateral__-0.1000/seed-510000-baseline-topdown.mp4",
+      "sha256": "43389c885e90792b4617039f5ddfa0bc94cdc581c65b76c7883ca0a64fdeb09b",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 552,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "370964"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/fixed-camera/lateral__-0.1000/seed-510000-preliminary-fixed-camera-paired.mp4",
+      "sha256": "98a3ff00b917d4a9c2a09e0fc48e7518d362b3279d9a3f73c448f112ab4981ea",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 588,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "794115"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/fixed-camera/lateral__-0.1000/seed-510000-steered-topdown.mp4",
+      "sha256": "e63bee9a2d0b7857856573d8536f184a328e4b3018aef758fc76fa494f4f742c",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 552,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "377068"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_+0.0000_seed510000_offNone.mp4",
+      "sha256": "19d5c244a3d4c38d302b07ee1709301ea1d40f13b8fbcbbb63f4580899a2b373",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1455877"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_+0.0000_seed510001_offNone.mp4",
+      "sha256": "1119268f6fd45c9a907ce6b4074caeb722838b668f98ba0f6f9b7359e94d6529",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1425995"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_+0.0000_seed510002_offNone.mp4",
+      "sha256": "92e5db836f9ea8cc3047d49a8e28404427ac3fb781f665563a3d3aad26abeae5",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1411408"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_-0.1000_seed510000_offNone.mp4",
+      "sha256": "4f66ff5ea332e73320407c795be756aa46afca14d6565f46c66f5a60b2043d4d",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1472704"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_-0.1000_seed510001_offNone.mp4",
+      "sha256": "fbbf1d7ee02eecea8aefcd7e53fab24cbcd0d3508decf4cbcf650df78b418a92",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1422595"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/lateral_-0.1000_seed510002_offNone.mp4",
+      "sha256": "5d66cf078788610c28cc33953d5f67d6589ac1c77dc8c0339a982f01fc8d2013",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1438145"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510000-baseline.mp4",
+      "sha256": "19d5c244a3d4c38d302b07ee1709301ea1d40f13b8fbcbbb63f4580899a2b373",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1455877"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510000-comparison.mp4",
+      "sha256": "12a1616e0bdfbf05cab4bbcbb2d9a24a762b481af7dc2d43320d205d56a7bc44",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 516,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3070319"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510000-preliminary-paired.mp4",
+      "sha256": "d294855dace3adf181169fbafd31d2133f1326e1fff624f2c934a48aad85cebe",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 568,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3067281"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510000-steered.mp4",
+      "sha256": "4f66ff5ea332e73320407c795be756aa46afca14d6565f46c66f5a60b2043d4d",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1472704"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510001-baseline.mp4",
+      "sha256": "1119268f6fd45c9a907ce6b4074caeb722838b668f98ba0f6f9b7359e94d6529",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1425995"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510001-comparison.mp4",
+      "sha256": "a9b9366d91c38e1530390e045c08984ae377b3a9b7e9bc87bd4f213381fc5ba6",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 516,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "2976235"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510001-preliminary-paired.mp4",
+      "sha256": "ae18036a8b2b7772ade76b908f2ea4d562bdf41550cbdc9f28e2db7c6965c31f",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 568,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "2963902"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510001-steered.mp4",
+      "sha256": "fbbf1d7ee02eecea8aefcd7e53fab24cbcd0d3508decf4cbcf650df78b418a92",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1422595"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510002-baseline.mp4",
+      "sha256": "92e5db836f9ea8cc3047d49a8e28404427ac3fb781f665563a3d3aad26abeae5",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1411408"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510002-comparison.mp4",
+      "sha256": "6e2ce842162234b0137ea8a6eb553c5912de7ef12ff8bcd30336568d6e9a05c8",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 516,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "2993045"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510002-preliminary-paired.mp4",
+      "sha256": "446d19a914e9b30e3650e7e28ac0634ef8353b1a5c884ef409f9f5b692004133",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 568,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "2980757"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/preliminary/seed-510002-steered.mp4",
+      "sha256": "5d66cf078788610c28cc33953d5f67d6589ac1c77dc8c0339a982f01fc8d2013",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 480,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "1438145"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-baseline-topdown.mp4",
+      "sha256": "26ca0ae9445c0a43c5aee04344bd0034f7bbefccc535e2b5730efea59ff46e58",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 528,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3721115"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-preliminary-topdown-paired.mp4",
+      "sha256": "eca57e337328945765dd74ad14289ec60e815c361eac62362202378fb96f1d95",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 564,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "7593129"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-steered-topdown.mp4",
+      "sha256": "be0d1a25fda59e28bbea6bf50f656b9a72aa8670332fff0259e8f9cc977e1a6b",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 528,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3716031"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/seed-510000-baseline-topdown.mp4",
+      "sha256": "26ca0ae9445c0a43c5aee04344bd0034f7bbefccc535e2b5730efea59ff46e58",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 528,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3721115"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/seed-510000-preliminary-topdown-paired.mp4",
+      "sha256": "eca57e337328945765dd74ad14289ec60e815c361eac62362202378fb96f1d95",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 960,
+            "height": 564,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "7593129"
+        }
+      }
+    },
+    {
+      "path": "runs/ant-classic-005/videos/topdown/seed-510000-steered-topdown.mp4",
+      "sha256": "be0d1a25fda59e28bbea6bf50f656b9a72aa8670332fff0259e8f9cc977e1a6b",
+      "metadata": {
+        "programs": [],
+        "stream_groups": [],
+        "streams": [
+          {
+            "index": 0,
+            "codec_name": "h264",
+            "codec_type": "video",
+            "width": 480,
+            "height": 528,
+            "avg_frame_rate": "20/1",
+            "nb_frames": "1001"
+          }
+        ],
+        "format": {
+          "duration": "50.050000",
+          "size": "3716031"
+        }
+      }
+    }
+  ],
+  "replay_arrays": [
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_+0.0000_seed510000_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510000.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_+0.0000_seed510001_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510001.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_+0.0000_seed510002_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510002.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_-0.1000_seed510000_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510000.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_-0.1000_seed510001_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510001.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/lateral_-0.1000_seed510002_offNone.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510002.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510000-baseline.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510000.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510000-steered.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510000.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510001-baseline.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510001.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510001-steered.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510001.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510002-baseline.npz",
+      "source": "runs/ant-classic-005/episodes/validation/baseline/510002.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    },
+    {
+      "replay_npz": "runs/ant-classic-005/videos/preliminary/seed-510002-steered.npz",
+      "source": "runs/ant-classic-005/episodes/validation/lateral__-0.1000/510002.npz",
+      "fields": [
+        "actions",
+        "bad_contact",
+        "dt",
+        "effort",
+        "height",
+        "inversion",
+        "length",
+        "observations",
+        "onset_hash",
+        "planar_speed",
+        "reward",
+        "saturation",
+        "seed",
+        "terminated",
+        "truncated",
+        "x_velocity",
+        "y_velocity",
+        "yaw_rate"
+      ],
+      "unequal": []
+    }
+  ]
+}

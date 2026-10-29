@@ -10,6 +10,10 @@ The new seed registry records both reservations and consumption. It prevents a n
 
 The [completion ledger](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/ant-publication.md) records checks, failures, retries, receipts, and requirements that remain historically unmet or inapplicable. The [interactive explorer]({{site}}) exposes positive, null and failed conditions from the same evidence.
 
+## Independent saved-data verification, 2026-10-29
+
+The [new claim ledger and correction report](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/report.md) independently recomputes saved extraction, paired effects, gates, selection and later audit statistics without model execution. It qualifies ensemble ranks, optimality arguments, historical runtime checks and kinematic timing. Original observations and selections remain unchanged. E1 fitted-regression claims, neural response-axis derivation and media replay correspondence are historical evidence, not independently revalidated model behavior. Use `scripts/build_publication.py` for the complete saved-data rebuild.
+
 ## AI statement
 
 Codex wrote this codebase and paper from the exact specification provided by a human. Human cleanup and rewriting are in progress. The named human author is Libor “Burny” Burian.

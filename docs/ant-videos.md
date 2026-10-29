@@ -1,5 +1,7 @@
 # Reproduce the Ant steering vector and videos
 
+**Current verification boundary:** The [2026-10-29 fact-check](../reports/fact-check-2026-10-29/report.md) inspects existing movie metadata and correspondence receipts only. All replay and checkpoint-use commands below execute models and were deliberately not run in that audit. Saved receipts document earlier correspondence checks; this is not independent frame/state revalidation.
+
 The [featured experiment](../reports/ant-classic-005-findings.md) uses the frozen upstream Ant SAC checkpoint and the saved `lateral` array at **alpha = −0.1**, applied after step 100 at `actor.latent_pi[1]`. The array has 256 float32 components and already includes the documented activation-RMS scaling. Do not normalize it again. The direction's name describes its extraction label; the observed positive world-Y response occurs at the negative strength. The [independent audit](../reports/ant-classic-005-independent-audit.md) supports heading involvement through component ablations and a specified observation transformation. Because that transformation rotates and reclips already-clipped contact wrenches, it does not establish exact physical-heading equivalence or a unique semantic mediator.
 
 ## Download and use the published vector

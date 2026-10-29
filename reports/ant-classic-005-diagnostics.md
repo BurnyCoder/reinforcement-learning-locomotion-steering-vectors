@@ -1,5 +1,7 @@
 # Ant 005: fitting contrast inspection
 
+**Verification boundary, 2026-10-29:** The [new audit](fact-check-2026-10-29/report.md) reconstructs original extraction and controls from saved activations. This historical inspection is not authority for unique semantic naming or runtime correctness. Its other recorded diagnostic statements remain attributed to the linked artifacts.
+
 **Historical fitting-only inspection.** The [original narrative snapshot](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf6337e92fbbe0fba9746671e0afd55b8149c/reports/ant-classic-005-diagnostics.md) and fitting artifacts remain available. The [current generated findings](ant-classic-005-findings.md) supersede this inspection's prospective recommendation with the observed validation, confirmation and audit outcomes. Use [saved-evidence publication](../docs/methodology.md#saved-evidence-publication) to regenerate the current publication without simulation. Fitting associations below are not causal or semantic evidence by themselves; later heading-related interventions retain the documented clipped-wrench qualification.
 
 Inspected 2026-09-08 UTC, before this inspection accessed any validation data. Scope: the 16 saved stochastic diagnostic episodes (500000–500015), 64 saved stochastic fitting episodes (501000–501063), and existing extraction metadata. Numerical detail is preserved in `artifacts/runtime-smoke/ant-classic-005-fitting-inspection.json`. No rollouts were rerun and no vectors, thresholds, or selections were changed.

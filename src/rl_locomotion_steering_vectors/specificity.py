@@ -1,6 +1,7 @@
-"""Local: statistics and direction builders for steering specificity. Global: compare one vector against many nulls.
+"""Statistics and direction builders for comparing one vector with reference ensembles.
 
-Sources: rank p-value (1 + #{null >= observed}) / (k + 1), Phipson & Smyth (2010)
+Sources: comparison rank (1 + #{controls >= observed}) / (k + 1), Phipson & Smyth (2010).
+Interpreting the rank as a p-value additionally requires a justified exchangeability null.
 https://doi.org/10.2202/1544-6115.1585 ; Holm (1979) https://www.jstor.org/stable/4615733 ;
 SciPy 1.14 bootstrap, permutation_test (one sample flips signs) and wilcoxon
 https://docs.scipy.org/doc/scipy-1.14.1/reference/stats.html ; NumPy SeedSequence
@@ -13,13 +14,17 @@ from scipy import stats  # Maintained bootstrap, randomization and signed-rank i
 
 
 def odd_even(minus, plus) -> tuple[np.ndarray, np.ndarray]:
-    """Local: split ±alpha effects. Global: odd = sign-dependent steering, even = sign-independent disruption."""
+    """Split sign-dependent and sign-independent responses; neither identifies semantics or disruption by itself."""
     minus, plus = np.asarray(minus, dtype=float), np.asarray(plus, dtype=float)  # Accept scalars or arrays.
     return (plus - minus) / 2, (plus + minus) / 2  # plus = even + odd, minus = even − odd.
 
 
 def rank_p_value(observed: float, null) -> float:
-    """Local: Monte Carlo rank p-value. Global: test a statistic against exchangeable null draws."""
+    """Compute a Monte Carlo comparison rank; p-value calibration additionally requires exchangeability.
+
+    Matching direction norms alone does not make a label-derived primary exchangeable
+    with isotropic directions. The recorded rank remains useful descriptively.
+    """
     null = np.asarray(null, dtype=float)  # Null statistics, larger means more extreme.
     if null.size == 0:
         raise ValueError("null draws are required")  # Nothing to rank against.
@@ -27,7 +32,7 @@ def rank_p_value(observed: float, null) -> float:
 
 
 def holm(pvalues) -> np.ndarray:
-    """Local: Holm step-down adjustment. Global: control family-wise error across the primary tests."""
+    """Apply Holm's arithmetic; family-wise guarantees require valid input p-values."""
     p = np.asarray(pvalues, dtype=float)  # Unadjusted values.
     order = np.argsort(p)  # Smallest first.
     adjusted = np.maximum.accumulate((len(p) - np.arange(len(p))) * p[order])  # (m − i) p_(i), made monotone.
@@ -44,7 +49,7 @@ def random_directions(count: int, dimension: int, norm: float, seed: int) -> np.
 
 
 def decompose(vector, axis) -> tuple[np.ndarray, np.ndarray]:
-    """Local: project onto one axis. Global: split a steering vector into a mechanism component and the rest."""
+    """Project onto an operational axis; projection alone does not establish a causal mediator."""
     vector, axis = np.asarray(vector, dtype=np.float64), np.asarray(axis, dtype=np.float64)  # Exact float64 algebra.
     unit = axis / np.linalg.norm(axis)  # Unit mechanism axis.
     parallel = (vector @ unit) * unit  # Component along the axis.
