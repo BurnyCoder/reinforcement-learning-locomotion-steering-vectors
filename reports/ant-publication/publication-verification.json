@@ -1,0 +1,159 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-29T00:48:54.363165+00:00",
+  "scope": "Existing Ant evidence publication; no scientific rollouts/training/retuning",
+  "git_commit_when_recorded": "22c812a9d86db043bf03773b5827c06bf2178512",
+  "core_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/18",
+  "verification_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/19",
+  "core_merge_commit": "4c7c19f98c67bc49d3001d1739a7cc1bd56197bd",
+  "tests": {
+    "command": "uv run --locked --no-sync pytest -q",
+    "passed": 190,
+    "log": "logs/tests-release.log"
+  },
+  "build": {
+    "command": "uv run --locked --no-sync python scripts/build_ant_publication.py",
+    "log": "logs/build-integrated.log",
+    "check_log": "logs/build-check-final.log"
+  },
+  "inputs": {
+    "receipt": "input-upload-verification.json",
+    "remote_path_receipt": "remote-path-verification.json",
+    "revision": "b262002001df6af2fd87dce82cc385f6b132e184",
+    "all_hashes_match": true
+  },
+  "fresh_restore_receipt": "clean-reproduction-verification.json",
+  "fresh_restore": {
+    "created_utc": "2026-10-29T00:47:20.890551+00:00",
+    "scope": "Clean committed source archive, separate locked local virtual environment, missing evidence restored from verified public input bytes, full publication build, byte-stability check, and comparison of every generated output with the current main workspace",
+    "archive_commit": "f803f2a52ab0ee612e0a2854385e952d51541bd9",
+    "archive_sha256": "78c54bca3100550271d6b0a8ddb124b130b44bf180020974e5a98ecf8a803d46",
+    "comparison_checkout_head": "22c812a9d86db043bf03773b5827c06bf2178512",
+    "clean_directory": "tmp/ant-clean-reproduction",
+    "python_version": "3.12.13",
+    "setup_warnings": [
+      "warning: `build_system.requires = [\"uv-build>=0.12.3,<0.13.0\"]` does not contain the current uv version 0.13.0"
+    ],
+    "commands": [
+      {
+        "working_directory": ".",
+        "command": "git archive --format=zip --output=tmp/ant-clean-reproduction.zip f803f2a52ab0ee612e0a2854385e952d51541bd9",
+        "exit_code": 0
+      },
+      {
+        "working_directory": ".",
+        "command": "Expand-Archive -LiteralPath tmp/ant-clean-reproduction.zip -DestinationPath tmp/ant-clean-reproduction",
+        "exit_code": 0
+      },
+      {
+        "working_directory": "tmp/ant-clean-reproduction",
+        "command": "uv sync --locked",
+        "exit_code": 0,
+        "log": "logs/clean-uv-sync.log"
+      },
+      {
+        "working_directory": ".",
+        "command": "Python os.link for each unique manifest SHA256 from .cache/ant-verification to tmp/ant-clean-reproduction/.cache/ant-inputs after matching every entry against the completed public download receipt",
+        "exit_code": 0,
+        "receipt": "clean-cache-provenance.json"
+      },
+      {
+        "working_directory": "tmp/ant-clean-reproduction",
+        "command": "uv run --locked --no-sync python scripts/build_ant_publication.py",
+        "exit_code": 0,
+        "log": "logs/clean-build.log"
+      },
+      {
+        "working_directory": "tmp/ant-clean-reproduction",
+        "command": "uv run --locked --no-sync python scripts/build_ant_publication.py --check",
+        "exit_code": 0,
+        "log": "logs/clean-check.log"
+      }
+    ],
+    "inputs": {
+      "files_verified": 6595,
+      "episode_npz_files": 6200,
+      "hub_revision": "b262002001df6af2fd87dce82cc385f6b132e184",
+      "manifest_sha256": "07b735f1ea4e8e92c31f2d5315d192bee4e505ef0aa5a4aff4c81769ddd18f86",
+      "public_download_verification_receipt_sha256": "bc42d5e2ac081ad50bf538412c0cfc49e473db77ad31248e36d4bd886b6206af",
+      "original_runs_copied": false,
+      "runs_present_before_build": false,
+      "public_cache_reuse": "Hardlinks of public immutable-revision bytes independently downloaded and verified for every manifest entry; no original runs directory copied. Builder rechecks cached bytes before restoring missing inputs."
+    },
+    "generated_outputs": 365,
+    "mismatches": [],
+    "log_sha256": {
+      "clean-uv-sync.log": "daa318fa92e44b202647b2482ff6d6db3a66a5907365a1ec0a9636d3e27ecc71",
+      "clean-build.log": "5b5ea451442bbcc320f8fd069e7db26543ada9a1e33264a9b3cfbd42b7634ed7",
+      "clean-check.log": "ba6245064fa04494941275818ec6152d8b04160084ee5bb7390f0b2a8450da2c"
+    },
+    "portability_corrections": {
+      "log_bytes": "git-input-verification.json",
+      "manifest_bytes": "Commit f803f2a preserves exact original inputs.json CRLF bytes; no JSON values changed. Archived manifest SHA256 equals the evidence provenance."
+    },
+    "limitations": [
+      "Reproduced on native Windows on this host, with a separately created environment; other platforms were not independently rerun.",
+      "This clean build reused hardlinks to a complete, independently downloaded and hash-verified public cache. It did not redownload every input a second time. No original runs were copied.",
+      "No simulator run, policy loading, new training, or new scientific episodes occurred."
+    ],
+    "passed": true
+  },
+  "documents": {
+    "all_hashes_match": true,
+    "allowlist_sha256": "a6c51015c6c0f09ed119d5026f61bd9e16cf7f03eabe992acdb3b6aab6bb212d",
+    "checked_utc": "2026-10-29T00:48:01.089412+00:00",
+    "files": 31,
+    "git_revision": "22c812a9d86db043bf03773b5827c06bf2178512",
+    "repo_id": "BurnyCoder/rl-locomotion-steering-vectors",
+    "revision": "41c84f9af2c23c3ba2b6225874b2b938ea6f8adf"
+  },
+  "pdfs": [
+    "paper-visual-verification.json",
+    "audit-pdf-visual-verification.json"
+  ],
+  "collection": {
+    "url": "https://huggingface.co/collections/BurnyCoder/ant-locomotion-steering-evidence-6ae2900bb110a4be69bbfb0b",
+    "receipt": "collection-verification.json",
+    "items": [
+      "BurnyCoder/rl-locomotion-steering-vectors",
+      "farama-minari/Ant-v5-SAC-medium"
+    ]
+  },
+  "pages": {
+    "url": "https://burnycoder.github.io/reinforcement-learning-locomotion-steering-vectors/",
+    "initial_run": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/actions/runs/40794705389",
+    "initial_conclusion": "success",
+    "live_receipt": "live-site-verification.json"
+  },
+  "deployed_bytes": {
+    "status": "pending"
+  },
+  "final_deployment": {
+    "status": "pending"
+  },
+  "ui": {
+    "local_and_live_flows": [
+      "original confirmation and pre-onset failure",
+      "validation cross-label strength sweep",
+      "audit projection ablation signs",
+      "random directions filter",
+      "observation rotation units",
+      "seed trajectories and evaluation rewards"
+    ],
+    "mobile_viewport": {
+      "width": 390,
+      "height": 844,
+      "observed_document_scroll_width": 375
+    },
+    "application_console_errors_observed": [],
+    "download": "same-origin download attribute added; browser download event unavailable; HTTP bytes checked separately"
+  },
+  "review_and_repairs": "verification.md",
+  "limitations": [
+    "Original confirmation_failed retained",
+    "No new scientific collection",
+    "Historical preregistration timing unrepairable",
+    "Baukit/full checkpoint licensing unresolved",
+    "No formal replication, training-seed generalization, unique heading mechanism or practical-control claim"
+  ]
+}

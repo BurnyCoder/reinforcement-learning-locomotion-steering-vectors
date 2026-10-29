@@ -1,5 +1,7 @@
 # Independent documentation fact-check, 2026-10-22
 
+**Historical audit and later qualification.** The text below records the checks and conclusions made at that time; its universal wording is not a current guarantee that every claim is correct. The [current Ant publication](ant-classic-005-findings.md) narrows the heading explanation, distinguishes rotation of clipped observations from physical rotation, and preserves the original confirmation outcome. The [completion ledger](ant-publication-completion.md) records the subsequent seed guard, reproducible reporting and publication work. Its current generated values and receipts supersede dated descriptions of code behavior and publication status below; historical experiment and verification records remain unchanged.
+
 **Scope.** Every factual claim in README.md, AGENTS.md, `docs/`, the experiment reports and register, the earlier audits, the paper and its PDF, the result bundles, code comments and the Hugging Face model card was checked against primary evidence. The earlier audits (documentation, rigor, y-shift, mechanism, independent, `math-audit.json`) were **not** used as evidence: their claims were treated as claims to check.
 
 **Method.**

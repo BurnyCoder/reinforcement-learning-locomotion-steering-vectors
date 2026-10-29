@@ -1,0 +1,58 @@
+2026-10-29 00:41:52,947Z INFO Downloading pinned evidence README.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:52,948Z INFO Downloading pinned evidence paper/build_paper.py at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:52,949Z INFO Downloading pinned evidence paper/paper.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:52,966Z ERROR Document verification failed paper/paper.pdf (ValueError)
+2026-10-29 00:41:53,021Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-causal-audit.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,355Z INFO Verified published document paper/build_paper.py
+2026-10-29 00:41:53,358Z INFO Verified published document README.md
+2026-10-29 00:41:53,452Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-findings.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,452Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-diagnostics.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,453Z INFO Verified published document documentation/experiments/ant-classic-005-causal-audit.md
+2026-10-29 00:41:53,453Z INFO Verified published document paper/paper.md
+2026-10-29 00:41:53,458Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit-preregistration.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,459Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,785Z INFO Verified published document documentation/experiments/ant-classic-005-diagnostics.md
+2026-10-29 00:41:53,788Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit-preregistration.md
+2026-10-29 00:41:53,790Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit.pdf at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,792Z INFO Verified published document documentation/experiments/ant-classic-005-findings.md
+2026-10-29 00:41:53,794Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-mechanism-audit.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,799Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-preregistration.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:53,813Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit.md
+2026-10-29 00:41:53,817Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-y-shift-audit.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,233Z INFO Verified published document documentation/experiments/ant-classic-005-preregistration.md
+2026-10-29 00:41:54,237Z INFO Downloading pinned evidence documentation/experiments/experiments.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,327Z INFO Verified published document documentation/experiments/ant-classic-005-mechanism-audit.md
+2026-10-29 00:41:54,331Z INFO Downloading pinned evidence documentation/experiments/ant-publication-completion.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,385Z INFO Verified published document documentation/experiments/ant-classic-005-y-shift-audit.md
+2026-10-29 00:41:54,389Z INFO Downloading pinned evidence documentation/methodology.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,684Z INFO Verified published document documentation/experiments/experiments.md
+2026-10-29 00:41:54,689Z INFO Downloading pinned evidence documentation/sources.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,743Z INFO Verified published document documentation/methodology.md
+2026-10-29 00:41:54,744Z INFO Verified published document documentation/experiments/ant-publication-completion.md
+2026-10-29 00:41:54,749Z INFO Downloading pinned evidence documentation/ant-publication.md at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,752Z INFO Downloading pinned evidence publication/inputs.json at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:54,829Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit.pdf
+2026-10-29 00:41:54,835Z INFO Downloading pinned evidence publication/evidence.json at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,181Z INFO Verified published document documentation/sources.md
+2026-10-29 00:41:55,184Z INFO Downloading pinned evidence paper/ant-publication/figures/confirmation.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,207Z INFO Verified published document documentation/ant-publication.md
+2026-10-29 00:41:55,210Z INFO Downloading pinned evidence paper/ant-publication/figures/ablations.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,516Z INFO Verified published document publication/inputs.json
+2026-10-29 00:41:55,523Z INFO Downloading pinned evidence paper/ant-publication/figures/strength-response.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,661Z INFO Verified published document publication/evidence.json
+2026-10-29 00:41:55,669Z INFO Downloading pinned evidence paper/ant-publication/figures/specificity.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,676Z INFO Verified published document paper/ant-publication/figures/confirmation.png
+2026-10-29 00:41:55,683Z INFO Downloading pinned evidence paper/ant-publication/figures/reward.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:55,898Z INFO Verified published document paper/ant-publication/figures/ablations.png
+2026-10-29 00:41:55,903Z INFO Downloading pinned evidence paper/ant-publication/figures/trajectories.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:56,049Z INFO Verified published document paper/ant-publication/figures/specificity.png
+2026-10-29 00:41:56,054Z INFO Downloading pinned evidence paper/ant-publication/figures/architecture.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:56,203Z INFO Verified published document paper/ant-publication/figures/strength-response.png
+2026-10-29 00:41:56,208Z INFO Downloading pinned evidence paper/paper_assets/ant-lateral-validation.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:56,404Z INFO Verified published document paper/ant-publication/figures/architecture.png
+2026-10-29 00:41:56,408Z INFO Downloading pinned evidence paper/paper_assets/ant-topdown-validation.png at 0161fa5d86d53eb1d48578526c2115244cfb73d2 (attempt 1)
+2026-10-29 00:41:56,480Z INFO Verified published document paper/ant-publication/figures/reward.png
+2026-10-29 00:41:56,574Z INFO Verified published document paper/paper_assets/ant-lateral-validation.png
+2026-10-29 00:41:56,605Z INFO Verified published document paper/ant-publication/figures/trajectories.png
+2026-10-29 00:41:56,790Z INFO Verified published document paper/paper_assets/ant-topdown-validation.png
+2026-10-29 00:41:56,792Z ERROR Document publication check failed: Some published document hashes failed; see the verification receipt
