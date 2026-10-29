@@ -1,6 +1,10 @@
 # RL locomotion steering: hc-classic-001
 
-Report generated: 2026-10-22T16:33:40+00:00
+Report generated: 2026-10-29 (saved-data publication)
+
+## Interpretation erratum
+
+This is a saved-data rendering of the original experiment, not a new run. Original JSON, selections and failed outcomes are unchanged. Historical decisions and runtime checks below are attributed records. The independent 2026-10-29 audit recomputes original extraction, paired effects, intervals, failures and gates. Odd/even responses do not identify a unique mechanism; random-direction ranks need a justified exchangeability null for p-value interpretation. Current corrections and verification limits: https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/report.md
 
 ## Outcome
 

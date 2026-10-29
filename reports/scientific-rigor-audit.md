@@ -1,5 +1,7 @@
 # Scientific-rigor audit: do experiments 001–005 support their interpretations?
 
+**Erratum, 2026-10-29:** [Independent saved-data verification](fact-check-2026-10-29/report.md) supersedes stronger rank-test, optimality and odd/even interpretations below. Original calculations and historical test outcomes remain records; only checks explicitly listed in the new verification were independently repeated. A descriptive rank is not a calibrated specificity p-value without a justified exchangeability null.
+
 Audit date: 2026-10-16 UTC. Scope: the saved results, vectors and episodes of the five completed experiments. Earlier audits asked whether the reported numbers are reproduced; this one asks whether the **inferences** drawn from them follow from the design. It is a post hoc, saved-data analysis: no policy inference, simulation, new seeds, selection changes or gate changes. Every recorded status (`confirmation_failed`, `no_validation_candidate`, `extraction_rejected_before_validation`) is unchanged.
 
 Reproduce from the project root, with the original `runs/` directories present (see the [documentation audit](documentation-audit.md#reproduction-and-evidence-files) for restoring them):
@@ -103,7 +105,7 @@ For each vector and magnitude tested at both signs, a response f splits exactly 
 
 `odd = (f(+α) − f(−α)) / 2` and `even = (f(+α) + f(−α)) / 2`.
 
-A steerable direction has a dominant odd part. Generic degradation shows up as an even part with the same sign at both α signs (`odd_even_responses`; validation, ten pairs, descriptive).
+The odd part measures sign dependence and the even part sign independence (`odd_even_responses`; validation, ten pairs, descriptive). Sign-independent slowdown is compatible with disruption, but this algebra does not identify its mechanism. Useful nonlinear control can also have an even component, and disruption can have an odd component.
 
 | Primary vector and outcome | \|α\| = smallest tested | \|α\| = 0.1 (004: 0.02) | \|α\| = 0.2 (004: 0.04) |
 | --- | --- | --- | --- |
@@ -121,18 +123,18 @@ For every HalfCheetah primary, the forward-speed even component exceeds the odd 
 
 No intervention raised HalfCheetah speed by more than about 0.4%. A few controls gave tiny but detectable speed-ups (e.g. 004 action bias −0.035: +0.068 m/s [+0.045, +0.088]; *corrected* by the [fact-check](fact-check-2026-10-22.md) from "never sped up"). The 004 random controls show the rectified pattern of a ceiling: one sign slows, the other does nothing (e.g. random 1 at 0.035: +0.2% vs −10.0%).
 
-So the 004 calibration "passes" and the locked −31.89% confirmation slowdown are degradation of a near-optimal gait, not evidence of a steerable speed direction. This does not change 004's `confirmation_failed` status. It does change what its positive calibration settings mean: they are not "useful speed effects" in the sense of controllable speed.
+The 004 calibration passes and locked −31.89% confirmation slowdown therefore do not establish bidirectional speed control. Its failed physical-quality gate is observed; proximity to an optimum and a unique degradation mechanism are not established. The recorded `confirmation_failed` status is unchanged. This distinction corrects the earlier categorical interpretation without discarding measured slowdowns.
 
 By contrast, two responses are genuinely bidirectional:
 - **Ant world-Y velocity.** At |α| = 0.1 the odd part is −0.403 m/s against an even part of +0.142 m/s.
-- **HalfCheetah torso height.** At |α| = 0.05 the odd part is +4.5 cm and the even part is 0.0 cm. The random and shuffled height controls' odd parts are at most 1.9 cm in magnitude at |α| ≤ 0.1, so the height direction also shows specificity in validation. It was never confirmed, because its speed cost exceeded the 10% allowance.
+- **HalfCheetah torso height.** At |α| = 0.05 the odd part is +4.5 cm and the even part rounds to 0.0 cm. The tested random and shuffled height controls' odd parts are at most 1.9 cm in magnitude at |α| ≤ 0.1. This is a descriptive comparison with the small selected control set, not an established label-specificity result. It was never confirmed, because its speed cost exceeded the 10% allowance.
 
 ## 5. Post hoc hypothesis: reward-aligned behaviors respond quadratically
 
 The pattern above has a compact explanation. It was **formulated after seeing these data** and requires a fresh test.
-- Suppose the trained policy approximately maximizes expected return R. Perturbing activations by αd then gives R(α) ≈ R(0) + ½R″(0)α² with R″(0) ≤ 0, because a local maximizer has zero gradient and a negative-semidefinite Hessian ([second-order necessary conditions](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2).
-- Both environments' rewards are dominated by forward velocity ([HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/), [Ant](https://gymnasium.farama.org/environments/mujoco/ant/)). Forward speed should therefore respond mainly through the even, non-positive α² term.
-- A behavior absent from the reward faces no such stationarity constraint, so it can respond at first order (odd in α). Torso height qualifies. So does Ant heading θ, whose reward cost enters only through cos θ ≈ 1 − θ²/2.
+- Assume, additionally, that the evaluated deterministic policy is a local maximizer of a twice-differentiable return function **along this activation-intervention path**. Then the first derivative vanishes and the second is non-positive, giving R(α) ≈ R(0) + ½R″(0)α² ([second-order necessary conditions](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). Training with SAC/TQC does not establish these assumptions for deterministic evaluation or for hidden-state perturbations.
+- Forward velocity is one component of the environment reward, alongside control costs and, for Ant, health/contact terms ([HalfCheetah](https://gymnasium.farama.org/environments/mujoco/half_cheetah/), [Ant](https://gymnasium.farama.org/environments/mujoco/ant/)). A local maximum of total return does not imply a local maximum of velocity alone.
+- A descriptor absent as an explicit reward term can still affect return through dynamics, survival and action costs. Under an additional rigid planar-rotation approximation with fixed speed, the forward component contains cos θ; the experiments do not establish that all effects of heading enter only through this term.
 
 | Prediction | Observed in saved data |
 | --- | --- |

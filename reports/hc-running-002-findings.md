@@ -1,5 +1,7 @@
 # hc-running-002: posture changes, but no primary target passes
 
+**Verification boundary, 2026-10-29:** Extraction, controls and every final condition estimate were independently recomputed from saved arrays in the [new check](fact-check-2026-10-29/report.md). Memory allocation and model replay statements below remain historical logged results; they were not rerun. The physical-failure criterion was revised after exploratory validation, not prospectively fixed before all observations.
+
 The frozen reinforcement-learning actor responded causally to a height-derived hidden vector: at strength **+0.05**, mean torso height increased **4.5048 cm** (paired 95% interval **4.3673–4.6452 cm**) with zero measured physical failures, forbidden contact, or inversion in ten validation episodes. Forward speed fell **12.85%**, exceeding the predeclared 10% allowance for a useful height intervention. All **24 primary vector/strength settings** failed at least one gate for their registered target. Eight control settings passed exploratory validation gates. No intervention was selected, confirmed, or replicated in this experiment.
 
 The [complete numerical report and PDF](hc-running-002/README.md) retain all 120 tested conditions, curves, vectors, provenance, and the superseded quality analysis. This narrative explains the decisions and limitations. The earlier [physical inspection](hc-running-002-validation-inspection.md) is a historical record of the measurement problem before its correction.

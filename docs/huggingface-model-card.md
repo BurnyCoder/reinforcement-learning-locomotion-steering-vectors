@@ -7,14 +7,13 @@ tags:
 - ant
 - halfcheetah
 - causal-intervention
-base_model:
-- farama-minari/Ant-v5-SAC-medium
-- farama-minari/HalfCheetah-v5-TQC-medium
 ---
 
 # Steering vectors for RL locomotion
 
 This repository publishes activation vectors, controls, numerical episodes, and reports from [the research code](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors). A fixed vector is added to a frozen RL actor's first ReLU output. **No behavioral cloning, imitation training, or new policy training was performed.** Upstream checkpoint weights are referenced, not redistributed.
+
+This is an evidence and intervention-vector repository. It is not a fine-tune, adapter, quantization, or merge of the referenced policies, so its metadata omits `base_model`; those relationships have specific meanings in the [Hub metadata specification](https://huggingface.co/docs/hub/model-cards#specifying-a-base-model). The pinned upstream checkpoint links below identify the policies used.
 
 The [Ant locomotion steering evidence collection](https://huggingface.co/collections/BurnyCoder/ant-locomotion-steering-evidence-6ae2900bb110a4be69bbfb0b) groups these artifacts with the upstream Ant checkpoint reference. The checkpoint does not provide a verified license grant; Baukit's package classifier and missing full license text also leave licensing unresolved. See the [source and license audit](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/sources.md) before reuse. This card does not assign an upstream license.
 
@@ -35,7 +34,9 @@ Adding the saved **256-dimensional lateral vector at strength -0.1** after the f
 
 Each control uses its own validation-selected strength. The intervals above use the original paired percentile bootstrap; the baseline is shared. Larger target effects do not erase physical failures. Full per-seed trajectories and all validation settings are available in the [interactive evidence explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/).
 
-**Later audit, separate cohort.** On 20 further resets, the locked vector produces **+0.462 m/s [0.343, 0.587]** (BCa 95% interval), with 19/20 positive pairs. Failures rise from 0/20 to 2/20. Against 99 norm-matched random directions its sign-dependent response ranks at **p = 0.05**; label specificity is unsupported. This audit consumed a previously reserved application cohort and is not the formal replication split. [Audit and ablations](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md).
+**Later audit, separate cohort.** On 20 further resets, the locked vector produces **+0.462 m/s [0.343, 0.587]** (BCa 95% interval), with 19/20 positive pairs. Failures rise from 0/20 to 2/20. Against 99 norm-matched random directions its sign-dependent response has **comparison rank 0.05**; label specificity is unsupported. This audit consumed a previously reserved application cohort and is not the formal replication split. [Audit and ablations](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md).
+
+These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/methodology.md#statistical-assumptions-and-rank-interpretation).
 
 **Mechanism is qualified.** Projection ablations and a specified observation transformation support a heading-related account for this checkpoint. The transformation rotates already-clipped contact-force channels and clips again: `clip(R clip(f))` generally differs from physical rotation's `clip(R f)`. It does not establish exact physical-heading equivalence or a unique semantic mediator. The original activation-steering result is unchanged.
 
