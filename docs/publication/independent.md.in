@@ -1,0 +1,75 @@
+# Independent audit: Ant world-Y path shift
+
+This generated report updates the interpretation and publication of the existing audit, collected under the [pre-collection protocol](ant-classic-005-independent-audit-preregistration.md). The [historical report](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf63/reports/ant-classic-005-independent-audit.md), exact [audit JSON](ant-classic-005-independent-audit/audit.json), [directions](ant-classic-005-independent-audit/directions.json), and original logs remain available. No fresh scientific episodes were collected for this publication revision. “Independent” describes the audit's use of raw data rather than preceding audits; it was conducted within this project, not by an external replication laboratory.
+
+## Verdict and evidence boundaries
+
+No error invalidating the original numerical world-Y shift was found in the checks performed. The locked activation intervention produces **{{effect}} m/s {{ci}}** on {{n}} original confirmation pairs and **{{fresh_effect}} m/s {{fresh_ci}}** on {{fresh_n}} audit pairs. Original confirmation uses a paired percentile interval; the audit headline uses BCa. The original outcome remains **`{{status}}`**. Audit failures rise from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}, so the reproduced target effect does not establish acceptable physical quality.
+
+The audit supports a **heading-related perceptual account**, with important limits. Its component ablations and specified observation transformation constrain causal explanations, but do not prove a unique semantic mediator. An arbitrary first-layer activation offset need not correspond to any valid physical observation. In particular, rotating and reclipping already-clipped contact channels is not generally equivalent to observing a physically rotated state.
+
+## Design, chronology and preserved checks
+
+The audit used the previously locked direction and a prespecified strength magnitude; no fresh outcomes were used to retune them. Hypotheses M1/M2 were informed by earlier saved-data inspection, then assessed on a separately collected cohort under fixed rules. There are {{audit_conditions}} arms and {{audit_episodes}} recorded episodes on seeds {{audit_seed_first}}–{{audit_seed_last}}. They include the application cohort previously reserved by convention, which the original integrity check omitted. The new registry records that overlap and rejects reuse for a new application. The formal replication reservation {{replication_first}}–{{replication_last}} remains unused.
+
+The historical integrity phase checked vector reconstruction, source identities, paired prefixes, offline actions, chronology, and simulator replays. Its exact counts and tolerances are preserved in `audit.json` under `integrity`. Those checks were reviewed here; this publication build does not independently rerun them. The comparison input files are now hash-pinned, and publication fails on changed or missing identities.
+
+{{cohort_table}}
+
+## Original-cohort sensitivity
+
+The analysis unit is a paired reset. The recorded estimand averages available post-onset velocities within each episode, retaining a zero summary for the shared pre-onset ending. The following alternative estimands were computed in the historical audit; survivor-only rows are sensitivity descriptions and do not replace the full primary population. Velocity rows use m/s; the displacement row uses metres.
+
+{{robustness_table}}
+
+The evaluated alternative estimands retain a positive effect. That is narrower than asserting that every reasonable estimand must do so. Paired designs do not automatically reduce variance, and uncertainty must follow the actual pairing and shared-baseline structure. The [path-mechanism audit](ant-classic-005-mechanism-audit.md) retains the corresponding correlation and joint-bootstrap evidence.
+
+## Fresh audit: targets, controls and ablations
+
+{{fresh_table}}
+
+The locked primary and perception-arm intervals are the saved paired BCa intervals where available. Other displayed arm intervals are explicitly descriptive percentile intervals generated from the saved pairs; their exact methods and resampling seeds are in [evidence.json](ant-publication/evidence.json). They create no new acceptance decisions or selections. All {{random_n}} random directions and {{shuffle_n}} shuffled-label redraws, at both signs, remain available in the [explorer]({{site}}) and downloadable evidence, including failed arms.
+
+{{hypothesis_table}}
+
+For P1 the saved Monte Carlo estimate is **p = {{fresh_p}}**, at the procedure's floor with {{fresh_resamples}} sampled sign patterns. A floor estimate is not an upper confidence bound on the exact randomization p-value. The original decisions are unchanged. P2 is at its decision boundary; it is weak evidence of specificity, not a general superiority guarantee. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity.
+
+![Fresh-cohort effect intervals and physical failures.](ant-publication/figures/ablations.png)
+
+## Odd/even responses and mechanism
+
+For each magnitude, let f(α) be the treated-minus-baseline world-Y response. The odd part is `(f(+α) - f(-α))/2`; the even part is `(f(+α) + f(-α))/2`. The odd part measures sign dependence, while the even part can include generic drift. These parts do not by themselves name an internal concept.
+
+{{odd_table}}
+
+![Signed odd/even responses, preserving negative and null outcomes.](ant-publication/figures/specificity.png)
+
+The observation arm at negative {{perception_angle}} degrees produces **{{perception_effect}} m/s {{perception_ci}}**, with {{perception_positive}} positive pairs. It changes the quaternion, world linear velocity, and already-clipped world-oriented contact wrenches seen by the actor, leaving simulator state unchanged. The operational transform is `clip(R clip(f))` for contact channels. The pinned [Ant observation code](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py) clips before the proxy receives the observation; a physical rotation would require `clip(R f)` from the unavailable unclipped wrench.
+
+The existing physical-frame test scales forces into an unsaturated regime. It establishes coordinate-frame handling there, not general equivalence. A new deterministic saturated-wrench counterexample covers that boundary without changing the comparator. The following counts are a post hoc descriptive analysis of saved states, with one state counted when any planar wrench component is at a clipping bound:
+
+{{clipping_table}}
+
+These counts show the unsaturated assumption is not universal; they do not measure how much of the behavioral effect is caused by clipped contact channels. A new intervention would be needed for that causal distinction. The exploratory projection model's limited predictive success also remains in the saved E1 results; it is not omitted to favor the heading interpretation.
+
+## Path kinematics
+
+These historical summaries use steps both arms recorded. They have their own eligible-pair counts and do not replace the all-pair primary estimand. Travel direction is derived from displacement; agreement between those two quantities is arithmetic, not independent mechanism evidence.
+
+{{kinematics_table}}
+
+The path and torso acquire a bounded heading offset under the tested conditions. That supports heading involvement, not a universal statement about rigid gait rotation or a body-relative sideways command.
+
+## Learnings, failure history and limits
+
+The original audit first reconstructed the evidence chain because numerical agreement is meaningful only when the interventions and pairing are authentic. It expanded the random-direction comparison because a small control set cannot resolve a useful rank test. The component ablations and observation comparator test causal predictions beyond correlation, but the clipping caveat shows why the precise intervention matters.
+
+The first historical collection attempt encountered a MuJoCo memory-allocation failure and resumed with fewer workers; the original complete logs retain that failure and retry. The source's version-pinned behavior and saved episode identities are the evidence for resumption. We do not infer that worker count can never affect any future workload. Additional build/test failures and fixes for this revision are recorded in the [completion ledger](../docs/ant-publication.md).
+
+Only one checkpoint and simulator are represented. Training-seed generalization, real-robot transfer, fresh strength-magnitude sensitivity, covariance-shaped nulls beyond the tested shuffles, formal replication, and practical target control remain unestablished. The original random and shuffled directions, all unsuccessful episodes and original gate decisions remain unchanged. No training-loss curve is available because this project did not train the evaluated policy.
+
+## Reproduction and sources
+
+Run `uv run --locked --no-sync python scripts/build_ant_publication.py` after the repository's locked installation. The command restores missing pinned evidence and regenerates this report, its PDF, tables, figures and explorer without loading a policy or running a simulator. Add `--check` to detect stale outputs. The [input manifest](ant-publication/inputs.json) records every local path, Hub path, byte hash and immutable revision. Historical simulator reproduction requires the historical code revision and its unchanged cache identities; do not rewrite an old manifest to bypass identity checks.
+
+Related work: [maze-policy activation interventions](https://arxiv.org/abs/2310.08043), [top-right steering](https://turntrout.com/top-right-steering-vector), [contrastive activation addition](https://arxiv.org/abs/2312.06681). Statistical implementations: [SciPy bootstrap](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.bootstrap.html), [permutation testing](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.permutation_test.html), [Phipson and Smyth](https://doi.org/10.2202/1544-6115.1585), and [Holm](https://www.jstor.org/stable/4615733). Source adaptations and unresolved license information are recorded in [sources](../docs/sources.md).

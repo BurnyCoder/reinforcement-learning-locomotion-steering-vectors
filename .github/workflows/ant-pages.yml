@@ -1,0 +1,57 @@
+name: Ant evidence Pages
+
+# Official Pages workflow interfaces and permissions:
+# https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages
+on:
+  push:
+    branches: [main]
+    paths: ["site/**", "scripts/check_ant_site.py", "tests/test_ant_site.py", ".github/workflows/ant-pages.yml"]
+  pull_request:
+    paths: ["site/**", "scripts/check_ant_site.py", "tests/test_ant_site.py", ".github/workflows/ant-pages.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ant-pages-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+      - name: Test the static publication checker
+        run: python3 -m unittest discover -s tests -p test_ant_site.py
+      - name: Validate published evidence and assets
+        run: python3 scripts/check_ant_site.py
+      - name: Check browser JavaScript syntax
+        run: node --check site/app.js
+      # PRs only validate. Upload exactly the public site directory on main.
+      - name: Package the public site
+        if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+        uses: actions/upload-pages-artifact@v4
+        with:
+          path: site
+
+  deploy:
+    if: github.event_name != 'pull_request' && github.ref == 'refs/heads/main'
+    needs: validate
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      # Pages enablement is a repository setting; do not request an admin token here.
+      - uses: actions/configure-pages@v5
+      - name: Deploy the validated artifact
+        id: deployment
+        uses: actions/deploy-pages@v4

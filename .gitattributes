@@ -12,3 +12,11 @@
 # Preserve this original inspection and captured logs byte-for-byte; https://git-scm.com/docs/gitattributes#_text
 reports/ant-classic-005/audit/fitting-inspection.json -text -whitespace
 reports/documentation-audit/*.log -text -whitespace
+# Keep the registered Ant logs identical in Git archives and Windows/Linux checkouts.
+# These original CRLF bytes are pinned by reports/ant-publication/inputs.json.
+reports/ant-classic-005/*.log -text -whitespace
+reports/ant-classic-005-independent-audit/*.log -text -whitespace
+reports/ant-classic-005-mechanism-audit/*.log -text -whitespace
+reports/ant-classic-005-y-shift-audit/*.log -text -whitespace
+# The publication's evidence includes this registry's raw SHA256, so retain its original bytes too.
+reports/ant-publication/inputs.json -text -whitespace

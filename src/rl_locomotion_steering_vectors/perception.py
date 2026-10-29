@@ -1,9 +1,11 @@
-"""Local: rotate what the Ant policy perceives about its heading. Global: test whether steering acts through perceived heading.
+"""Local: apply a yaw-like observation transform. Global: test a heading-related account of activation steering.
 
 The first actor layer is a function of the current observation only, so a contrast
-vector at the first ReLU is an observation feature. This module provides the
-observation-level comparator: rotate the observed world about the vertical axis
-and leave the simulator untouched.
+vector at the first ReLU depends on observed state. This module preserves the
+historical observation-level comparator while leaving the simulator untouched.
+Its quaternion and world velocity rotate exactly, but already-clipped contact
+wrenches lose information: clip(R clip(f)) is not generally clip(R f). Thus this
+comparator is not an exact physical-state rotation when wrench channels saturate.
 
 Sources: Ant-v5 observation = qpos[2:], qvel, clip(cfrc_ext[1:])
 https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py ;
@@ -36,12 +38,14 @@ def _rotate_planar(x: np.ndarray, y: np.ndarray, delta: float) -> tuple[np.ndarr
 
 
 def rotate_ant_observation(observation: np.ndarray, delta: float) -> np.ndarray:
-    """Local: rotate the perceived world by delta radians about world z. Global: emulate a heading error without physics.
+    """Local: apply the recorded yaw-like transform. Global: change policy input without changing the simulator.
 
     Joint angles, joint velocities, height and the body-frame angular velocity are
     invariant under a world yaw rotation; the torso quaternion, world linear
     velocity and world-oriented contact wrenches rotate. Contact wrenches are
-    re-clipped to the environment's range because Ant-v5 clips after measurement.
+    rotated from their already-clipped values and re-clipped. This preserves the
+    evaluated comparator, but cannot recover a physical yaw rotation's clipped
+    wrenches from saturated input channels; see tests/test_perception.py.
     """
     rotated = np.array(observation, dtype=np.float64, copy=True)  # Never alias the caller's array.
     if rotated.shape[-1] != 105:
@@ -55,7 +59,7 @@ def rotate_ant_observation(observation: np.ndarray, delta: float) -> np.ndarray:
     wrench = rotated[..., CONTACT_FORCES].reshape(*rotated.shape[:-1], 13, 6)  # Copy-free view per body when contiguous.
     for start in (0, 3):  # Torque block, then force block.
         wrench[..., start], wrench[..., start + 1] = _rotate_planar(wrench[..., start].copy(), wrench[..., start + 1].copy(), delta)  # Rotate x/y; z is invariant.
-    rotated[..., CONTACT_FORCES] = np.clip(wrench.reshape(*rotated.shape[:-1], 78), -CONTACT_LIMIT, CONTACT_LIMIT)  # Match the environment's final clipping.
+    rotated[..., CONTACT_FORCES] = np.clip(wrench.reshape(*rotated.shape[:-1], 78), -CONTACT_LIMIT, CONTACT_LIMIT)  # Local: keep the evaluated transform inside the clip range; global: this does not reconstruct lost raw forces.
     return rotated  # Same shape as the input.
 
 
@@ -97,7 +101,8 @@ def first_relu(model: Any, observations: np.ndarray) -> np.ndarray:
 def perceived_heading_gradient(model: Any, observations: np.ndarray, delta: float = np.radians(2.0)) -> np.ndarray:
     """Local: central difference of first-ReLU activations under perceived rotation. Global: define the heading axis g.
 
-    Positive g means "the policy perceives itself rotated toward +y", in activation units per radian.
+    Positive g is the response to a positive yaw-like observation transform, in
+    activation units per radian; the clipped-wrench qualification above applies.
     """
     plus = first_relu(model, rotate_ant_observation(observations, delta)).mean(axis=0, dtype=np.float64)  # Perceived +delta.
     minus = first_relu(model, rotate_ant_observation(observations, -delta)).mean(axis=0, dtype=np.float64)  # Perceived −delta.

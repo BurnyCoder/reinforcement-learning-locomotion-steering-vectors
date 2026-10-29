@@ -1,0 +1,82 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Explore saved evidence for a world-Y velocity change from an activation vector in a frozen Ant locomotion policy.">
+  <title>Ant steering · Evidence explorer</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="app.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#explorer">Skip to evidence</a>
+  <header class="masthead wrap">
+    <a class="brand" href="#top" aria-label="Ant steering evidence explorer home"><span class="brand-mark" aria-hidden="true">↗</span> LOCOMOTION / RESEARCH</a>
+    <nav aria-label="Page navigation"><a href="#explorer">Evidence</a><a href="#episode">Episodes</a><a href="#methods">Method & sources</a></nav>
+  </header>
+  <main id="top" class="wrap">
+    <section class="hero" aria-labelledby="page-title">
+      <div class="eyebrow"><span class="status-dot" aria-hidden="true"></span> ANT · FROZEN POLICY · ACTIVATION STEERING</div>
+      <h1 id="page-title">A change in direction.<br><span>A result with limits.</span></h1>
+      <p class="lead">A constant vector added inside a pretrained Ant policy shifts motion toward world Y. Explore the saved comparisons, physical costs, and evidence for a heading-related explanation.</p>
+      <div class="hero-footer"><span class="pill">Saved experimental evidence</span><span>No policy training or behavioral cloning</span></div>
+    </section>
+
+    <aside class="acceptance" aria-labelledby="acceptance-title">
+      <div class="acceptance-label"><span aria-hidden="true">!</span><strong id="acceptance-title">Original outcome: <code id="historical-status">confirmation_failed</code></strong></div>
+      <p>The measured velocity effect and the experiment’s acceptance decision are separate. Failed episodes remain included. Later audit results do not replace the original outcome.</p>
+    </aside>
+
+    <div id="load-state" class="load-state" role="status">Loading the published evidence…</div>
+    <noscript><p class="load-state">JavaScript is needed for the interactive plots. Read the <a href="https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/tree/main/reports">saved reports and numerical evidence</a>.</p></noscript>
+
+    <section id="explorer" class="evidence-section" aria-labelledby="evidence-title" hidden>
+      <div class="section-heading"><div><div class="eyebrow">01 / COMPARE THE EVIDENCE</div><h2 id="evidence-title">One intervention, several checks.</h2></div><p id="cohort-description" class="section-caption"></p></div>
+      <form class="controls" aria-label="Evidence selection" onsubmit="return false">
+        <label>Evaluation cohort<select id="cohort-select" name="cohort"></select></label>
+        <label>Vector / intervention<select id="vector-select" name="vector"></select></label>
+        <label>Strength / condition<select id="condition-select" name="condition"></select></label>
+      </form>
+      <p class="selection-note" id="selection-note"></p>
+      <div class="metric-grid" aria-live="polite" aria-atomic="true">
+        <article class="metric primary-metric"><span class="metric-label">Paired change in world-Y velocity</span><div class="metric-value" id="effect-value">—</div><p id="effect-interval">—</p></article>
+        <article class="metric"><span class="metric-label">Mean forward speed retained</span><div class="metric-value" id="retention-value">—</div><p>Ratio of episode means; not distance retention</p></article>
+        <article class="metric"><span class="metric-label">Physical failures</span><div class="metric-value" id="failure-value">—</div><p id="failure-context">—</p></article>
+      </div>
+      <div class="two-column comparison-layout">
+        <article class="panel"><div class="panel-heading"><div><h3>Effect and uncertainty</h3><p>Paired change relative to the unsteered policy</p></div><label class="compact-label">Show<select id="comparison-select"><option value="vector">Selected vector</option><option value="nonrandom">Non-random interventions</option><option value="random">Random directions</option><option value="all">All conditions</option></select></label></div><div id="effect-chart" class="chart-scroll" tabindex="0" aria-label="Effect plot; scroll to inspect all matching conditions"></div><p id="effect-chart-note" class="figure-note"></p></article>
+        <article class="panel"><div class="panel-heading"><div><h3>The physical tradeoff</h3><p>Current condition and its baseline</p></div></div><div class="table-scroll"><table class="metrics-table"><caption class="sr-only">Episode-level physical outcomes for the selected condition</caption><thead><tr><th scope="col">Measurement</th><th scope="col">Baseline</th><th scope="col">Selected</th></tr></thead><tbody id="metrics-table"></tbody></table></div><p class="figure-note">Effort is mean squared action, not physical energy. Episode reward is an evaluation measurement, not a training curve.</p></article>
+      </div>
+      <article class="panel odd-panel"><div class="panel-heading"><div><h3>What changes when the sign flips?</h3><p>Odd = sign-dependent response. Even = response shared by opposite signs.</p></div><span class="small-tag">AVAILABLE SIGNED PAIRS</span></div><div id="odd-chart" class="chart-scroll" tabindex="0" aria-label="Odd and even response plot"></div><p class="figure-note" id="odd-note"></p></article>
+    </section>
+
+    <section id="episode" class="evidence-section" aria-labelledby="episode-title" hidden>
+      <div class="section-heading"><div><div class="eyebrow">02 / INSPECT A SAVED PAIR</div><h2 id="episode-title">Follow the whole episode.</h2></div><label class="seed-label">Reset seed<select id="seed-select"></select></label></div>
+      <div class="episode-status" id="episode-status" role="status"></div>
+      <div class="legend" aria-label="Plot legend"><span><i class="legend-line baseline"></i>Baseline</span><span><i class="legend-line treated"></i>Selected intervention</span><span><i class="legend-onset"></i>Intervention onset</span><span><i class="legend-end">×</i>Failed endpoint</span></div>
+      <div class="two-column episode-layout">
+        <article class="panel"><div class="panel-heading"><div><h3>Ground-plane trajectory</h3><p>World coordinates · equal X and Y scales</p></div></div><div id="trajectory-chart" class="chart"></div><p class="figure-note">Coordinates start at reset. Both recorded endpoints remain visible, including early terminations. Dots mark the onset when reached.</p></article>
+        <article class="panel"><div class="panel-heading"><div><h3>Evaluation reward over time</h3><p>Original environment reward</p></div></div><div id="reward-chart" class="chart"></div><p id="reward-note" class="figure-note"></p></article>
+      </div>
+      <p class="selection-note" id="sampling-note"></p>
+    </section>
+
+    <section id="methods" class="evidence-section methods-section" aria-labelledby="methods-title">
+      <div class="section-heading"><div><div class="eyebrow">03 / INTERPRET & REPRODUCE</div><h2 id="methods-title">Keep the claim attached to its evidence.</h2></div></div>
+      <div class="two-column">
+        <article class="method-card"><h3>What this result establishes</h3><p>Adding a fixed hidden-activation vector causes a measured change in world-Y motion for the evaluated checkpoint. A change along the world’s Y axis does not by itself establish body-relative sidestepping, a clean semantic concept, or a reliable locomotion controller.</p><p>Projection ablations and the saved observation transformation support a heading-related explanation. That transformation rotates already-clipped contact wrenches too: exact physical-heading equivalence and unique heading mediation remain unestablished.</p><ul id="limitations"></ul></article>
+        <article class="method-card"><h3>From observations to a causal test</h3><ol class="pipeline"><li><span>Collect</span><p>Unsteered rollouts from a frozen pretrained policy.</p></li><li><span>Extract</span><p>Episode-balanced differences between high and low velocity activations.</p></li><li><span>Lock</span><p>Select vector strength using validation episodes.</p></li><li><span>Compare</span><p>Paired held-out episodes, controls, failures and later mechanism audits.</p></li></ol>
+          <svg class="architecture" viewBox="0 0 550 150" role="img" aria-labelledby="architecture-title architecture-description">
+            <title id="architecture-title">Frozen-policy intervention loop</title><desc id="architecture-description">Observation enters the actor. A scaled vector is added after the first ReLU. The remaining actor outputs actions to the unchanged environment, which returns the next observation.</desc>
+            <defs><marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="5" markerHeight="5" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="#6d8780"/></marker></defs>
+            <g fill="none" stroke="#6d8780" stroke-width="1.5" marker-end="url(#arrow)"><path d="M105 64H133"/><path d="M254 64H281"/><path d="M392 64H420"/><path d="M480 87V122H50V87"/><path d="M195 20V41"/></g>
+            <g fill="#eef3ee" stroke="#c8d7cf"><rect x="1" y="42" width="104" height="44" rx="5"/><rect x="133" y="42" width="121" height="44" rx="5"/><rect x="281" y="42" width="111" height="44" rx="5"/><rect x="420" y="42" width="129" height="44" rx="5"/></g>
+            <g font-family="Segoe UI,sans-serif" font-size="11" fill="#182e36" text-anchor="middle"><text x="53" y="68">Observation</text><text x="194" y="61">First ReLU</text><text x="194" y="76" fill="#087d75">h → h + αv</text><text x="337" y="61">Remaining actor</text><text x="337" y="76">→ action</text><text x="484" y="61">Unchanged</text><text x="484" y="76">environment</text><text x="195" y="13" fill="#087d75">Saved vector × strength</text><text x="278" y="142" fill="#586d73">Next observation · policy weights remain frozen</text></g>
+          </svg><p id="estimand-note" class="figure-note"></p></article>
+      </div>
+      <article class="sources-panel"><div><h3>Open the evidence</h3><p>Numerical artifacts, reports, source code and recorded video examples.</p></div><ul id="source-links"><li><a href="https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors">Source repository <span aria-hidden="true">↗</span></a></li></ul></article>
+    </section>
+  </main>
+  <footer class="wrap footer"><span>Ant steering / Evidence explorer</span><span>Figures read generated data. Original research outcomes are preserved.</span><a href="#top">Back to top ↑</a></footer>
+</body>
+</html>
