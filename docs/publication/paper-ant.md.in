@@ -1,0 +1,57 @@
+## 5. Ant: a directional world-Y effect
+
+The frozen SAC checkpoint receives {{observation_dim}} observation coordinates and emits {{action_dim}} continuous actions. We add the saved {{hidden_dim}}-dimensional contrast at the first ReLU. Diagnostics and fitting use {{diagnostic_episodes}} and {{fit_episodes}} episodes respectively. Complete {{window}}-step windows after the {{warmup}}-step warmup supply natural variation; {{eligible_windows}}/{{total_windows}} are eligible. The lateral contrast's split-half cosine is {{split_half}}. Its norm is {{norm}} after RMS scaling. These extraction statistics do not establish useful control [E5].
+
+The difference-of-means construction adapts CAA [R1] with episode balancing, physical filters and pilot gates. Frozen RL activation interventions precede this work: [Mini et al.'s maze-policy study](https://arxiv.org/abs/2310.08043) identifies and modifies goal-related activations, and the [top-right vector report](https://turntrout.com/top-right-steering-vector) applies a directional activation addition. The present experiment concerns continuous actions and ground-plane velocity; it is not the first example of RL policy steering.
+
+![Ant evidence flow: frozen policy, fitting contrast, locked selection and paired evaluation.](ant-publication/figures/architecture.png)
+
+The original run evaluates {{n_validation}} validation conditions and locks lateral strength {{alpha}} before {{n_confirmation}} confirmation comparisons. Each control uses its own validation-selected strength. Turning is another extraction label, not a label-free control. Random and shuffled vectors must be interpreted alongside their alignment, norm and physical cost [E5, E7, E9].
+
+![Validation world-Y response across evaluated strengths.](ant-publication/figures/strength-response.png)
+
+## 6. Ant confirmation and later audit
+
+### 6.1 Original confirmation
+
+Across {{n}} paired resets, mean world-Y velocity changes from {{baseline_y}} to {{treated_y}} m/s: **{{effect}} m/s {{ci}}**, the original paired percentile-bootstrap 95% interval. Mean forward speed changes from {{baseline_speed}} to {{treated_speed}} m/s, retaining {{retention}}%. The coordinate is world-Y in the ground plane; this does not establish body-relative sidestepping [E5].
+
+{{original_table}}
+
+Every pair remains in the primary denominator. Available post-onset steps are averaged within each episode; a pre-onset ending receives zero summary outcomes and counts as a failure. The original full status is **`{{status}}`**, because a shared pre-intervention ending violates the additional strict prefix criterion. Baseline and treatment each have {{baseline_failures}}/{{n}} failures on partly different seeds. Squared action increases {{effort_change}}%, and mean post-onset reward falls from {{baseline_reward}} to {{treated_reward}} per step. Neither equal failure counts nor retained speed establishes preserved gait or per-episode safety [E5, E8].
+
+![Original confirmation effect intervals and failures.](ant-publication/figures/confirmation.png)
+
+### 6.2 Separate audit cohort
+
+The later preregistered audit contains {{audit_episodes}} episodes across {{audit_conditions}} arms on {{fresh_n}} resets. Its locked-primary effect is **{{fresh_effect}} m/s {{fresh_ci}}** (BCa 95% interval), with {{fresh_positive}} positive pairs. Failures increase from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}, independently of the original equal-count result. These audit resets include a formerly reserved application cohort and are not the formal replication split [E9].
+
+{{hypothesis_table}}
+
+The rank comparison uses {{random_n}} isotropic directions at matched norm. Its p = {{random_p}} sits at the decision threshold. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity. P1's Monte Carlo estimate is {{fresh_p}}, at the procedure's floor; it is not an upper confidence bound on the exact p-value. Original decisions are retained [E9].
+
+![Ablation and observation-comparator effects, separate audit cohort.](ant-publication/figures/ablations.png)
+
+## 7. Visual and mechanistic evidence
+
+Existing paired movies replay predetermined validation seed {{validation_seed}}. They illustrate saved evidence and do not add evaluation units. Fixed-camera trails and rings are annotations. The [video reproduction record](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/ant-videos.md) retains replay verification and upstream movie links.
+
+![Paired ground trajectories from saved episodes; both axes are metres with equal scale.](ant-publication/figures/trajectories.png)
+
+![Observed evaluation reward with available-episode counts; no training curve is inferred.](ant-publication/figures/reward.png)
+
+Projection ablations and a specified observation transformation support a heading-related account. The observation comparator at negative {{perception_angle}} degrees produces {{perception_effect}} m/s {{perception_ci}} without an activation addition. It rotates quaternion and world linear-velocity coordinates, plus world-oriented contact wrenches that Ant already clipped. For those channels the operation is `clip(R clip(f))`, generally different from physical rotation's `clip(R f)`. The physical-frame test covers an unsaturated regime, and the new saturation counterexample documents that boundary. Exact physical-heading equivalence and unique semantic mediation are unestablished.
+
+{{clipping_table}}
+
+These are descriptive counts from saved observations, not a new causal ablation. They do not quantify how much the clipped channels contribute to behavior. Similarly, an activation vector's alignment with an observation-response gradient does not imply that every constant activation offset is realizable as a physical state. Earlier overly categorical “perceived-heading direction” wording is superseded by this bounded interpretation.
+
+## 8. Discussion, limitations and conclusion
+
+Three distinctions remain essential: extraction association differs from intervention effect; intervention effect differs from practical usefulness; and a control's positive response limits specificity rather than disappearing from the record. The Ant effect is a world-frame path change under a fixed checkpoint. Its failed gate remains a negative result, alongside the earlier HalfCheetah failures.
+
+The historical audits examine alternative estimands, shared-baseline uncertainty, pairing correlations, sign-dependent versus sign-independent responses, and heading/path kinematics. Their complete numerical evidence remains linked in [E6–E9]. The evaluated alternative estimands retain a positive Ant effect; this is not a guarantee across all possible estimands. A travel angle calculated from displacement supplies no independent mechanism evidence. No finding here establishes a body-relative sideways concept, rigid gait preservation, or superiority across independently trained policies.
+
+The result is confined to the tested checkpoint, simulator, layer, horizons, resets and strengths. The fresh audit checks a single magnitude. Cross-training-seed robustness, domain shift, real robots, sustained target-following, formal replication and practical application remain untested. The original locally dated protocol cannot be retroactively made preregistered before diagnostics. Upstream training curves and complete training history were not reproduced, and action effort is not physical energy.
+
+**Conclusion.** The original held-out effect is {{effect}} m/s with {{retention}}% mean forward-speed retention and `{{status}}`. The later audit reproduces a target effect but increases observed failures. Its interventions support heading involvement while leaving exact physical-state equivalence and unique mediation unresolved. This is a documented causal effect with explicit limits, not a validated general locomotion controller.
