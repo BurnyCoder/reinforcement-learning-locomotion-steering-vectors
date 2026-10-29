@@ -157,7 +157,7 @@ def bad_ground_contact(data: Any, floor_id: int, forbidden_ids: set[int]) -> flo
         other = int(contact.geom2) if contact.geom1 == floor_id else int(contact.geom1) if contact.geom2 == floor_id else -1  # Local: identify the body touching the floor; global: ignore self-collisions.
         if other in forbidden_ids and contact.dist <= 0.0:  # Local: require geometric contact rather than only collision margin; global: define the failure proxy transparently.
             return 1.0  # Local: flag this timestep once; global: let summary means represent contact fractions.
-    return 0.0  # Local: indicate no inappropriate contact; global: retain an unbiased per-step denominator.
+    return 0.0  # Local: indicate no inappropriate contact; global: include noncontact steps in the recorded contact fraction.
 
 
 def _pose(env: Any, model_key: str) -> tuple[np.ndarray, float, float]:

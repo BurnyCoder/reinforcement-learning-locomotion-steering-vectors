@@ -23,6 +23,8 @@ The [machine verification](verification.json) records every comparison. [Input h
 - “Conditions were confirmed” is replaced by “evaluated in confirmation.” Failed acceptance remains failed. Fixed fitted vectors are distinguished from observation-dependent activations.
 - Hugging Face metadata no longer implies fine-tuning/merging of the frozen upstream policies. Explicit pinned checkpoint references remain. [Hub specification](https://huggingface.co/docs/hub/model-cards#specifying-a-base-model).
 - Heading-relative kinematics pairs pre-transition input orientation with the ensuing displacement velocity. It is a discrete-time projection. Root-position velocity is not asserted to be bitwise identical to the torso-position velocity used by Ant reward.
+- The [kinematics follow-up](kinematics-follow-up.md) corrects slope units for nondefault windows, single-window trend availability, angle branch-cut subtraction, and timestep validation. It checks that published default-window means and denominators remain compatible with saved evidence. A finite-horizon heading offset does not prove bounded long-run behavior.
+- Further corrections distinguish a passing mean-effect gate from temporal persistence, selection bias from an observed validation/confirmation difference, covariance participation ratio from matrix rank, and current generated report bytes from historical run-directory renderings. Aligned directions can still be compared; alignment limits semantic interpretation rather than making an effect comparison untestable.
 - Historical runtime checks, training metadata and paused PGS work are attributed records. Static inspection and saved arrays cannot establish untested model behavior. Existing perceived-heading claims retain the clipped-wrench qualification: rotating an already-clipped wrench need not equal clipping a physically rotated wrench.
 - Archived README screenshots in `reports/readme-restructure` retain the former “p =” rank label; interpret it as the descriptive comparison rank above. Historical “perceived-heading axis” plot labels name the saved operational response axis, not a verified unique mediator or exact physical rotation. These preserved images do not supersede the corrected current prose and figures.
 
@@ -44,20 +46,20 @@ Original Ant's protocol first enters Git after diagnostics began. The later audi
 
 ## Claim ledger and limits
 
-The [claim ledger](claims.json) inventories **690 original and added source files** and **5958 prose/comment blocks**, linking locations, evidence, check scope and disposition. File coverage includes derived images/PDFs, recorded JSON, logs and source. Classification is conservative: a source citation does not automatically verify a claim; a group disposition applies only to its stated checks. Any uncovered block remains explicitly unresolved.
+The [claim ledger](claims.json) inventories **693 original and added source files** and **5979 prose/comment blocks**, linking locations, evidence, check scope and disposition. File coverage includes derived images/PDFs, recorded JSON, logs and source. Classification is conservative: a source citation does not automatically verify a claim; a group disposition applies only to its stated checks. Any uncovered block remains explicitly unresolved.
 
 | Claim-block disposition | Blocks |
 | --- | ---: |
-| checked_and_qualified | 286 |
+| checked_and_qualified | 289 |
 | checked_saved_data_only | 70 |
-| checked_with_runtime_boundary | 98 |
-| corrected_and_qualified | 379 |
+| checked_with_runtime_boundary | 145 |
+| corrected_and_qualified | 381 |
 | qualified | 52 |
 | qualified_correspondence | 167 |
 | qualified_historical_record | 1238 |
 | recomputed_with_limits | 537 |
-| screened_execution_or_static_check | 1394 |
-| source_checked_runtime_unverified | 199 |
+| screened_execution_or_static_check | 1361 |
+| source_checked_runtime_unverified | 201 |
 | static_check_only | 1538 |
 
 Primary-source reading and project adaptations are recorded in [the scope/source registry](../../docs/fact-check-scope.json) and [sources](../../docs/sources.md). The visual/media record and [checks actually executed](checks.json) are separate from old test totals. Movie metadata and saved correspondence receipts can bind artifacts but do not independently establish every frame's state correspondence without replay. No such replay was performed.

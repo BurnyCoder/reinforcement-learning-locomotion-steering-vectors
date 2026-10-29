@@ -101,7 +101,7 @@ def body_relative_travel_change(before: dict, after: dict, warmup: int = 100) ->
 
 
 def matched_horizon_difference(before: dict, after: dict, field: str, warmup: int = 100) -> float | None:
-    """Local: treated-minus-baseline mean over the post-onset steps both arms recorded. Global: remove termination timing from a paired outcome."""
+    """Local: treated-minus-baseline mean over shared recorded steps. Global: align averaging spans while retaining treatment-dependent censoring."""
     shared = min(int(before["length"]), int(after["length"]))  # Steps before the earlier of the two terminations.
     if shared <= warmup:
         return None  # No common post-onset step exists.

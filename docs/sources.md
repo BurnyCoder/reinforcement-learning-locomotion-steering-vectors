@@ -70,6 +70,9 @@ The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the pr
 - **Second-order optimality conditions.** At an interior local maximizer of a twice-differentiable unconstrained objective, the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). Applying this to an activation offset requires a local maximum along that intervention path. A trained return objective does not establish local optimality of deterministic evaluation velocity. This motivates a post hoc hypothesis, not evidence for it.
 
 The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) adds a perception intervention and pinned SciPy statistics.
+
+The further claim review uses [Cawley and Talbot (2010)](https://jmlr.csail.mit.edu/papers/volume11/cawley10a/cawley10a.pdf), particularly Sections 4–5, for selection bias from optimizing noisy validation criteria. That source does not establish the cause of this project's validation-to-confirmation decrease. A covariance participation ratio is also distinct from [matrix rank](https://numpy.org/doc/1.26/reference/generated/numpy.linalg.matrix_rank.html); shared activation span alone guarantees neither leading-component confinement nor large cosine alignment.
+
 - **Observation layout.** [Gymnasium Ant-v5 `_get_obs`](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py) concatenates `qpos[2:]`, `qvel` and `cfrc_ext[1:]` clipped to the contact-force range. That puts the torso quaternion at obs[1:5], free-joint velocities at obs[13:19] and 13 × 6 contact wrenches at obs[27:105].
 - **Frames.**
   - MuJoCo's ["c"-quantities](https://mujoco.readthedocs.io/en/3.1.5/computation/index.html) are expressed "in a global frame centered at the subtree center of mass".
