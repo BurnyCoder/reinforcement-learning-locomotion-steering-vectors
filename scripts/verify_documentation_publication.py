@@ -72,18 +72,22 @@ def verify_media(github_revision: str = "main") -> dict:
             row.update(safe_error(error))  # Local: omit error text and headers; global: never persist temporary access tokens.
         videos.append(row)  # Local: retain every promised attachment; global: do not drop failed checks.
     readme = {"url": f"https://api.github.com/repos/{REPO}/commits/{quote(github_revision, safe='')}"}  # Local: resolve the requested GitHub ref; global: separate README identity from the Hub's revision.
-    players = None  # Local: distinguish an unavailable page from zero players; global: avoid invented verification results.
+    players = expected_players = None  # Local: distinguish unavailable source/rendering from zero players; global: avoid invented verification results.
     try:
         with urlopen(readme["url"], timeout=60) as response:  # Local: read public commit metadata; global: resolve a moving ref once without credentials.
             revision = json.load(response)["sha"]  # Local: keep only the immutable commit; global: exclude unrelated metadata from the evidence.
         readme.update(git_revision=revision, url=f"https://github.com/{REPO}/tree/{revision}")  # Local: pin the rendered tree; global: make the README check reproducible after later pushes.
+        readme["source_url"] = f"https://raw.githubusercontent.com/{REPO}/{revision}/README.md"  # Local: bind expectations to the same commit; global: support historical and concise README layouts.
+        with urlopen(readme["source_url"], timeout=60) as response:
+            source = response.read().decode("utf-8")
+        expected_players = len(re.findall(r"^https://github\.com/user-attachments/assets/[0-9a-fA-F-]+$", source.replace("\r\n", "\n"), re.MULTILINE))  # Local: count standalone attachment URLs; global: ordinary camera links do not promise embedded players.
         with urlopen(readme["url"], timeout=60) as response:  # Local: inspect this public repository revision; global: count actual rendered players.
             html = response.read().decode("utf-8")  # Local: inspect HTML in memory only; global: never save signed tokens embedded by GitHub.
         players = len(re.findall(r"<video\b", html))  # Local: count actual video tags; global: keep this rendering check separate from attachment availability.
         readme["status"] = "ok"  # Local: mark a complete page inspection; global: permit acceptance only after successful access.
     except Exception as error:  # Local: preserve metadata or rendering failure; global: save all attachment results before command failure.
         readme.update(safe_error(error))  # Local: retain safe error facts; global: exclude full HTML and redirect URLs.
-    return {"videos": videos, "readme_video_players": players, "readme": readme}  # Local: expose checks and pinned stable links; global: avoid storing browser or authentication state.
+    return {"videos": videos, "readme_video_players": players, "readme_expected_video_players": expected_players, "readme": readme}  # Local: expose checks and pinned stable links; global: avoid storing browser or authentication state.
 
 
 def main() -> None:
@@ -108,7 +112,8 @@ def main() -> None:
     result.update(media=media, readme_git_revision=media["readme"].get("git_revision"))  # Local: expose both publication revisions explicitly; global: distinguish them from the local audit checkout.
     save_json(args.output, result)  # Local: write the complete evidence before acceptance; global: retain mismatches for inspection.
     copies_pass = result["public"] and bool(result["copies"]) and all(row.get("unchanged_from_git") and row.get("public_copy_matches") and row["status"] == "ok" for row in result["copies"])  # Local: require nonempty completed comparisons; global: never accept skipped or failed evidence.
-    media_pass = media["readme"].get("status") == "ok" and media["readme_video_players"] == 3 and len(media["videos"]) == 3 and all(row["status"] == "ok" and row.get("http_status") == 200 and row.get("content_type") == "video/mp4" for row in media["videos"])  # Local: require each recorded media check; global: do not infer availability from absent data.
+    expected_players = media["readme_expected_video_players"]
+    media_pass = media["readme"].get("status") == "ok" and isinstance(expected_players, int) and expected_players > 0 and media["readme_video_players"] == expected_players and len(media["videos"]) == len(MEDIA) and all(row["status"] == "ok" and row.get("http_status") == 200 and row.get("content_type") == "video/mp4" for row in media["videos"])  # Local: require positive source/render agreement and every attachment; global: do not infer availability from absent data.
     if not copies_pass or not media_pass:  # Local: use an unconditional runtime guard; global: preserve failure behavior under Python optimization.
         logging.error("Publication verification failed: copies_pass=%s media_pass=%s; evidence=%s", copies_pass, media_pass, args.output)  # Local: log safe acceptance facts; global: keep failed invocations reviewable.
         raise RuntimeError("Publication verification failed; inspect the saved evidence JSON")  # Local: return a failing command status; global: avoid claiming a partial check succeeded.

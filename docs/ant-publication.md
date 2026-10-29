@@ -15,7 +15,7 @@ The first command validates every entry in [inputs.json](../reports/ant-publicat
 
 `--check` verifies existing inputs and generates temporary outputs under `tmp/ant-publication`. It compares bytes with the published files, reports stale or obsolete outputs, and does not modify publications or restore missing inputs. PDF timestamps and identifiers are fixed by ReportLab's invariant mode. Timestamped build logs are separate from deterministic scientific outputs.
 
-The publication source templates are in `docs/publication`; edit them rather than generated Ant sections. The thin script delegates restoration, saved-data reductions, plotting and document rendering to the `publication` package. The original JSON/NPZ files remain immutable inputs. The experiment register preserves other experiments, and historical protocols/reports retain their original evidence and linked errata.
+The publication source templates are in `docs/publication`; edit them rather than generated Ant sections. The README uses `readme-results.md.in` inside explicit `BEGIN GENERATED README RESULTS` / `END GENERATED README RESULTS` HTML comments. Its surrounding overview and usage text remain manually maintained; the Hugging Face featured section has its own template. The README tables add a reference baseline and separate the original confirmation from the later audit's negative named arms. The full signed results remain in the audit and explorer. The thin script delegates restoration, saved-data reductions, plotting and document rendering to the `publication` package. The original JSON/NPZ files remain immutable inputs. The experiment register preserves other experiments, and historical protocols/reports retain their original evidence and linked errata.
 
 ## What the outputs mean
 
