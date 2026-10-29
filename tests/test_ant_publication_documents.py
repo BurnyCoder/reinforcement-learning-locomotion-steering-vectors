@@ -120,6 +120,9 @@ def publication_sources(tmp_path):
         "reports/ant-classic-005/vector_diagnostics.json",
         "reports/ant-classic-005-independent-audit/audit.json",
         "reports/ant-publication/inputs.json",
+        "reports/hc-classic-001/results.json", "reports/hc-running-002/results.json",
+        "reports/hc-height-speed-003/results.json", "reports/hc-height-speed-004/results.json",
+        "reports/hc-running-002/vector_diagnostics.json",
     ]
     for relative in compact:
         target = root / relative
