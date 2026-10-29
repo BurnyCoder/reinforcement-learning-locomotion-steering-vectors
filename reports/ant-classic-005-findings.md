@@ -1,100 +1,76 @@
-# Featured result — ant-classic-005: lateral effect on fresh episodes
+# Ant 005: world-Y velocity steering, with failed formal acceptance
 
-The frozen Ant policy shows a causal change in **world-ground lateral velocity** on both validation and held-out episodes. At the locked strength **−0.1**, the confirmation effect is **+0.40238 m/s** (paired 95% interval **[+0.30803, +0.49127]**), while mean forward speed retains **96.83%** of baseline. This measurement concerns the world's y axis; it does not establish body-frame sidestepping or an isolated internal concept.
+This is the current generated account of the existing result. It supersedes the interpretation in the [historical narrative](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf63/reports/ant-classic-005-findings.md); original numerical artifacts and protocol decisions are unchanged. Author: Libor “Burny” Burian.
 
-The recorded status is `confirmation_failed`: a strict implementation rule rejects any episode ending before intervention. Seed **520025 ends at step 34 in both arms**, before steering begins at step 100. The failure count is **4/30 in both arms**, and all allowed increases in aggregate quality metrics are satisfied. Equal counts do not mean identical failed-seed identities or absence of intervention-induced failures. The shared pre-onset failure itself cannot have been caused by an intervention that had not started.
+## Question and method
 
-**Published evidence:** [downloadable vectors and controls](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz), [pinned manifest, selection and numerical results](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005), and the [within-project causal/code audit](ant-classic-005-causal-audit.md). The downloaded vector archive was checked against its local SHA256. No extra policy training or behavioral cloning was used.
+The question was whether a frozen Ant SAC actor contains an activation contrast that produces a useful, repeatable change in lateral movement or turning. “Lateral” is the original vector key; its evaluation coordinate is **world-Y ground-plane velocity**, not a body-relative sidestep. The [locally dated protocol](ant-classic-005-preregistration.md) records the pilot hypotheses and quality gates. Its first Git record follows the start of diagnostics/fitting, so it is not independently verifiable preregistration before any results.
 
-## Watch the same paired trajectory in three views
+The checkpoint has 105 observations, 8 actions, and a first hidden layer of 256 ReLU units. It is the [pinned Farama-Minari SAC checkpoint](https://huggingface.co/farama-minari/Ant-v5-SAC-medium/tree/de5978d34b0118341df2b0a30232c5d2bfcb148e), SHA256 `dea0e6dbb847776ac9e91dc8b7df5ba975742924eb55831d2da08a0abc786ca2`. We use deterministic inference and do not update policy weights. Upstream training provenance is distinct from independently reproduced training history.
 
-All three public attachments show baseline and lateral −0.1 for predetermined validation seed **510000**, the same existing 50-second simulated trajectory. They are explanatory media, not three independent tests or held-out confirmation episodes. The direct replay audit verifies numerical correspondence. World-ground lateral movement may reflect heading or diagonal progress; it does not demonstrate body-frame sidestepping.
+After 16 diagnostic and 64 fitting episodes, the extraction uses complete 100-step windows following a 100-step warmup. 531/531 fitting windows are eligible under the saved rules. The high/low quartile activation means are episode-weighted, differenced, and scaled to the fitting activation RMS. The saved lateral norm is 5.15135; strength -0.1 applies an offset of norm 0.51513. Its split-half cosine is 0.966. These stability diagnostics describe extraction, not causal usefulness.
 
-**Tracking view** — useful for seeing the gait close up.
+The implementation adapts [contrastive activation addition](https://arxiv.org/abs/2312.06681) to continuous-action locomotion. Earlier [maze-policy work](https://arxiv.org/abs/2310.08043) and [top-right steering](https://turntrout.com/top-right-steering-vector) already intervened on frozen RL activations. Episode weighting, movement filters, RMS scaling and usefulness gates are project choices, documented in [methodology](../docs/methodology.md) and [sources](../docs/sources.md).
 
-https://github.com/user-attachments/assets/676ef6c8-ade4-4f85-a0b7-01d7fcdb86c9
+## Data separation and selection
 
-**Top-down view** — a world-oriented view from above.
+| Cohort | Seeds | Role |
+| --- | --- | --- |
+| diagnostic | 500000–500015 | observed |
+| fit | 501000–501063 | observed |
+| validation | 510000–510009 | observed |
+| confirmation | 520000–520029 | observed |
+| replication | 530000–530029 | unused reservation |
+| independent audit | 540000–540019 | observed; includes former application reservation |
 
-https://github.com/user-attachments/assets/17286e19-c5a2-4ab9-96ab-f50444d494ca
+The original run evaluated 88 validation conditions and selected the lateral strength -0.1 before confirmation. 6 conditions were confirmed; each comparator retained its own validation-selected strength. The fitting data determine vectors, validation determines strength, and confirmation estimates the locked outcomes. The later audit has separate provenance and must not be pooled with confirmation or described as the unused formal replication split.
 
-**Fixed far-camera view with trails** — both panels use the same stationary camera and scale; the 20 m grid and labeled position rings/past-path trails show accumulated ground displacement.
+## Original confirmation results
 
-https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a
+The primary shifts mean world-Y velocity from 0.175 to 0.577 m/s: **+0.402 m/s**, paired percentile-bootstrap 95% interval **[0.308, 0.491]**. Mean world-X speed changes from 6.262 to 6.063 m/s, retaining **96.83%**. This is speed retention, not distance retention or a gait-similarity measurement.
 
-The movies and rendering audits are also preserved in the [pinned Hugging Face media release](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/865e68e9bf9eadc8b4efc20873e98f2d70e5e45a/experiments/ant-classic-005/videos).
+| Condition (strength) | Δ world-Y m/s | 95% interval | Forward speed retained | Squared-action change | Failures baseline → treated | Full gate |
+| --- | --- | --- | --- | --- | --- | --- |
+| lateral (-0.1) | +0.402 | [0.308, 0.491] | 96.83% | +17.84% | 4/30 → 4/30 | fail |
+| lateral_bias (+0.5) | +0.134 | [0.076, 0.197] | 99.40% | +1.21% | 4/30 → 1/30 | fail |
+| lateral_random0 (-0.05) | +0.155 | [0.095, 0.217] | 97.90% | -4.58% | 4/30 → 3/30 | fail |
+| lateral_random1 (-0.1) | +0.253 | [0.195, 0.311] | 95.72% | +7.34% | 4/30 → 7/30 | fail |
+| lateral_random2 (-0.05) | +0.155 | [0.089, 0.219] | 96.31% | -6.22% | 4/30 → 9/30 | fail |
+| lateral_shuffled (-0.2) | +0.890 | [0.771, 0.980] | 88.31% | +14.12% | 4/30 → 9/30 | fail |
 
-## Acceptance status and complete records
+The baseline is shared across conditions. The shuffled control is not a label-free null: its construction retains the fitting activation geometry. Random controls and the action-space comparator show that generic perturbations can also move the path. Failure costs and differing selected strengths prevent reading the largest effect as the best controller.
 
-No thresholds, selection, or data exclusions were changed after confirmation. All thirty pairs remain counted. No formal replication (seeds 530000–530029) or application run was performed; a later pre-registered audit on fresh seeds 540000–540019 reproduced the effect (see below). The [complete bundle](ant-classic-005/README.md) preserves 88 validation and six confirmation conditions, the fixed selection, vectors, action-bias comparator, and PDF. The [locally dated protocol record](ant-classic-005-preregistration.md) and [fitting inspection](ant-classic-005-diagnostics.md) preserve earlier decisions. Their timestamp limits and later narrative corrections are recorded in the [documentation audit](documentation-audit.md); they are not independent registrations.
+The status is **`confirmation_failed`**. Every pair is retained. An episode ending before intervention receives zero for unavailable post-onset summary outcomes and still counts as a failure; the strict prefix criterion independently rejects the condition. Other episodes use their available post-onset steps. This convention is not a general missing-data correction or a fixed-horizon estimand. Baseline and treated failure counts are each 4/30, with different failed-seed identities. Squared-action effort rises +17.84%; mean post-onset reward falls from 6.239 to 5.864 per step. No practical-target application is claimed.
 
-## Hypothesis, policy, and fitting
+![Original confirmation: effects, uncertainty and failures from saved evidence.](ant-publication/figures/confirmation.png)
 
-Ant was chosen because its free three-dimensional root supports lateral velocity and yaw rate, whereas planar HalfCheetah cannot test these outcomes. We used one frozen [Farama-Minari Ant-v5 SAC medium checkpoint](https://huggingface.co/farama-minari/Ant-v5-SAC-medium/tree/de5978d34b0118341df2b0a30232c5d2bfcb148e), with two 256-unit ReLU actor layers, 105 observations and eight actions. The first ReLU receives a fixed activation addition through [Baukit](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py). No behavioral cloning or policy training was performed.
+![Validation strengths, including unsuccessful conditions.](ant-publication/figures/strength-response.png)
 
-Diagnostic seeds 500000–500015 were followed by fitting seeds 501000–501063. There were **531 eligible 100-step windows from 62 contributing episodes**, with centered activation RMS **5.15135**. No fitting speed-floor exclusion occurred. The lateral contrast was **0.980 m/s**, with split-half cosine **0.9657**; the yaw-rate contrast was **0.0908 rad/s**, cosine **0.7610**. Longer-window sensitivity supported sustained lateral variation more strongly than turning. The lateral label also correlated with heading, so the vector does not establish an isolated sideways-motion concept.
+## Later audit and mechanism limits
 
-Eight fitting episodes ended early. All observed early endpoints had torso height above 1 m, consistent with Ant's [default healthy-height boundary](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py); no observed fitting-window inversion or torso contact explained those endings. This matters because baseline competence is imperfect even without intervention.
+The separately preregistered audit contains 5020 episodes across 251 arms on 20 resets. It reproduces **+0.462 m/s [0.343, 0.587]**, with 19 positive pairs, while treatment failures increase from 0 to 2. The rank p-value against 99 isotropic directions is 0.05; against 19 shuffled-label redraws it is 0.40. The turning-label direction is stronger. These findings do not establish lateral-label specificity.
 
-## Protocol and validation
+Projection ablations and the observation intervention support a heading-related account. At a negative observation rotation of 9.22 degrees, the measured world-Y effect is +0.903 m/s [0.816, 0.998]. That intervention changes observation channels only, while the simulator state remains unedited. Because contact channels were already clipped before rotation, it computes `clip(R clip(f))`, not generally `clip(R f)`. Quaternion and world linear-velocity rotations do not fix that loss of force magnitude. Exact physical-state equivalence and unique heading mediation remain unestablished.
 
-The original signed strengths ±0.05, ±0.1, ±0.2, ±0.5 were tested for lateral and turning candidates and each candidate's three random and one shuffled-label controls. Evaluation used ten paired seeds **510000–510009**, deterministic actions, a 100-step common prefix and 1,000-step horizon. Lateral usefulness requires at least **0.2 m/s** absolute change, an interval excluding zero, at least **80%** baseline forward speed, and the existing quality rules. Turning requires at least **0.1 rad/s** and 80% planar-speed retention. These are project pilot choices, not environment reward objectives.
+| Saved cohort | States with clipped planar wrench component | Post-onset states | Pooled fraction |
+| --- | --- | --- | --- |
+| fitting | 8444 | 53409 | 15.81% |
+| audit baseline | 2801 | 18000 | 15.56% |
 
-Lateral **−0.1** passed validation: **0.12536 → 0.67037 m/s**, effect **+0.54501 m/s**, interval **[+0.44638, +0.63939]**. Forward speed changed **6.46976 → 6.31790 m/s**, and failure fell from one episode to zero. Lateral **+0.1** also passed, changing the outcome in the opposite direction: effect **−0.26147 m/s**, interval **[−0.37796, −0.13919]**, with zero treated failures. No turning primary setting passed all gates.
+The clipping count is a new descriptive reduction of existing observations, not a fresh experiment. It does not estimate the clipping discrepancy's causal contribution. See the [generated independent-audit report](ant-classic-005-independent-audit.md) for ablations, alternative estimands, negative evidence and historical checks.
 
-The larger passing primary lateral effect at −0.1 was locked for confirmation. A fitted constant action-bias comparator received the same eight-strength calibration grid. Total validation comprises **80 activation conditions plus eight action-bias conditions**, with eleven pilot passes: two primary lateral settings and nine random/shuffled settings. Selection and controls were fixed at **2026-09-08 00:09:03 UTC**. Confirmation used fresh seeds **520000–520029**; replication **530000–530029** remains unused.
+![Mechanism ablations on the separate audit cohort.](ant-publication/figures/ablations.png)
 
-## Held-out outcome and the exact gate failure
+![Evaluation reward from observed episode segments; no training curve is inferred.](ant-publication/figures/reward.png)
 
-| Confirmation measurement, locked lateral −0.1 | Baseline | Steered |
-| --- | ---: | ---: |
-| Mean lateral velocity, m/s | 0.17472 | 0.57710 |
-| Mean forward speed, m/s | 6.26183 | 6.06317 |
-| Episode failures | 4/30 | 4/30 |
-| Inversion time fraction | 0% | 0.71685% |
-| Forbidden torso-contact fraction | 0% | 0% |
-| Episodes ending before steering | 1/30 | 1/30 |
+## Learnings and limits
 
-Effect size, interval, forward-speed retention, and the maximum five-percentage-point increases in failure/inversion/contact all pass. The additional requirement that both arms have **zero prefix-only episodes** alone makes `quality_pass` false for the primary. Seed 520025 ends at step 34 identically in baseline, primary, and every selected control, as verified in the [prefix audit](ant-classic-005/prefix-failure-audit.json). Its behavioral summary is zero in both arms under the project convention, while it still counts as a failure. Every pair remains counted; other episode summaries average available post-onset steps. For this shared early pair, retaining zero scales the observed paired effect by 29/30 relative to the other 29 pairs; this is not a generally validated missing-data correction or a fixed-horizon locomotion outcome.
+The measured target can change without producing a controller that satisfies its original acceptance rule. World-Y motion can reflect heading involvement rather than a pure sidestep. A component ablation and an observation intervention constrain explanations more than a cosine alone, but do not identify a unique latent semantic feature. Shared baselines require joint resampling for cross-arm inference; matching displacement and a derived travel angle is arithmetic rather than independent mechanism evidence.
 
-Each control was confirmed at its own validation-selected strength ([selection](ant-classic-005/selection.json)). The selected action bias (+0.5) gives **+0.13439 m/s**, below the lateral threshold. Random controls 0, 1 and 2 (−0.05, −0.1 and −0.05) give **+0.15550**, **+0.25282**, and **+0.15472 m/s**; the shuffled control, at −0.2 or twice the primary's strength, gives **+0.89039 m/s**. None passes the complete gate because every arm includes the shared prefix failure; some also fail size or increase failure. The shuffled control has nine failures versus four at baseline, so its larger effect does not establish equally competent control. The primary's positive effect should be distinguished from both a formal protocol pass and a claim of superiority to all generic directions.
+The original fitting sensitivities, paired replay checks and source audits remain linked in the [diagnostics](ant-classic-005-diagnostics.md), [causal audit](ant-classic-005-causal-audit.md), [specificity audit](ant-classic-005-y-shift-audit.md) and [path audit](ant-classic-005-mechanism-audit.md). Their numbers and run history are preserved. The correction here narrows interpretation and prevents future seed reuse.
 
-**Later qualification ([scientific-rigor audit](scientific-rigor-audit.md)).** The audit leaves the recorded status unchanged. It finds that the effect is robust:
-- a sign-flip randomization test gives p ≈ 5×10⁻⁶, the smallest value attainable with its 200,000 sign flips (none was as extreme);
-- 28 of 30 pairs are positive;
-- post-onset world-Y displacement rises +17.4 m, interval [12.8, 21.7] m, a measure that avoids the prefix-only zero-fill convention.
+Only the evaluated checkpoint, simulator, layer, strengths and horizons are covered. Reset-seed evidence does not establish training-seed robustness. No new training, retuning, formal replication, application, or alternative-method experiment was performed for this completion. Training-loss curves and experimental LLM prompt logs are inapplicable.
 
-It also finds that the effect is only partly specific to this vector:
-- On the same seeds, the primary exceeds each isotropic random control by 0.15–0.25 m/s and the action bias by 0.27 m/s. Only random 1 ran at the primary's strength (−0.1); it trails by 0.150 m/s [0.079, 0.215]. Random 0 and 2 ran at −0.05, half the offset.
-- In validation, the three lateral-family random directions produce 35–112% of the primary's sign-dependent lateral response at |α| ≤ 0.1. Across all six isotropic draws the range is −13% to 112%, with mixed signs.
-- The shuffled control has cosine +0.60 with the primary, so its larger shift is not label-free evidence.
-- Mean torso heading changes +5.23°.
+## Reproduce and explore
 
-**Further qualification ([world-Y specificity audit](ant-classic-005-y-shift-audit.md)).** This post hoc, saved-data check also leaves the status unchanged. It finds:
-- **Not label-specific.** The turning vector, fitted on yaw-rate labels and nearly orthogonal to this one (cosine +0.114), moves world Y more at every |α| ≤ 0.2: by +0.19 m/s [+0.14, +0.25] more at |α| = 0.1 in validation.
-- **Weak evidence against isotropic noise.** Among six norm-matched isotropic directions, the primary's sign-dependent response ranks first at |α| = 0.1, but the rank p is only 1/7.
-- **Partly generic.** About a quarter of the selected validation shift is sign-independent. Almost every perturbation pushes the Ant toward +Y.
-- **A rotated path, not a continuing turn.** On average the direction of travel rotates by +3.84° [+3.01, +4.58], through a bounded 4–7° heading offset with no sustained yaw rate. It is neither a continuing turn nor sidestepping toward +Y (body-relative travel even drifts slightly toward −Y; see below).
-
-**Second-pass corrections ([mechanism audit](ant-classic-005-mechanism-audit.md)).** The status is again unchanged. The audit confirms the effect over the steps both arms recorded: +0.392 m/s [+0.299, +0.477]. It corrects two statements above and one statistical rationale:
-- **The quarter is uncertain.** The sign-independent share is 26%, with a bootstrap interval of about [8%, 39%]; its lower bound moves between 6.5% and 8.9% across bootstrap seeds. "Almost every perturbation" rested on one shared baseline. Resampled jointly, the generic drift is not supported at |α| = 0.05 and is marginal at 0.1.
-- **The rotation is not rigid.** The torso turns +5.23°, more than the +3.84° path change. Seen from the torso, travel direction shifts −1.39° [−2.03, −0.85]. The displacement-based "rotation check" cannot tell rotation from sidestepping.
-- **Pairing does not narrow the interval.** Arms decorrelate after onset (r = −0.40 for world Y), so pairing does not reduce variance. The recorded interval stays valid, and a studentized sign-flip test also reaches its 200,000-flip floor, p ≈ 5×10⁻⁶.
-
-**Independent audit with fresh seeds ([report](ant-classic-005-independent-audit.md), [protocol](ant-classic-005-independent-audit-preregistration.md)).** The status is unchanged. This audit did not use the audits above.
-- **Evidence chain.** It recomputed every saved number from raw episodes, refit the vectors bitwise and re-simulated pairs exactly. It found no implementation, pairing, leakage or reporting error.
-- **Replication.** On 20 fresh resets (540000–540019), lateral −0.1 gives +0.462 m/s [0.343, 0.587], with 19/20 pairs positive. Failures rise from 0/20 to 2/20, which is typical of equal-size random perturbations and exceeds the five-point quality allowance. These resets are not the formal replication split, and 540000–540009 are the application cohort that `demonstrate` reserves by convention for this run, so a future 005 application needs other seeds.
-- **Specificity.** The vector's sign-dependent response ranks at p = 0.05 among 99 norm-matched random directions. That is exactly the threshold, so this specificity is weak. It is not label-specific: turning is stronger, and 7 of 19 shuffle redraws match it.
-- **Mechanism: perceived heading.** The vector has cosine 0.91 with the first-layer response to a rotated observation. Its heading component reproduces the effect, while the remainder's sign-dependent response ranks like a random direction (p = 0.21); rescaled to the full vector's norm, that remainder fails 8/20 and 14/20 episodes at −0.1 and +0.1, far more than the 2/20 of the unscaled remainder. Rotating only the observation by −9.2° moves world Y by +0.90 m/s in 20/20 pairs, with zero failures and a rigidly rotated path. The useful strength is negative because the vector reports a heading rotated toward +Y at positive strength, and the policy corrects it.
-
-## Visual evidence and interpretation
-
-The first three predetermined validation seeds, **510000–510002**, were replayed with and without −0.1 steering. All six episodes complete 1,000 steps without measured inversion/contact. Paired videos are preliminary validation illustrations, not new independent evaluations. The media audit verifies exact replay-array equality, matching initial states and unsteered action prefixes. The tracking camera and finite ground texture can obscure world displacement late in the video; the accompanying XY plot shows **sideways motion on the ground, not torso height or jumping**. For seed 510000, mean lateral velocity changes from +0.073 to +0.547 m/s. See the media index under `runs/ant-classic-005/videos/preliminary/` and the cumulative [paper](paper.md). A completed top-down paired movie is at `runs/ant-classic-005/videos/topdown/lateral__-0.1000/seed-510000-preliminary-topdown-paired.mp4`; the scene-only ground improvement preserves the numerical trajectory.
-
-Diagnosis and fitting record code commit `8ad6ce3`; validation/confirmation ran from `1b835f98446b86aa30c8ba3e50a6826b12ef4068`, recorded with source hashes in `20260908T000243916712Z.log`. The manifest migration retains the original coarse grid and does not imply that every phase used the initial manifest commit. Full phase logs remain part of the raw run provenance.
-
-The requested fixed far-camera movie is also complete: `runs/ant-classic-005/videos/fixed-camera/lateral__-0.1000/seed-510000-preliminary-fixed-camera-paired.mp4`. Both panels use the same stationary camera and scale, with a 20 m ground grid and labeled position rings and past-path trails. These annotations aid visibility; they are not changed robot geometry. Its adjacent audit verifies observation, action, reward and metadata arrays against the existing validation rollouts, unchanged model geometry/material, and preserved simulation state. No fresh evaluation data were collected.
-
-The [separate within-project arithmetic audit](ant-classic-005/math-audit.json) found that confirmation mean squared action rises from **0.24702 to 0.29108**, while episode-averaged original reward falls from **6.23937 to 5.86443** per available post-onset step. A post hoc yaw-aligned coordinate calculation gives **+0.05943 m/s** side-velocity change, compared with **+0.40238 m/s** in world Y. These measurements are consistent with a change in direction/heading, without proving a sole mediator. Gait-pattern preservation was not directly measured. The descriptive analysis did not change fitting, selection or acceptance. Speed retention is not retained travel distance or full-horizon completion; episode summaries use available post-onset durations.
-
-The result supports a causal world-ground lateral shift on the tested frozen policy, including fresh held-out reset episodes. It does not establish a formally accepted or replicated useful intervention, a feedback-controlled target, cross-training-seed robustness, or a sideways-motion concept. The independent audit's interventions identify the operative representation as perceived heading. The strict prefix criterion and imperfect baseline competence limit the current acceptance procedure. A future protocol could distinguish baseline failures before intervention from intervention quality, but this experiment's rule and recorded outcome remain unchanged. The research priority here is documenting the existing effect, failures, controls, and media rather than starting another method.
+Run `uv run --locked --no-sync python scripts/build_ant_publication.py` from the repository root. It restores missing pinned inputs, verifies hashes, and regenerates current tables, figures, prose and PDFs without loading the policy. `--check` compares generated outputs for staleness. [Instructions and completion ledger](../docs/ant-publication.md) · [all generated evidence](ant-publication/evidence.json) · [interactive explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/).

@@ -16,6 +16,17 @@ def test_minus_plus_keeps_its_sign_order():
     assert inline("±0.1") == "±0.1"  # Helvetica has ±, so it stays unchanged.
 
 
+def test_greek_names_remain_readable_in_text_and_inline_code(tmp_path, monkeypatch):
+    """Local: spell Greek names in portable fonts. Global: preserve differences and signed formulas across PDF viewers."""
+    assert inline("Δ world-Y; `f(α) = δ + θ + ω`") == 'Delta world-Y; <font name="Courier">f(alpha) = delta + theta + omega</font>'
+    monkeypatch.setattr(rl_config, "pageCompression", 0)  # Inspect real PDF text without depending on a particular viewer's font fallback.
+    source = tmp_path / "greek.md"
+    source.write_text("# Greek notation\n\nΔ world-Y velocity\n\n`f(α) = δ + θ + ω`\n", encoding="utf-8")
+    pdf = build(source).read_bytes()
+    assert all(name in pdf for name in (b"Delta", b"alpha", b"delta", b"theta", b"omega"))
+    assert b"/BaseFont /Symbol" not in pdf  # Avoid the unembedded Symbol font that rendered missing/wrong glyphs in the final inspection.
+
+
 def test_pdf_build_is_byte_deterministic_and_names_requested_author(tmp_path):
     """Local: build the same source twice. Global: let publication --check compare PDF bytes reliably."""
     source = tmp_path / "paper.md"  # Local: isolate the output; global: do not overwrite a scientific paper in tests.

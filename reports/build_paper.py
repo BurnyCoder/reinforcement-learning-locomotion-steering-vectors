@@ -4,7 +4,7 @@ Sources: https://docs.reportlab.com/reportlab/userguide/ch5_platypus/ and
 https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/ describe the layout APIs.
 This deliberately supports only the Markdown used here: headings, paragraphs, one-line bullets,
 tables (with escaped pipes), links, images, bold, inline code, explicit page breaks,
-Greek letters via the Symbol font and superscript exponents. Other HTML comments
+Greek letters spelled as ASCII names and superscript exponents. Other HTML comments
 are generation bookkeeping and are omitted. ReportLab's invariant Canvas mode
 fixes PDF dates/identifiers so the same source and assets produce identical bytes:
 https://docs.reportlab.com/reportlab/userguide/ch2_graphics/ .
@@ -28,7 +28,7 @@ def inline(text: str) -> str:
     """Local: translate used inline markup. Global: preserve prose, units and source attribution."""
     text = text.replace("−", "-").replace("→", " to ").replace("≥", ">=").replace("≤", "<=")  # Local: normalize unsupported font glyphs; global: prevent missing scientific symbols in portable PDF fonts.
     text = escape(text).replace("≈", "~").replace("∓", "-/+")  # Local: protect markup characters and spell out two glyphs missing from Helvetica (∓ keeps its sign order); global: render literal equations correctly.
-    text = re.sub("[αδθω]+", lambda m: f'<font name="Symbol">{m.group()}</font>', text)  # Local: ReportLab 4 encodes these code points into the standard Symbol font; global: show audit notation without embedding fonts.
+    text = text.translate(str.maketrans({"Δ": "Delta", "α": "alpha", "δ": "delta", "θ": "theta", "ω": "omega"}))  # Local: spell Greek names before inline-code markup; global: preserve difference/sign notation when viewers lack the unembedded Symbol font.
     text = re.sub("[⁻⁰¹²³⁴⁵⁶⁷⁸⁹]+", lambda m: f"<super>{m.group().translate(str.maketrans('⁻⁰¹²³⁴⁵⁶⁷⁸⁹', '-0123456789'))}</super>", text)  # Local: superscript exponents via ReportLab <super>; global: keep scientific notation legible.
     text = re.sub(r"\[([^]]+)\]\((https?://[^)]+)\)", r'<a href="\2" color="#174d78">\1</a>', text)  # Local: retain external citations as active links; global: let readers inspect primary evidence.
     text = re.sub(r"\[([^]]+)\]\(([^)]+)\)", r"\1 (\2)", text)  # Local: print repository-relative artifact references; global: avoid machine-specific file links.
