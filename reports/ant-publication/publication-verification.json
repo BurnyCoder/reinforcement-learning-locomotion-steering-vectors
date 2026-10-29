@@ -165,5 +165,17 @@
     "Historical preregistration timing unrepairable",
     "Baukit/full checkpoint licensing unresolved",
     "No formal replication, training-seed generalization, unique heading mechanism or practical-control claim"
-  ]
+  ],
+  "record_scope": "Historical Ant publication receipt. Earlier test counts and clean-restore checks remain historical; the later independent fact-check below records current verification separately.",
+  "independent_fact_check_2026_10_29": {
+    "report": "../fact-check-2026-10-29/report.md",
+    "checks": "../fact-check-2026-10-29/checks.json",
+    "publication_receipt": "../fact-check-2026-10-29/publication.json",
+    "source_commit": "95b9c2b570dd9421ce1ed46f4e818ea24e813811",
+    "merge_commit": "5bbf7c2af3b79143c3e19fc5d91f692e492aaf6d",
+    "pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/22",
+    "hugging_face_revision": "6d31e45bdf0b4f58665d78ed9cfdb1f881852838",
+    "pages_all_hashes_match": true,
+    "boundary": "Publication downloads, hashing, metadata and saved-data browser checks only; no model or simulator execution."
+  }
 }

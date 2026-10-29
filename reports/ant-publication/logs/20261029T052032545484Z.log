@@ -1,0 +1,132 @@
+2026-10-29 05:20:33,650Z INFO Downloading pinned evidence paper/build_paper.py at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:33,651Z INFO Downloading pinned evidence paper/paper.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:33,651Z INFO Downloading pinned evidence README.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:33,652Z INFO Downloading pinned evidence paper/paper.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,093Z INFO Verified published document README.md
+2026-10-29 05:20:34,096Z INFO Verified published document paper/build_paper.py
+2026-10-29 05:20:34,096Z INFO Downloading pinned evidence paper/paper_build.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,101Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-causal-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,297Z INFO Verified published document paper/paper.md
+2026-10-29 05:20:34,300Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-diagnostics.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,453Z INFO Verified published document paper/paper_build.md
+2026-10-29 05:20:34,459Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-findings.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,497Z INFO Verified published document documentation/experiments/ant-classic-005-causal-audit.md
+2026-10-29 05:20:34,501Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit-preregistration.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,650Z INFO Verified published document documentation/experiments/ant-classic-005-diagnostics.md
+2026-10-29 05:20:34,655Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,840Z INFO Verified published document documentation/experiments/ant-classic-005-findings.md
+2026-10-29 05:20:34,845Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-independent-audit.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,920Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit-preregistration.md
+2026-10-29 05:20:34,924Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-mechanism-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:34,936Z INFO Verified published document paper/paper.pdf
+2026-10-29 05:20:34,940Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-preregistration.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,021Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit.md
+2026-10-29 05:20:35,024Z INFO Downloading pinned evidence documentation/experiments/ant-classic-005-y-shift-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,312Z INFO Verified published document documentation/experiments/ant-classic-005-preregistration.md
+2026-10-29 05:20:35,313Z INFO Verified published document documentation/experiments/ant-classic-005-mechanism-audit.md
+2026-10-29 05:20:35,315Z INFO Downloading pinned evidence documentation/experiments/experiments.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,317Z INFO Downloading pinned evidence documentation/experiments/ant-publication-completion.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,375Z INFO Verified published document documentation/experiments/ant-classic-005-y-shift-audit.md
+2026-10-29 05:20:35,380Z INFO Downloading pinned evidence documentation/experiments/fact-check-2026-10-22.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,626Z INFO Verified published document documentation/experiments/ant-classic-005-independent-audit.pdf
+2026-10-29 05:20:35,630Z INFO Downloading pinned evidence documentation/experiments/scientific-rigor-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,678Z INFO Verified published document documentation/experiments/ant-publication-completion.md
+2026-10-29 05:20:35,680Z INFO Downloading pinned evidence documentation/experiments/documentation-audit.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,734Z INFO Verified published document documentation/experiments/fact-check-2026-10-22.md
+2026-10-29 05:20:35,737Z INFO Downloading pinned evidence documentation/experiments/hc-classic-001-diagnostics.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,760Z INFO Verified published document documentation/experiments/experiments.md
+2026-10-29 05:20:35,765Z INFO Downloading pinned evidence documentation/experiments/hc-running-002-findings.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:35,959Z INFO Verified published document documentation/experiments/scientific-rigor-audit.md
+2026-10-29 05:20:35,963Z INFO Downloading pinned evidence documentation/experiments/hc-running-002-validation-inspection.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,070Z INFO Verified published document documentation/experiments/hc-classic-001-diagnostics.md
+2026-10-29 05:20:36,074Z INFO Downloading pinned evidence documentation/experiments/hc-height-speed-003-findings.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,103Z INFO Verified published document documentation/experiments/documentation-audit.md
+2026-10-29 05:20:36,108Z INFO Downloading pinned evidence documentation/experiments/hc-height-speed-004-findings.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,111Z INFO Verified published document documentation/experiments/hc-running-002-findings.md
+2026-10-29 05:20:36,115Z INFO Downloading pinned evidence documentation/methodology.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,406Z INFO Verified published document documentation/experiments/hc-height-speed-003-findings.md
+2026-10-29 05:20:36,409Z INFO Downloading pinned evidence documentation/sources.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,527Z INFO Verified published document documentation/experiments/hc-running-002-validation-inspection.md
+2026-10-29 05:20:36,529Z INFO Verified published document documentation/experiments/hc-height-speed-004-findings.md
+2026-10-29 05:20:36,534Z INFO Downloading pinned evidence documentation/ant-publication.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,535Z INFO Downloading pinned evidence documentation/ant-videos.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,547Z INFO Verified published document documentation/methodology.md
+2026-10-29 05:20:36,551Z INFO Downloading pinned evidence documentation/pgs-adaptation.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,764Z INFO Verified published document documentation/sources.md
+2026-10-29 05:20:36,771Z INFO Downloading pinned evidence documentation/fact-check-scope.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,875Z INFO Verified published document documentation/ant-publication.md
+2026-10-29 05:20:36,882Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/inputs.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,898Z INFO Verified published document documentation/pgs-adaptation.md
+2026-10-29 05:20:36,904Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/verification.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:36,909Z INFO Verified published document documentation/ant-videos.md
+2026-10-29 05:20:36,913Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/provenance.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,107Z INFO Verified published document documentation/fact-check-scope.json
+2026-10-29 05:20:37,114Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/claims.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,563Z INFO Verified published document documentation/fact-check-2026-10-29/provenance.json
+2026-10-29 05:20:37,567Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,589Z INFO Verified published document documentation/fact-check-2026-10-29/inputs.json
+2026-10-29 05:20:37,594Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,630Z INFO Verified published document documentation/fact-check-2026-10-29/verification.json
+2026-10-29 05:20:37,634Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/checks.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,964Z INFO Verified published document documentation/fact-check-2026-10-29/report.md
+2026-10-29 05:20:37,969Z INFO Downloading pinned evidence documentation/fact-check-2026-10-29/media.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:37,977Z INFO Verified published document documentation/fact-check-2026-10-29/report.pdf
+2026-10-29 05:20:37,982Z INFO Downloading pinned evidence experiments/hc-classic-001/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:38,269Z INFO Verified published document documentation/fact-check-2026-10-29/claims.json
+2026-10-29 05:20:38,276Z INFO Downloading pinned evidence experiments/hc-classic-001/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:38,302Z INFO Verified published document documentation/fact-check-2026-10-29/checks.json
+2026-10-29 05:20:38,306Z INFO Downloading pinned evidence experiments/hc-running-002/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:38,606Z INFO Verified published document experiments/hc-classic-001/report.pdf
+2026-10-29 05:20:38,610Z INFO Downloading pinned evidence experiments/hc-running-002/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:38,670Z INFO Verified published document experiments/hc-running-002/report.md
+2026-10-29 05:20:38,672Z INFO Verified published document experiments/hc-classic-001/report.md
+2026-10-29 05:20:38,674Z INFO Downloading pinned evidence experiments/hc-running-002/strength_response_1.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:38,675Z INFO Downloading pinned evidence experiments/hc-running-002/strength_response_2.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,316Z INFO Verified published document experiments/hc-running-002/strength_response_2.png
+2026-10-29 05:20:39,320Z INFO Downloading pinned evidence experiments/hc-running-002/strength_response_3.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,327Z INFO Verified published document documentation/fact-check-2026-10-29/media.json
+2026-10-29 05:20:39,331Z INFO Downloading pinned evidence experiments/hc-height-speed-003/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,359Z INFO Verified published document experiments/hc-running-002/strength_response_1.png
+2026-10-29 05:20:39,363Z INFO Downloading pinned evidence experiments/hc-height-speed-003/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,634Z INFO Verified published document experiments/hc-running-002/report.pdf
+2026-10-29 05:20:39,639Z INFO Downloading pinned evidence experiments/hc-height-speed-003/strength_response_1.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,671Z INFO Verified published document experiments/hc-height-speed-003/report.md
+2026-10-29 05:20:39,674Z INFO Downloading pinned evidence experiments/hc-height-speed-004/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:39,926Z INFO Verified published document experiments/hc-running-002/strength_response_3.png
+2026-10-29 05:20:39,929Z INFO Downloading pinned evidence experiments/hc-height-speed-004/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,012Z INFO Verified published document experiments/hc-height-speed-004/report.md
+2026-10-29 05:20:40,016Z INFO Downloading pinned evidence experiments/hc-height-speed-004/strength_response_1.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,080Z INFO Verified published document experiments/hc-height-speed-003/report.pdf
+2026-10-29 05:20:40,084Z INFO Downloading pinned evidence experiments/ant-classic-005/report.md at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,235Z INFO Verified published document experiments/hc-height-speed-003/strength_response_1.png
+2026-10-29 05:20:40,240Z INFO Downloading pinned evidence experiments/ant-classic-005/report.pdf at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,371Z INFO Verified published document experiments/hc-height-speed-004/strength_response_1.png
+2026-10-29 05:20:40,376Z INFO Downloading pinned evidence experiments/ant-classic-005/strength_response_1.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,426Z INFO Verified published document experiments/ant-classic-005/report.md
+2026-10-29 05:20:40,430Z INFO Downloading pinned evidence experiments/ant-classic-005/strength_response_2.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,715Z INFO Verified published document experiments/ant-classic-005/strength_response_1.png
+2026-10-29 05:20:40,721Z INFO Downloading pinned evidence publication/inputs.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,787Z INFO Verified published document experiments/ant-classic-005/strength_response_2.png
+2026-10-29 05:20:40,794Z INFO Downloading pinned evidence publication/evidence.json at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:40,964Z INFO Verified published document experiments/hc-height-speed-004/report.pdf
+2026-10-29 05:20:40,968Z INFO Downloading pinned evidence paper/ant-publication/figures/confirmation.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,018Z INFO Verified published document experiments/ant-classic-005/report.pdf
+2026-10-29 05:20:41,023Z INFO Downloading pinned evidence paper/ant-publication/figures/ablations.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,355Z INFO Verified published document publication/inputs.json
+2026-10-29 05:20:41,357Z INFO Verified published document paper/ant-publication/figures/confirmation.png
+2026-10-29 05:20:41,362Z INFO Downloading pinned evidence paper/ant-publication/figures/strength-response.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,364Z INFO Downloading pinned evidence paper/ant-publication/figures/specificity.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,411Z INFO Verified published document paper/ant-publication/figures/ablations.png
+2026-10-29 05:20:41,416Z INFO Downloading pinned evidence paper/ant-publication/figures/reward.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,465Z INFO Verified published document publication/evidence.json
+2026-10-29 05:20:41,469Z INFO Downloading pinned evidence paper/ant-publication/figures/trajectories.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:41,723Z INFO Verified published document paper/ant-publication/figures/specificity.png
+2026-10-29 05:20:41,725Z INFO Downloading pinned evidence paper/ant-publication/figures/architecture.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:42,007Z INFO Verified published document paper/ant-publication/figures/strength-response.png
+2026-10-29 05:20:42,011Z INFO Downloading pinned evidence paper/paper_assets/ant-lateral-validation.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:42,030Z INFO Verified published document paper/ant-publication/figures/reward.png
+2026-10-29 05:20:42,035Z INFO Downloading pinned evidence paper/paper_assets/ant-topdown-validation.png at 6d31e45bdf0b4f58665d78ed9cfdb1f881852838 (attempt 1)
+2026-10-29 05:20:42,051Z INFO Verified published document paper/ant-publication/figures/trajectories.png
+2026-10-29 05:20:42,063Z INFO Verified published document paper/ant-publication/figures/architecture.png
+2026-10-29 05:20:42,359Z INFO Verified published document paper/paper_assets/ant-lateral-validation.png
+2026-10-29 05:20:42,377Z INFO Verified published document paper/paper_assets/ant-topdown-validation.png
