@@ -1,0 +1,31 @@
+{
+  "videos": [
+    {
+      "url": "https://github.com/user-attachments/assets/676ef6c8-ade4-4f85-a0b7-01d7fcdb86c9",
+      "status": "ok",
+      "http_status": 200,
+      "content_type": "video/mp4"
+    },
+    {
+      "url": "https://github.com/user-attachments/assets/17286e19-c5a2-4ab9-96ab-f50444d494ca",
+      "status": "ok",
+      "http_status": 200,
+      "content_type": "video/mp4"
+    },
+    {
+      "url": "https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a",
+      "status": "ok",
+      "http_status": 200,
+      "content_type": "video/mp4"
+    }
+  ],
+  "readme_video_players": 1,
+  "readme_expected_video_players": 1,
+  "readme": {
+    "url": "https://github.com/BurnyCoder/rl-locomotion-steering-vectors/tree/f58173562a6db548218903c63863688b50b4e89f",
+    "git_revision": "f58173562a6db548218903c63863688b50b4e89f",
+    "source_url": "https://raw.githubusercontent.com/BurnyCoder/rl-locomotion-steering-vectors/f58173562a6db548218903c63863688b50b4e89f/README.md",
+    "status": "ok"
+  },
+  "created_utc": "2026-10-29T01:32:41.835326+00:00"
+}

@@ -1,0 +1,31 @@
+## Results and limitations
+
+### Original Ant confirmation
+
+Adding the saved **{{hidden_dim}}-dimensional lateral vector at strength {{alpha}}** increases mean **world-Y ground-plane velocity by {{effect}} m/s**, with a paired bootstrap 95% interval **{{ci}}**, across **{{n}} confirmation pairs**. Forward-speed retention is **{{retention}}%**. These are equal-episode means over available post-onset motion, not body-relative sidestepping or distance retention. [Saved results](reports/ant-classic-005/results.json).
+
+**The original outcome remains `{{status}}`.** Baseline and treated arms each fail on {{baseline_failures}}/{{n}} episodes, on partly different seeds. A shared episode ends before steering begins and triggers the strict prefix criterion. Squared action rises {{effort_change}}%, while mean post-onset reward falls from {{baseline_reward}} to {{treated_reward}} per recorded step. Equal failure counts do not establish equal safety on each reset.
+
+{{readme_confirmation_table}}
+
+Every confirmed primary/control arm is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
+
+![Original confirmation effects and uncertainty, including unsuccessful controls](reports/ant-publication/figures/confirmation.png)
+
+In plain language, the primary's measured mean shift is larger than the action bias and the displayed random controls, but it increases action effort. The shuffled-label direction has a still larger mean shift while sacrificing forward speed and increasing failures. None passes the full confirmation gate. These are descriptive comparisons, not tests of superiority between directions. See [the findings](reports/ant-classic-005-findings.md) for the physical-quality criteria.
+
+### Later audit and component ablations
+
+On a **separate cohort of {{fresh_n}} resets**, the locked primary produces **{{fresh_effect}} m/s {{fresh_ci}}** (paired BCa 95% interval). Failures increase from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}. Its sign-dependent response ranks at **p = {{random_p}}** against {{random_n}} norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
+
+{{readme_audit_table}}
+
+For compactness, this table shows the baseline and **every negative-strength named arm**, including all heading-component ablations and the negative observation transformation; rows were not chosen by effect size. The primary and observation-transform intervals are saved paired BCa intervals. The remaining comparison intervals are descriptive paired percentile intervals, unadjusted for multiple comparisons. The [complete signed audit](reports/ant-classic-005-independent-audit.md), [control alignment audit](reports/scientific-rigor-audit.md), and [explorer]({{site}}) include both signs, random/shuffled ensembles, control cosines and odd/even responses. The baseline has no comparison interval.
+
+![Ant heading-component ablations and observation intervention with paired uncertainty](reports/ant-publication/figures/ablations.png)
+
+Removing the heading-aligned component changes the response. Its norm-matched remainder still shifts behavior at the opposite, positive sign, with severe locomotion costs (see the complete signed audit); the negative arm above has an interval containing zero. Projection ablations and the observation intervention support **heading involvement**, without establishing exact physical-heading equivalence or a unique semantic mediator. The historical transformation rotates and reclips already-clipped contact wrenches: `clip(R clip(f))` generally differs from physical rotation's `clip(R f)`. No historical treatment or result is changed by this qualification.
+
+![Evaluation reward over recorded transitions with available-episode counts, separated by cohort](reports/ant-publication/figures/reward.png)
+
+These are **evaluation rewards**, averaged over observed segments and accompanied by available-episode counts; failed episodes remain included and curves stop at termination. Training-loss curves are unavailable for the evaluated frozen upstream checkpoints. Generalization across independently trained policies, new domains or real robots has not been established. [Estimators, provenance and full-precision evidence](reports/ant-publication/evidence.json) · [All experiments, including HalfCheetah's negative results](reports/experiments.md).

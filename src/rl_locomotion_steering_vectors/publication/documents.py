@@ -37,9 +37,20 @@ def markdown_table(headers: list[str], rows: list[list]) -> str:
     return "\n".join([clean(headers), clean(["---"] * len(headers)), *(clean(row) for row in rows)])
 
 
-def measurement_table(records: list[dict]) -> str:
+def measurement_table(records: list[dict], *, include_baseline: bool = False) -> str:
     """Publish every original confirmed arm, including unsuccessful controls and denominators."""
     rows = []
+    if include_baseline:
+        if not records:
+            raise ValueError("A confirmation baseline requires saved confirmation records")
+        baseline, n = records[0]["effect"]["baseline_means"], records[0]["effect"]["n_pairs"]
+        if any(record["effect"]["baseline_means"] != baseline or record["effect"]["n_pairs"] != n for record in records):
+            raise ValueError("Confirmation records must have one shared baseline")
+        # Zero is the baseline's self-comparison, not an estimated interval or a successful usefulness gate.
+        rows.append(["unsteered baseline", number(0, 3, True), "reference",
+                     "100.00%" if baseline["speed"] else "undefined",
+                     "+0.00%" if baseline["effort"] else "undefined",
+                     f"{round(baseline['failure'] * n)}/{n} (reference)", "reference"])
     for record in records:
         effect = record["effect"]
         baseline, treated, n = effect["baseline_means"], effect["treated_means"], effect["n_pairs"]
@@ -51,6 +62,22 @@ def measurement_table(records: list[dict]) -> str:
                      "pass" if effect["gate"] else "fail"])
     return markdown_table(["Condition (strength)", "Δ world-Y m/s", "95% interval", "Forward speed retained",
                            "Squared-action change", "Failures baseline → treated", "Full gate"], rows)
+
+
+def audit_measurement_table(records: list[dict], *, negative_only: bool = False) -> str:
+    """Render named audit arms; the README filters signs, never measured effects or failures."""
+    reference = next(item["metrics"] for item in records if item["kind"] == "baseline")
+    rows = []
+    for item in records:
+        if item["kind"] in ("random", "shuffled") or (negative_only and item["kind"] != "baseline" and item["alpha"] >= 0):
+            continue  # Complete random ensembles and both signs remain available in the evidence and explorer.
+        metrics, comparison = item["metrics"], item["pairedEffect"]
+        effort = number(100 * (metrics["effort"] / reference["effort"] - 1), 2, True) + "%" if reference["effort"] else "undefined"
+        retention = number(metrics["forward_speed_retention"] * 100, 2) + "%" if reference["x_velocity"] else "undefined"
+        rows.append([item["label"], number(comparison["mean"], 3, True),
+                     interval(comparison["ci95"]) if comparison["ci95"] else "reference",
+                     retention, effort, f"{metrics['failures']}/{item['n_pairs']}"])
+    return markdown_table(["Audit arm", "Δ world-Y m/s", "95% interval", "Forward speed retained", "Squared-action change", "Failures"], rows)
 
 
 def source_context(root: Path, evidence: dict) -> dict:
@@ -76,6 +103,7 @@ def source_context(root: Path, evidence: dict) -> dict:
         baseline_failures=round(baseline["failure"] * effect["n_pairs"]),
         treated_failures=round(treated["failure"] * effect["n_pairs"]),
         original_table=measurement_table(result["confirmation"]),
+        readme_confirmation_table=measurement_table(result["confirmation"], include_baseline=True),
         n_validation=len(result["validation"]), n_confirmation=len(result["confirmation"]),
         fresh_n=p1["n"], fresh_effect=number(p1["mean"], 3, True), fresh_ci=interval(p1["bca_ci"]),
         fresh_positive=p1["positive_pairs"], fresh_baseline_failures=p1["failures"][0],
@@ -127,19 +155,8 @@ def source_context(root: Path, evidence: dict) -> dict:
         for name, value in [("original confirmation", audit["saved"]["kinematics_confirmation"]), *fresh["K1"].items()]])
     context["software_table"] = markdown_table(["Measured dependency", "Version"], list(manifest["software"].items()))
     cohort = next(item for item in evidence["cohorts"] if item["id"] == "fresh_audit")
-    reference = next(item for item in cohort["conditions"] if item["kind"] == "baseline")
-    fresh_rows = []
-    for item in cohort["conditions"]:
-        if item["vector"].startswith(("random", "shuffled")):
-            continue  # Random ensembles remain complete in the evidence and explorer; the paper shows their rank tests.
-        metrics, comparison = item["metrics"], item["pairedEffect"]
-        effort_change = 100 * (metrics["effort"] / reference["metrics"]["effort"] - 1)
-        fresh_rows.append([item["label"], number(comparison["mean"], 3, True),
-                           interval(comparison["ci95"]) if comparison["ci95"] else "reference",
-                           number(metrics["forward_speed_retention"] * 100, 2) + "%",
-                           number(effort_change, 2, True) + "%",
-                           f"{metrics['failures']}/{item['n_pairs']}"])
-    context["fresh_table"] = markdown_table(["Audit arm", "Δ world-Y m/s", "95% interval", "Forward speed retained", "Squared-action change", "Failures"], fresh_rows)
+    context["fresh_table"] = audit_measurement_table(cohort["conditions"])
+    context["readme_audit_table"] = audit_measurement_table(cohort["conditions"], negative_only=True)
     # Wrench clipping is distinct from motor-action saturation; conflating them would miss the mechanism caveat.
     clipping_rows = []
     for label, key in (("fitting", "contact_wrench_clipping"), ("audit baseline", "fresh_baseline_contact_wrench_clipping")):
@@ -156,6 +173,15 @@ def replace_section(text: str, start: str, end: str, content: str) -> str:
     return text[:left] + content.rstrip() + "\n\n" + text[right:]
 
 
+def replace_readme_results(text: str, content: str) -> str:
+    """Retain explicit markers and all surrounding prose, rejecting an ambiguous boundary."""
+    start, end = "<!-- BEGIN GENERATED README RESULTS -->", "<!-- END GENERATED README RESULTS -->"
+    if text.count(start) != 1 or text.count(end) != 1 or text.index(start) >= text.index(end):
+        raise ValueError("README results markers must occur exactly once and in order")
+    left, right = text.index(start) + len(start), text.index(end)
+    return text[:left] + "\n\n" + content.strip() + "\n\n" + text[right:]
+
+
 def render_documents(root: Path, evidence: dict, output_root: Path | None = None) -> list[Path]:
     """Render generated sections into the requested tree; --check uses a temporary output tree."""
     destination = output_root or root
@@ -164,7 +190,7 @@ def render_documents(root: Path, evidence: dict, output_root: Path | None = None
     template = lambda name: interpolate((template_root / name).read_text(encoding="utf-8"), context)
     read = lambda path: (root / path).read_text(encoding="utf-8")
     outputs = {}
-    outputs["README.md"] = replace_section(read("README.md"), "## Featured experiment:", "### Watch the same episode", template("featured.md.in"))
+    outputs["README.md"] = replace_readme_results(read("README.md"), template("readme-results.md.in"))
     outputs["docs/huggingface-model-card.md"] = replace_section(read("docs/huggingface-model-card.md"), "## Featured result:", "## Watch the same paired episode", template("featured.md.in").replace("## Featured experiment:", "## Featured result:", 1))
     outputs["docs/huggingface-model-card.md"] = replace_section(outputs["docs/huggingface-model-card.md"], "## Download and apply the vector", "## Research record", template("model-use.md.in"))
     outputs["docs/huggingface-model-card.md"] = re.sub(r"^\| `ant-classic-005`.*$", f"| `ant-classic-005` | World-Y effect on {context['n']} confirmation pairs and {context['fresh_n']} audit resets; original `confirmation_failed`; no formal replication |", outputs["docs/huggingface-model-card.md"], flags=re.MULTILINE)

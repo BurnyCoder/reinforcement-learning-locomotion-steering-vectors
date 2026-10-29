@@ -1,0 +1,708 @@
+{
+  "started_at_utc": "2026-10-29T01:30:12.887109+00:00",
+  "finished_at_utc": "2026-10-29T01:30:15.442052+00:00",
+  "command": "uv run --locked --no-sync python reports/readme-restructure/check_links.py",
+  "script_sha256": "efdee090af96f9f1d41e2af5cc05e398d2691d29f44165f583ed8cae69f274ca",
+  "source_sha256": {
+    "README.md": "ff2572fbc6d0b53bf830da81c8feaea3b07a7517ec50d321a7dd8861207e95a0",
+    "docs/usage.md": "fc92f4386ef7f5d6b69545cb01a52b65e7ffe1c7fcb8bbe0b28f2e49602be42d",
+    "docs/ant-publication.md": "ce80b361b243ed33054fde568bd0183282628d079fe0370e783607d7bb147918",
+    "docs/ant-videos.md": "093913f74c79a00f7b808a552eee63b0dc37677a4f2f36de932df2be2829770e"
+  },
+  "summary": {
+    "local_references": 74,
+    "local_failures": 0,
+    "readme_external_urls": 18,
+    "external_unresolved": 0
+  },
+  "local": [
+    {
+      "source": "README.md",
+      "line": 5,
+      "target": "docs/sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 7,
+      "target": "reports/experiments.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 9,
+      "target": "reports/ant-publication/figures/trajectories.png",
+      "image": true,
+      "png_dimensions": [
+        1600,
+        720
+      ],
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 15,
+      "target": "docs/ant-videos.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 15,
+      "target": "reports/ant-classic-005-causal-audit.md#camera-and-video-integrity",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 23,
+      "target": "reports/ant-classic-005/results.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 39,
+      "target": "reports/ant-publication/figures/confirmation.png",
+      "image": true,
+      "png_dimensions": [
+        1376,
+        710
+      ],
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 41,
+      "target": "reports/ant-classic-005-findings.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 58,
+      "target": "reports/ant-classic-005-independent-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 58,
+      "target": "reports/scientific-rigor-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 60,
+      "target": "reports/ant-publication/figures/ablations.png",
+      "image": true,
+      "png_dimensions": [
+        1376,
+        777
+      ],
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 64,
+      "target": "reports/ant-publication/figures/reward.png",
+      "image": true,
+      "png_dimensions": [
+        1600,
+        832
+      ],
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 66,
+      "target": "reports/ant-publication/evidence.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 66,
+      "target": "reports/experiments.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 76,
+      "target": "docs/methodology.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 114,
+      "target": "docs/ant-publication.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 116,
+      "target": "docs/usage.md#seed-allocation-and-configuration",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 116,
+      "target": ".env.example",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 124,
+      "target": "uv.lock",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 126,
+      "target": "docs/usage.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 126,
+      "target": "docs/ant-videos.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 139,
+      "target": "pyproject.toml",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 139,
+      "target": "uv.lock",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 139,
+      "target": "docs/sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 139,
+      "target": "docs/pgs-adaptation.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 143,
+      "target": "reports/experiments.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 144,
+      "target": "reports/paper.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 144,
+      "target": "reports/paper.pdf",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 144,
+      "target": "reports/ant-classic-005-findings.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 144,
+      "target": "reports/ant-classic-005-independent-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 145,
+      "target": "reports/hc-height-speed-004-preregistration.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 145,
+      "target": "reports/ant-classic-005-preregistration.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 145,
+      "target": "reports/ant-classic-005-independent-audit-preregistration.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 145,
+      "target": "reports/ant-publication-completion.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 146,
+      "target": "reports/scientific-rigor-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 146,
+      "target": "reports/documentation-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 146,
+      "target": "docs/sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 147,
+      "target": "docs/ant-publication.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "README.md",
+      "line": 148,
+      "target": "AGENTS.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 3,
+      "target": "../README.md#install-and-reproduce",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 3,
+      "target": "methodology.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 7,
+      "target": "../uv.lock",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 7,
+      "target": "../pyproject.toml",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 9,
+      "target": "../reports/documentation-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 9,
+      "target": "sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 11,
+      "target": "../.env.example",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 19,
+      "target": "methodology.md#data-collection-and-vector-extraction",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 35,
+      "target": "ant-publication.md#setup-and-one-command-build",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 37,
+      "target": "ant-publication.md#historical-reproduction-and-seed-safety",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 48,
+      "target": "ant-videos.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 52,
+      "target": "../src/rl_locomotion_steering_vectors/seed_cohorts.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 64,
+      "target": "../reports/experiments.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 74,
+      "target": "../reports/experiments.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 74,
+      "target": "methodology.md#fixed-speed-application",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 94,
+      "target": "sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/usage.md",
+      "line": 96,
+      "target": "../reports/documentation-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 3,
+      "target": "../reports/ant-publication-completion.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 3,
+      "target": "../reports/ant-classic-005-findings.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 14,
+      "target": "../reports/ant-publication/inputs.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 22,
+      "target": "../reports/ant-publication/evidence.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 38,
+      "target": "ant-videos.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 44,
+      "target": "../reports/ant-publication/input-upload-verification.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 46,
+      "target": "sources.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-publication.md",
+      "line": 48,
+      "target": "../reports/ant-publication-completion.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 3,
+      "target": "../reports/ant-classic-005-findings.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 3,
+      "target": "../reports/ant-classic-005-independent-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 55,
+      "target": "../reports/ant-classic-005-causal-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 61,
+      "target": "huggingface-model-card.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 63,
+      "target": "../reports/documentation-audit.md",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 63,
+      "target": "../reports/documentation-audit/readme-render-verification.json",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 65,
+      "target": "../reports/documentation-audit/tests-initial.log",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 65,
+      "target": "../reports/documentation-audit/tests-targeted-retry.log",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 65,
+      "target": "../reports/documentation-audit/tests-full-retry.log",
+      "image": false,
+      "status": "ok"
+    },
+    {
+      "source": "docs/ant-videos.md",
+      "line": 65,
+      "target": "../reports/fact-check-2026-10-22/",
+      "image": false,
+      "status": "ok"
+    }
+  ],
+  "external": [
+    {
+      "url": "https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://arxiv.org/abs/2310.08043",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://arxiv.org/abs/2312.06681",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://docs.astral.sh/uv/getting-started/installation/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://docs.astral.sh/uv/guides/projects/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://git-scm.com/downloads",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://github.com/davidbau/baukit",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "video/mp4"
+    },
+    {
+      "url": "https://gymnasium.farama.org/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://huggingface.co/docs/huggingface_hub/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://huggingface.co/farama-minari/Ant-v5-SAC-medium/tree/de5978d34b0118341df2b0a30232c5d2bfcb148e",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://huggingface.co/farama-minari/HalfCheetah-v5-TQC-medium/tree/b4ce04da6f246f06ae4c4258b8ab39624e6600b4",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://mujoco.readthedocs.io/en/3.1.5/python.html",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://pytorch.org/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://sb3-contrib.readthedocs.io/en/v2.4.0/modules/tqc.html",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    },
+    {
+      "url": "https://stable-baselines3.readthedocs.io/en/v2.4.1/",
+      "method": "HEAD",
+      "timeout_seconds": 15,
+      "status": "reachable",
+      "http_status": 200,
+      "content_type": "text/html"
+    }
+  ],
+  "limitations": [
+    "Scoped to four named documents; HTTP checks cover README URLs only.",
+    "Parses inline links/images, standalone URLs, ATX headings and explicit HTML anchors; no full Markdown renderer.",
+    "HEAD success establishes HTTP reachability only, not claim accuracy, remote fragment validity, or media playback.",
+    "HEAD errors can reflect server policy, rate limits, or transient network conditions; no GET fallback is attempted.",
+    "No remote response bodies or redirect destinations are downloaded or recorded.",
+    "PNG checks cover file signatures and dimensions, not full image decoding or visual quality."
+  ]
+}
