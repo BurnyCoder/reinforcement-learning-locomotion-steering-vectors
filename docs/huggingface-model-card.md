@@ -60,6 +60,8 @@ The base checkpoint is [Farama-Minari Ant SAC medium](https://huggingface.co/far
 
 ## Research record
 
+The [kinematics follow-up](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/kinematics-follow-up.md) corrects angle/trend boundary cases in the analysis helper and verifies compatibility with the published default-window means. Recorded heading changes do not establish a bounded long-run offset or that turning has ceased.
+
 | Experiment | Observed result |
 | --- | --- |
 | `hc-classic-001` | Fitting rejected because a few recovery windows dominated the contrasts; no validation |

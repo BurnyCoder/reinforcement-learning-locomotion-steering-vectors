@@ -33,7 +33,7 @@ The initial nonzero strength grid is `+/-0.05, +/-0.1, +/-0.2, +/-0.5`; `STEERIN
 Each fitted candidate receives three norm-matched random directions. A norm-matched shuffled-label direction is added when its contrast is supported and non-negligible; otherwise the implementation records `shuffled_control_skipped` without replacing it ([extraction code](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/src/rl_locomotion_steering_vectors/analysis.py#L172-L190)). Every actual family in experiments 001–005 includes all four controls. Available controls receive the same signed validation grid. A candidate must pass the usefulness gate to be shortlisted. Per vector, the selection favors the smallest absolute strength within 5% of the largest absolute useful effect; controls without a useful grid point retain a strong measured comparison instead of disappearing. Selected signs and strengths are recorded before confirmation. Later report rendering cannot choose a different strength.
 
 A shuffled-label direction is not orthogonal to its primary, as the [scientific-rigor audit](../reports/scientific-rigor-audit.md#3-the-shuffled-label-control-shares-the-primarys-subspace) found later:
-- Shuffled contrasts are differences between random window subsets, so they fall in the same low-dimensional subspace of window-mean activation variation as the primary.
+- Shuffled contrasts and the primary are linear combinations of centered window means. They share that span, but need not be confined to its leading principal components. A small covariance participation ratio measures variance concentration; it does not establish a correspondingly small matrix rank.
 - The saved cosines are +0.60 (Ant lateral), +0.58 (HalfCheetah height) and −0.83 (HalfCheetah effort). Over 300 fresh reshuffles the mean |cos| is about 0.24–0.53 across the five families (Monte Carlo estimates that move by about ±0.02 between reshuffle seeds), against an SD of 0.06 for isotropic random directions.
 
 Shuffled-label results are therefore not label-free evidence about generic directions; isotropic random directions are the cleaner generic control.
@@ -61,11 +61,13 @@ An explicitly registered cross-behavior experiment can test an existing vector a
 
 | Behavior | Initial practical effect threshold | Movement preservation |
 | --- | --- | --- |
-| Speed | At least 5% sustained absolute change | Retain at least 50% of baseline forward speed |
+| Speed | At least 5% absolute change in mean post-onset speed | Retain at least 50% of baseline forward speed |
 | Effort | At least 10% lower mean squared action | Speed within 5% of baseline |
-| Height | At least 0.03 m sustained torso-height change | Speed within 10% of baseline |
+| Height | At least 0.03 m change in mean post-onset torso height | Speed within 10% of baseline |
 | Lateral movement | At least 0.2 m/s directed change | Retain 80% of baseline mean forward speed |
 | Turning | At least 0.1 rad/s directed yaw-rate change | Retain 80% of baseline planar speed |
+
+These are thresholds on episode means. Passing them does not require an effect at every transition, persistence across windows, or full-horizon survival. A transient change can pass; the [mean-gate regression case](../tests/test_analysis.py) demonstrates this without simulation. Temporal persistence needs a separately specified time-course criterion.
 
 A useful condition must also have a confidence interval excluding zero and avoid increasing the observed failure rate or mean inversion/forbidden-ground-contact fractions by more than five percentage points. Failure is classified for each episode before computing its frequency: an episode fails when its post-onset inversion or forbidden head/torso-ground-contact fraction is strictly greater than 5%, or it has an explicit recorded failure, environment termination, or no post-onset transitions. Existing explicit failure values are retained rather than replaced. Inversion/contact summaries average each episode's fraction equally; they do not pool every timestep across unequal-length episodes. The five-percentage-point checks concern differences of these observed fractions, not confidence bounds on population safety.
 
@@ -78,6 +80,8 @@ The speed gate accepts a change of either sign, so on its own it cannot distingu
 Future protocols should report the odd/even decomposition alongside each gate. The existing gates and recorded outcomes are unchanged.
 
 ### Statistical assumptions and rank interpretation
+
+Kinematic path-angle differences are shortest signed angles across the ±180° branch cut. A heading trend requires at least two full windows and is reported in degrees per 100 simulation steps, independent of window size; one window leaves the slope unavailable. Paired step horizons require equal positive recorded timesteps. These geometric summaries neither identify a unique causal mediator nor prove a bounded long-run heading offset. See the [follow-up checks](../reports/fact-check-2026-10-29/kinematics-follow-up.md), [NumPy's angle convention](https://numpy.org/doc/1.26/reference/generated/numpy.arctan2.html), and [linear-fit definition](https://numpy.org/doc/1.26/reference/generated/numpy.polyfit.html).
 
 The saved observation is the policy input before each transition, while velocity is displacement during the ensuing transition. Heading-relative kinematic reductions use that pre-transition orientation; they are discrete-time projections, not instantaneous post-step body velocities. In Ant, the project's root-`qpos` displacement measurement also differs in implementation from the torso-`xpos` displacement used by the environment reward. Do not infer exact reward components from the stored root velocity. [Project measurement loop](../src/rl_locomotion_steering_vectors/runtime.py) · [pinned Ant step](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py).
 

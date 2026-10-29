@@ -1,7 +1,5 @@
 # RL locomotion steering vectors
 
-[Independent saved-data fact-check and corrections](reports/fact-check-2026-10-29/report.md) · [claim ledger](reports/fact-check-2026-10-29/claims.json). Rebuild all publications with `uv run --locked --no-sync python scripts/build_publication.py`; add `--check` for deterministic verification without models.
-
 Can a small change inside a frozen reinforcement-learning policy change how it moves, without retraining it? This project extracts a direction from contrasting hidden activations in unsteered rollouts, adds that direction during inference, and tests locomotion against baselines and controls. It uses **no behavioral cloning** and never updates the evaluated policy's weights.
 
 The method adapts [contrastive activation addition](https://arxiv.org/abs/2312.06681) to continuous control, building on [earlier interventions in RL maze policies](https://arxiv.org/abs/2310.08043). The contribution is a reproducible locomotion experiment and its evidence, not the invention of activation steering. The Python pipeline combines PyTorch, Stable-Baselines3, Baukit, Gymnasium and MuJoCo with saved-data reporting and an interactive evidence explorer. [Sources and adaptation boundaries](docs/sources.md).

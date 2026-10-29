@@ -2,7 +2,7 @@
 
 Current Ant publication and both affected PDFs are rebuilt with `uv run --locked --no-sync python scripts/build_ant_publication.py`; use `--check` to verify saved-data regeneration. See [the publication workflow](../docs/ant-publication.md) and [verification record](ant-publication/verification.md). The instructions and edition notes below describe the standalone renderer and historical builds; the current saved-data workflow also regenerates numerical prose, tables, figures and explorer inputs.
 
-`paper.md` is the single prose source. From the repository root, after the normal `uv sync` setup, run:
+`paper.md` is the renderer input. Its generated sections come from `docs/publication/*.md.in` and saved evidence, while the remaining sections are maintained directly. Edit the appropriate source and run the publication builder before rendering. For rendering an already generated Markdown file, run:
 
 ```powershell
 uv run python reports/build_paper.py
@@ -15,7 +15,7 @@ The copied figures in `paper_assets` preserve their source bytes:
 - `ant-lateral-validation.png`: `runs/ant-classic-005/strength_response_1.png`, all saved lateral validation strength-response series, including controls.
 - `ant-topdown-validation.png`: `runs/ant-classic-005/videos/preliminary/seed-510000-topdown-path.png`, saved ground-plane trajectory plot for the first predetermined validation seed.
 
-Numerical tables summarize existing results; complete condition rows remain in the individual experiment bundles. Source paths, phase provenance, and limitations are recorded in the paper and experiment reports. The [documentation audit](documentation-audit.md) records corrections and verification without changing scientific outcomes. Generated run reports are rendered from saved evidence. On 2026-10-22 they were regenerated only to replace a broken ReportLab link; see the [fact-check](fact-check-2026-10-22.md). Their Markdown copies match the run directories after CRLF/LF normalization, PDFs, PNGs and NPZs match source bytes, and compacted JSON matches source values.
+Numerical tables summarize existing results; complete condition rows remain in the individual experiment bundles. The [documentation audit](documentation-audit.md) and [current saved-data audit](fact-check-2026-10-29/report.md) record provenance and verification scope. The 2026-10-22 byte-comparison and link-repair statements describe that historical edition. Current Markdown/PDF reports are regenerated publications with correction notices and differ from the original run-directory reports. Original observations and selection artifacts remain unchanged; reproducibility means rebuilding the current publication from its sources, not claiming every publication is byte-identical to its historical rendering.
 
 For each final PDF, render every page and inspect clipping, table wrapping, figures, captions and reference readability. Repeat that verification after changing prose or layout, and check Markdown/PDF content and active-link parity. A previous render does not verify newly edited prose. The paper is a timestamped research snapshot, not an assertion of peer review or formal protocol success.
 
