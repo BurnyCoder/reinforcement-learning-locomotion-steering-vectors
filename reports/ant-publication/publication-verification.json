@@ -177,5 +177,14 @@
     "hugging_face_revision": "6d31e45bdf0b4f58665d78ed9cfdb1f881852838",
     "pages_all_hashes_match": true,
     "boundary": "Publication downloads, hashing, metadata and saved-data browser checks only; no model or simulator execution."
+  },
+  "kinematics_followup_2026_10_29": {
+    "git_revision": "f51f7c777af5a74a0e0ecaf5f3819c56e99c6995",
+    "hub_revision": "56b973f387240ef9d550c5df999643d11db18337",
+    "verified_files": 68,
+    "verification": "document-upload-verification.json",
+    "report": "../fact-check-2026-10-29/kinematics-follow-up.md",
+    "readme_notice_removed_and_remote_checked": true,
+    "site_and_figures": "unchanged"
   }
 }
