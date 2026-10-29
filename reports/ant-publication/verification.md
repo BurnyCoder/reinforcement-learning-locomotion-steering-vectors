@@ -17,6 +17,7 @@ The working environment uses the committed `uv.lock`. Run `uv sync --locked`, th
 - Fresh-archive inspection found Git newline conversion in original logs and in the hash-addressed input manifest. Scoped Git attributes preserve their original bytes. The scientific arrays, manifests, selections and result values were not edited.
 - Visual inspection found missing/incorrect Greek glyphs in PDF table headings and inline formulas. The minimal renderer now spells the mathematical variable names portably. A failing regression preceded the fix; both complete PDFs were inspected again.
 - Browser inspection found that the evidence link opened JSON instead of declaring a file download. The link now uses the standard same-origin `download` attribute. The browser automation download-event API did not report an event; direct HTTP retrieval and hash verification independently check the downloadable bytes. This tool limitation is not recorded as a successful browser download event.
+- The first document-verification attempt reported a `ValueError` for the paper PDF. Its staged bytes and the pinned Hub LFS identity matched. A separate direct download and the subsequent complete verification passed without changing the PDF or weakening its expected hash. The initial failure receipt and both logs are retained; the original exception report does not establish its cause.
 
 ## Substantive review
 
