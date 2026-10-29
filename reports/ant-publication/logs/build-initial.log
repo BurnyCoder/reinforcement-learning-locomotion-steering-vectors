@@ -1,0 +1,93 @@
+2026-10-29 00:12:28,203Z INFO Verified 6595 exact input files
+2026-10-29 00:12:34,974Z INFO Assembled validation: 89 conditions, 10 seeds
+2026-10-29 00:12:36,384Z INFO Assembled confirmation: 7 conditions, 30 seeds
+2026-10-29 00:13:14,049Z INFO Assembled fresh_audit: 251 conditions, 20 seeds
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 525, in open_for_read
+    return open_for_read_by_name(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 463, in open_for_read_by_name
+    return open(name,mode)
+           ^^^^^^^^^^^^^^^
+FileNotFoundError: [Errno 2] No such file or directory: 'C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-publication\\architecture.png'
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 532, in open_for_read
+    return BytesIO((datareader if name[:5].lower()=='data:' else rlUrlRead)(name))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 478, in rlUrlRead
+    return urlopen(Request(name,headers=headers)).read()
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\urllib\request.py", line 215, in urlopen
+    return opener.open(url, data, timeout)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\urllib\request.py", line 515, in open
+    response = self._open(req, data)
+               ^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\urllib\request.py", line 537, in _open
+    return self._call_chain(self.handle_open, 'unknown',
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\urllib\request.py", line 492, in _call_chain
+    result = func(*args)
+             ^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\urllib\request.py", line 1420, in unknown_open
+    raise URLError('unknown url type: %s' % type)
+urllib.error.URLError: <urlopen error unknown url type: c>
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 647, in __init__
+    fp = open_for_read(fileName,'b')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 536, in open_for_read
+    return open_for_read(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 534, in open_for_read
+    raise IOError('Cannot open resource "%s"' % name)
+OSError: Cannot open resource "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\reports\ant-publication\architecture.png"
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\build_ant_publication.py", line 82, in <module>
+    raise SystemExit(main())
+                     ^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\build_ant_publication.py", line 76, in main
+    generated = generate(root, verified, root)
+                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\build_ant_publication.py", line 33, in generate
+    outputs.extend(render_documents(root, evidence, output_root=output_root))
+                   ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\src\rl_locomotion_steering_vectors\publication\documents.py", line 205, in render_documents
+    paths.append(renderer.build(source))
+                 ^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\reports\build_paper.py", line 93, in build
+    scale = min(width / figure.imageWidth, 320 / figure.imageHeight)  # Local: preserve aspect ratio within page space; global: avoid distorted axes or oversized figures.
+                        ^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\platypus\flowables.py", line 504, in __getattr__
+    self._setup_inner()
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\platypus\flowables.py", line 461, in _setup_inner
+    img = self._img
+          ^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\platypus\flowables.py", line 498, in __getattr__
+    self._img = ImageReader(self._file)
+                ^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 659, in __init__
+    annotateException('\nfileName=%r identity=%s'%(fileName,self.identity()))
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 1180, in annotateException
+    rl_reraise(t,t(sep.join((_ for _ in (msg,str(v),postMsg) if _))),b)
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 138, in rl_reraise
+    raise v.with_traceback(b)
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 647, in __init__
+    fp = open_for_read(fileName,'b')
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 536, in open_for_read
+    return open_for_read(name,mode)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\reportlab\lib\utils.py", line 534, in open_for_read
+    raise IOError('Cannot open resource "%s"' % name)
+OSError: 
+fileName='C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-publication\\architecture.png' identity=[ImageReader@0x222475c64e0 filename='C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-publication\\architecture.png'] Cannot open resource "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\reports\ant-publication\architecture.png"

@@ -1,0 +1,19 @@
+F                                                                        [100%]
+================================== FAILURES ===================================
+__________ test_greek_names_remain_readable_in_text_and_inline_code ___________
+
+tmp_path = WindowsPath('C:/Users/Happy/Documents/projects/rl-locomotion-steering-vectors/.cache/pytest/89568/test_greek_names_remain_readab0')
+monkeypatch = <_pytest.monkeypatch.MonkeyPatch object at 0x0000022BE14C1550>
+
+    def test_greek_names_remain_readable_in_text_and_inline_code(tmp_path, monkeypatch):
+        """Local: spell Greek names in portable fonts. Global: preserve differences and signed formulas across PDF viewers."""
+>       assert inline("\u0394 world-Y; `f(\u03b1) = \u03b4 + \u03b8 + \u03c9`") == 'Delta world-Y; <font name="Courier">f(alpha) = delta + theta + omega</font>'
+E       assert '\u0394 world-Y; <.../font></font>' == 'Delta world-... omega</font>'
+E         
+E         - Delta world-Y; <font name="Courier">f(alpha) = delta + theta + omega</font>
+E         + \u0394 world-Y; <font name="Courier">f(<font name="Symbol">\u03b1</font>) = <font name="Symbol">\u03b4</font> + <font name="Symbol">\u03b8</font> + <font name="Symbol">\u03c9</font></font>
+
+tests\test_build_paper.py:21: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_build_paper.py::test_greek_names_remain_readable_in_text_and_inline_code
+1 failed, 3 deselected in 0.92s

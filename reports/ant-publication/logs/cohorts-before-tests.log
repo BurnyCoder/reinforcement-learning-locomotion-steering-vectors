@@ -1,0 +1,17 @@
+
+=================================== ERRORS ====================================
+___________________ ERROR collecting tests/test_cohorts.py ____________________
+ImportError while importing test module 'C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\tests\test_cohorts.py'.
+Hint: make sure your test modules/packages have valid Python names.
+Traceback:
+.cache\python\cpython-3.12-windows-x86_64-none\Lib\importlib\__init__.py:90: in import_module
+    return _bootstrap._gcd_import(name[level:], package, level)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+tests\test_cohorts.py:8: in <module>
+    from rl_locomotion_steering_vectors.cohorts import assert_available_cohort, load_cohorts  # Local: exercise the shared ledger guard; global: use one freshness rule.
+    ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+E   ModuleNotFoundError: No module named 'rl_locomotion_steering_vectors.cohorts'
+=========================== short test summary info ===========================
+ERROR tests/test_cohorts.py
+!!!!!!!!!!!!!!!!!!! Interrupted: 1 error during collection !!!!!!!!!!!!!!!!!!!!
+1 error in 0.47s

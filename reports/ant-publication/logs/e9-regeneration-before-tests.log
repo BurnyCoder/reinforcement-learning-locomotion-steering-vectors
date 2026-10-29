@@ -1,0 +1,32 @@
+.F                                                                       [100%]
+================================== FAILURES ===================================
+______ test_reference_counts_regenerate_after_initial_publication[audit] ______
+
+publication_sources = (WindowsPath('C:/Users/Happy/Documents/projects/rl-locomotion-steering-vectors/.cache/pytest/24976/test_reference_coun...figures/reward.png'}, {'name': 'trajectories', 'path': 'reports/ant-publication/figures/trajectories.png'}, ...], ...})
+tmp_path = WindowsPath('C:/Users/Happy/Documents/projects/rl-locomotion-steering-vectors/.cache/pytest/24976/test_reference_counts_regenera1')
+episode_label = 'audit'
+
+    @pytest.mark.parametrize("episode_label", ["fresh-seed", "audit"])
+    def test_reference_counts_regenerate_after_initial_publication(publication_sources, tmp_path, episode_label):
+        """Restore corrupted reference counts from evidence for historical and already-generated prose."""
+        root, evidence = publication_sources
+        source = root / "reports/paper.md"
+        stale = f"Integrity rebuild, 1 {episode_label} episodes, a rank test against 2 random directions"
+        text, replacements = re.subn(
+            r"Integrity rebuild, [\d,]+ (?:fresh-seed|audit) episodes, a rank test against [\d,]+ random directions",
+            stale, source.read_text(encoding="utf-8"),
+        )
+        assert replacements == 1  # The reference fixture must exercise the actual published sentence.
+        source.write_text(text, encoding="utf-8")
+        output = tmp_path / "regenerated"
+        render_documents(root, evidence, output_root=output)
+        context = source_context(root, evidence)
+        expected = f"Integrity rebuild, {context['audit_episodes']:,} audit episodes, a rank test against {context['random_n']} random directions"
+        rendered = (output / "reports/paper.md").read_text(encoding="utf-8")
+>       assert expected in rendered
+E       AssertionError: assert 'Integrity rebuild, 5,020 audit episodes, a rank test against 99 random directions' in '# Causal activation steering in frozen RL locomotion policies\n\n**Featured result: Ant lateral steering on fresh epi...on provided by a human. Human cleanup and rewriting are in progress. The named human author is Libor �Burny� Burian.\n'
+
+tests\test_ant_publication_documents.py:128: AssertionError
+=========================== short test summary info ===========================
+FAILED tests/test_ant_publication_documents.py::test_reference_counts_regenerate_after_initial_publication[audit]
+1 failed, 1 passed, 5 deselected in 5.98s

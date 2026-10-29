@@ -357,6 +357,8 @@ function renderContext() {
       const target = new URL(url, document.baseURI);
       if (!["https:", "http:"].includes(target.protocol)) return [];
       const item = node("li"), link = node("a", { href: target.href }, label);
+      // The same-origin JSON link saves the evidence file; https://developer.mozilla.org/en-US/docs/Web/HTML/Reference/Elements/a#download
+      if (url === "data/ant005.json") link.download = "ant005-evidence.json";
       if (target.origin !== location.origin) { link.target = "_blank"; link.rel = "noopener noreferrer"; }
       link.append(node("span", { "aria-hidden": "true" }, "↗")); item.append(link); return [item];
     } catch { return []; }

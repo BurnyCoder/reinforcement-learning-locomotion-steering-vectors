@@ -1,0 +1,14 @@
+{
+  "created_utc": "2026-10-29T00:39:46.575858+00:00",
+  "archive_commit": "f803f2a52ab0ee612e0a2854385e952d51541bd9",
+  "hub_revision": "b262002001df6af2fd87dce82cc385f6b132e184",
+  "verification_receipt_sha256": "bc42d5e2ac081ad50bf538412c0cfc49e473db77ad31248e36d4bd886b6206af",
+  "manifest_sha256": "07b735f1ea4e8e92c31f2d5315d192bee4e505ef0aa5a4aff4c81769ddd18f86",
+  "cache_source": ".cache/ant-verification",
+  "cache_destination": "tmp/ant-clean-reproduction/.cache/ant-inputs",
+  "method": "Hardlinks of public immutable-revision bytes independently downloaded and verified for every manifest entry; no original runs directory copied. Builder rechecks cached bytes before restoring missing inputs.",
+  "manifest_files": 6595,
+  "unique_cache_objects": 6575,
+  "runs_present_before_build": false,
+  "venv_separate": true
+}
