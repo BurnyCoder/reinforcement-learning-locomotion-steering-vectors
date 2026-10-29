@@ -1,5 +1,7 @@
 # Reproduce the Ant publication from saved evidence
 
+The complete research-record entrypoint is now `uv run --locked --no-sync python scripts/build_publication.py` (or `--check`). It requires the original saved runs and checkpoint archives listed in the [input inventory](../reports/fact-check-2026-10-29/inputs.json) and [provenance](../reports/fact-check-2026-10-29/provenance.json); it fails on missing or altered inputs. It runs the independent numerical reference checks before reusing this Ant renderer and the experiment-report renderer. [Dated corrections, coverage and limits](../reports/fact-check-2026-10-29/report.md). The Ant-only command below remains supported and restores its own missing inputs.
+
 This workflow rebuilds the existing Ant world-Y result. It does not train, retune, load policy weights, or collect simulator episodes. The original failed confirmation and later audit are separate cohorts. See the [completion ledger](../reports/ant-publication-completion.md) for requirement status and the [current findings](../reports/ant-classic-005-findings.md) for scientific interpretation.
 
 ## Setup and one-command build

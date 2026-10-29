@@ -8,7 +8,7 @@ Evidence cutoff: **2026-09-08, after experiments 001–005 completed their recor
 
 ## Abstract
 
-We investigate whether a constant hidden-activation intervention can alter locomotion in a frozen reinforcement-learning policy without behavioral cloning or weight updates. Earlier HalfCheetah attempts produced posture changes and slowdowns but did not establish a useful replicated controller. The featured Ant experiment extracts an episode-weighted difference of activation means from natural world-Y velocity variation and selects intervention strength on separate validation episodes. The locked strength -0.1 changes world-Y ground-plane velocity by +0.402 m/s, paired percentile-bootstrap 95% interval [0.308, 0.491], on 30 confirmation pairs, retaining 96.83% of mean forward speed. Its status remains `confirmation_failed`: both arms have 4/30 failures and a shared pre-onset ending triggers a strict rejection rule. A later audit reproduces +0.462 m/s [0.343, 0.587] on 20 further resets, while failures increase from 0 to 2. Its sign-dependent response ranks at p = 0.05 against 99 isotropic directions; lateral-label specificity is not supported. Projection ablations and an observation intervention support a heading-related explanation, but clipping prevents general physical-heading equivalence. We publish the positive effect, failed quality gates, complete controls, raw episodes, and a saved-data publication workflow. The evidence is specific to the evaluated checkpoint and simulator; cross-training-seed generalization remains untested. [E5, E9; generated values from the accompanying evidence bundle.]
+We investigate whether a constant hidden-activation intervention can alter locomotion in a frozen reinforcement-learning policy without behavioral cloning or weight updates. Earlier HalfCheetah attempts produced posture changes and slowdowns but did not establish a useful replicated controller. The featured Ant experiment extracts an episode-weighted difference of activation means from natural world-Y velocity variation and selects intervention strength on separate validation episodes. The locked strength -0.1 changes world-Y ground-plane velocity by +0.402 m/s, paired percentile-bootstrap 95% interval [0.308, 0.491], on 30 confirmation pairs, retaining 96.83% of mean forward speed. Its status remains `confirmation_failed`: both arms have 4/30 failures and a shared pre-onset ending triggers a strict rejection rule. A later audit reproduces +0.462 m/s [0.343, 0.587] on 20 further resets, while failures increase from 0 to 2. Its sign-dependent response has comparison rank 0.05 against 99 isotropic directions; this is not a calibrated specificity p-value without an exchangeability assumption. Lateral-label specificity is not supported. Projection ablations and an observation intervention support a heading-related explanation, but clipping prevents general physical-heading equivalence. We publish the positive effect, failed quality gates, complete controls, raw episodes, and a saved-data publication workflow. The evidence is specific to the evaluated checkpoint and simulator; cross-training-seed generalization remains untested. [E5, E9; generated values from the accompanying evidence bundle.]
 
 ## 1. Research question and scope
 
@@ -77,33 +77,26 @@ This is an adaptive research sequence. Each subsequent hypothesis may use earlie
 
 <!-- pagebreak -->
 
-## 4. HalfCheetah: causal changes and failed practical acceptance
+## 4. HalfCheetah: negative results and informative controls
 
-### 4.1 Rejected extraction and the episode-quality measurement problem
+The first attempt stopped with `extraction_rejected_before_validation`. Its fitting-only inspection found sensitivity to recovery windows and unwrapped posture history; no validation or confirmation effect was measured. A later speed-floor proposal was informed by those observations, so it is an adaptive design choice rather than independent confirmation of the original hypothesis [E1].
 
-Run 001 produced 576 fitting windows, 517 initially eligible. Ten near-stationary recovery windows, just 1.9% of the eligible set, strongly influenced the mean activations despite passing the current health checks. Removing them changed direction cosine to 0.298 for speed, 0.113 for height, and −0.555 for effort. The extraction was rejected before validation. The measured issue was sensitivity to rare observation histories, including accumulated torso rotation, rather than insufficient natural variation [E1].
+Run 002 retained 564/576 fitting windows, with 0 additional windows removed by its speed floor. Its 120 validation settings produced 0 primary gate passes and 8 control passes; the outcome is `no_validation_candidate`. The height contrast also correlates with speed in fitting data, so its extraction label does not establish a speed-independent internal concept. Episode-level physical-failure classification was revised during exploratory validation; both the earlier pooled-quality estimates and the final analysis remain saved [E2].
 
-Run 002 used fresh fitting data: 564 of 576 windows from all 64 episodes were eligible, with no additional floor exclusions. Direction split-half cosines were 0.982 for speed, 0.895 for effort and 0.980 for height. None of its 24 primary vector/strength conditions passed all target gates. Height +0.05 nevertheless raised the torso **4.505 cm**, interval **[4.367, 4.645] cm**, with zero measured physical failures/contact/inversion. Forward speed fell **12.85%**, exceeding the height target's 10% allowance. Eight random/shuffled settings passed exploratory validation. This supports a controlled posture effect, without a confirmed useful height intervention or extraction specificity [E2].
+Run 003 reused the exact 002 height family as a proposed speed intervention. Its 40 fresh validation comparisons yielded 0 primary passes and 2 control passes, with `no_validation_candidate`. Run 004 then tested a finer grid: 6 primary strengths passed among 72 total validation comparisons. The frozen primary choice was strength -0.02. This reuse is a new evaluation of an already extracted direction, not another independent fitting study [E3, E4].
 
-After 74 validation conditions, inspection of speed −0.05 found that **4.47% episode-averaged contact concealed one episode stalled on its head for 400 consecutive steps**, or 20 simulated seconds. Named geometry contacts and identical replayed arrays ruled out an indexing/replay mismatch. Quality analysis was amended to classify failure per episode before averaging, while retaining the existing five-point allowance. The same condition then had one failure in ten trials and was rejected. All 120 final conditions were analyzed consistently; the [old/new analysis audit](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/reports/hc-running-002/quality-analysis-audit.json) preserves identical target effects, intervals and seed metadata for the original 74. Two gate decisions changed. This documented amendment used validation observations, not held-out results.
+On 30 confirmation pairs, the locked primary changes forward speed by **-5.359 m/s**, paired percentile 95% interval **[-6.986, -3.999]**. Failures change from 0 to 10. The outcome remains **`confirmation_failed`**; alternative validation strengths were not substituted after observing confirmation. Every selected primary/control arm is shown below [E4].
 
-### 4.2 Retargeted speed control and fresh-reset instability
+| Locked condition | Speed change | 95% interval (m/s) | Failures | Pilot gate |
+| --- | ---: | --- | ---: | --- |
+| speed (-0.02) | -31.89% | [-6.986, -3.999] | 10/30 | fail |
+| speed_bias (-0.025) | -0.67% | [-0.162, -0.064] | 0/30 | fail |
+| speed_random0 (+0.04) | -4.84% | [-0.877, -0.767] | 0/30 | fail |
+| speed_random1 (-0.035) | -5.09% | [-0.969, -0.763] | 0/30 | pass |
+| speed_random2 (-0.035) | -3.29% | [-0.977, -0.319] | 1/30 | fail |
+| speed_shuffled (-0.035) | -13.92% | [-3.198, -1.862] | 1/30 | pass |
 
-The overall goal allowed testing the height-derived direction as speed control. Run 003 imported the exact family and tested 40 conditions on fresh seeds. Every primary strength failed physical quality. At +0.05, the direction slowed speed 17.01%, but two of ten episodes physically failed; two random-control strengths passed validation. The earlier clean sample did not establish reliable control across resets [E3].
-
-Run 004 used the finer signed grid. Its 72 validation conditions comprise 60 activation settings and 12 fitted action-bias settings. Six primary strengths passed, including positive strengths +0.02 to +0.04. The selected −0.02 had the largest eligible slowdown: **16.43%**, with zero failures in ten validation episodes. Its locked confirmation on thirty new episodes gave **−5.359 m/s**, interval **[−6.986, −3.999]**, a **31.89%** slowdown, but **ten physical failures** and 18.24% episode-averaged forbidden contact. The primary failed confirmation; positive validation alternatives were not substituted afterward [E4].
-
-The following locked-control values are in the [004 confirmation results](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/reports/hc-height-speed-004/results.json), with choices preserved in [selection.json](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/d0cd2c07e3641531c39037223eb98e309f44c4dc/reports/hc-height-speed-004/selection.json).
-
-| Run 004 confirmation control | Speed change | Failures / 30 | Pilot gate |
-| --- | --- | --- | --- |
-| Constant action bias | −0.67% | 0 | Fails size |
-| Random 0 | −4.84% | 0 | Fails size |
-| Random 1 | −5.09% | 0 | Passes |
-| Random 2 | −3.29% | 1 | Fails size |
-| Shuffled label | −13.92% | 1 | Passes |
-
-The shuffled condition's one failure is within the five-percentage-point allowance at n=30; a pilot pass therefore does not imply zero failures. These controls retain meaningful causal evidence and prevent a claim that contrastive extraction uniquely supplies effective directions. Two later qualifications apply (Section 8). The shuffled direction has cosine +0.58 with the locked primary, so it is not a label-free control. The primary's run-004 slowdowns are sign-independent degradation rather than steerable speed, and the random controls slow at one sign only; no condition raised speed by more than about 0.4%. Neither control was replicated or turned into an application.
+The shuffled and random controls demonstrate that passing a pilot gate is not unique to the extracted primary. A pass can permit failures under the registered difference threshold. Across 238 HalfCheetah evaluation settings, the maximum forward-speed increase was +0.40%. Predominantly sign-independent slowdowns do not establish bidirectional speed control, near-optimality or a unique degradation mechanism. No primary completed successful confirmation and replication; no application is established. [Full original conditions and extraction](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/verification.json) · [all-experiment register](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/experiments.md).
 
 <!-- pagebreak -->
 
@@ -145,13 +138,15 @@ The later preregistered audit contains 5020 episodes across 251 arms on 20 reset
 | Test | Saved statistic | Interpretation |
 | --- | --- | --- |
 | P1: locked arm | +0.462 [0.343, 0.587] m/s | effect reproduced; physical gate fails |
-| P2: isotropic specificity | rank p = 0.05 | at decision boundary |
-| S1: label specificity | shuffle rank p = 0.40 | not supported; turning is stronger |
+| P2: isotropic comparison | comparison rank = 0.05 | descriptive ensemble ranking |
+| S1: label specificity | shuffle rank = 0.40 | not supported; turning is stronger |
 | S2: generic drift | +0.034 [-0.032, 0.104] m/s | interval includes zero |
-| M1: component ablation | orthogonal norm-matched rank p = 0.21 | original falsification criterion not met |
+| M1: component ablation | orthogonal norm-matched comparison rank = 0.21 | original falsification criterion not met |
 | M2: observation transform | +0.903 [0.816, 0.998] m/s at negative rotation | specified transform produces a shift; not exact physical-heading equivalence |
 
-The rank comparison uses 99 isotropic directions at matched norm. Its p = 0.05 sits at the decision threshold. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity. P1's Monte Carlo estimate is 0.00019998, at the procedure's floor; it is not an upper confidence bound on the exact p-value. Original decisions are retained [E9].
+The rank comparison uses 99 isotropic directions at matched norm and gives 0.05. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity. P1's Monte Carlo estimate is 0.00019998, at the procedure's floor; it is not an upper confidence bound on the exact p-value. Exact sign-flip calibration requires symmetry under sign changes, not merely zero mean. Original decisions are retained [E9].
+
+These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/methodology.md#statistical-assumptions-and-rank-interpretation).
 
 ![Ablation and observation-comparator effects, separate audit cohort.](ant-publication/figures/ablations.png)
 
@@ -252,6 +247,10 @@ The original confirmation estimator averages available post-onset values within 
 The new seed registry records both reservations and consumption. It prevents a new application from reusing the later audit resets while allowing explicit historical audit verification. Historical cache identities are not migrated. The exact research dependencies remain pinned for reproduction; newer tooling is limited to publication. Source/license uncertainties for Baukit and upstream weights remain disclosed in the [source audit](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/sources.md).
 
 The [completion ledger](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/ant-publication.md) records checks, failures, retries, receipts, and requirements that remain historically unmet or inapplicable. The [interactive explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/) exposes positive, null and failed conditions from the same evidence.
+
+## Independent saved-data verification, 2026-10-29
+
+The [new claim ledger and correction report](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/fact-check-2026-10-29/report.md) independently recomputes saved extraction, paired effects, gates, selection and later audit statistics without model execution. It qualifies ensemble ranks, optimality arguments, historical runtime checks and kinematic timing. Original observations and selections remain unchanged. E1 fitted-regression claims, neural response-axis derivation and media replay correspondence are historical evidence, not independently revalidated model behavior. Use `scripts/build_publication.py` for the complete saved-data rebuild.
 
 ## AI statement
 

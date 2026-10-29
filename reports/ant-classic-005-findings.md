@@ -23,7 +23,7 @@ The implementation adapts [contrastive activation addition](https://arxiv.org/ab
 | replication | 530000–530029 | unused reservation |
 | independent audit | 540000–540019 | observed; includes former application reservation |
 
-The original run evaluated 88 validation conditions and selected the lateral strength -0.1 before confirmation. 6 conditions were confirmed; each comparator retained its own validation-selected strength. The fitting data determine vectors, validation determines strength, and confirmation estimates the locked outcomes. The later audit has separate provenance and must not be pooled with confirmation or described as the unused formal replication split.
+The original run evaluated 88 validation conditions and selected the lateral strength -0.1 before confirmation. 6 conditions were evaluated in confirmation; each comparator retained its own validation-selected strength. The fitting data determine vectors, validation determines strength, and confirmation estimates the locked outcomes. The later audit has separate provenance and must not be pooled with confirmation or described as the unused formal replication split.
 
 ## Original confirmation results
 
@@ -48,7 +48,9 @@ The status is **`confirmation_failed`**. Every pair is retained. An episode endi
 
 ## Later audit and mechanism limits
 
-The separately preregistered audit contains 5020 episodes across 251 arms on 20 resets. It reproduces **+0.462 m/s [0.343, 0.587]**, with 19 positive pairs, while treatment failures increase from 0 to 2. The rank p-value against 99 isotropic directions is 0.05; against 19 shuffled-label redraws it is 0.40. The turning-label direction is stronger. These findings do not establish lateral-label specificity.
+The separately preregistered audit contains 5020 episodes across 251 arms on 20 resets. It reproduces **+0.462 m/s [0.343, 0.587]**, with 19 positive pairs, while treatment failures increase from 0 to 2. The comparison rank against 99 isotropic directions is 0.05; against 19 shuffled-label redraws it is 0.40. The turning-label direction is stronger. These findings do not establish lateral-label specificity.
+
+These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/methodology.md#statistical-assumptions-and-rank-interpretation).
 
 Projection ablations and the observation intervention support a heading-related account. At a negative observation rotation of 9.22 degrees, the measured world-Y effect is +0.903 m/s [0.816, 0.998]. That intervention changes observation channels only, while the simulator state remains unedited. Because contact channels were already clipped before rotation, it computes `clip(R clip(f))`, not generally `clip(R f)`. Quaternion and world linear-velocity rotations do not fix that loss of force magnitude. Exact physical-state equivalence and unique heading mediation remain unestablished.
 
