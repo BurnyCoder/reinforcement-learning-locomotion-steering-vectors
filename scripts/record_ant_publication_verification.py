@@ -51,6 +51,7 @@ write("audit-pdf-visual-verification.json", {"checked_utc": datetime.now(timezon
 tests = read_log(out / "logs/tests-release.log")
 write("publication-verification.json", {
     "schema_version": 1, "recorded_utc": datetime.now(timezone.utc).isoformat(),
+    "release_status": "complete" if all((optional("input-upload-verification.json").get("all_hashes_match"), optional("remote-path-verification.json").get("all_paths_match"), optional("clean-reproduction-verification.json").get("passed"), optional("document-upload-verification.json").get("all_hashes_match"), optional("live-site-verification.json").get("all_hashes_match"), optional("pages-deployment.json").get("conclusion") == "success")) else "checks_pending",
     "scope": "Existing Ant evidence publication; no scientific rollouts/training/retuning",
     "git_commit_when_recorded": subprocess.check_output(["git", "rev-parse", "HEAD"], cwd=root, text=True).strip(),
     "core_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/18",

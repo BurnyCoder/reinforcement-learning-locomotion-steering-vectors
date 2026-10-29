@@ -1,0 +1,21 @@
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\reports\ant-publication\logs\verify_live_site.py", line 35, in <module>
+    checks = list(pool.map(verify, files))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\reports\ant-publication\logs\verify_live_site.py", line 30, in verify
+    raise ValueError(f"Deployment mismatch: {relative}")
+ValueError: Deployment mismatch: app.js
