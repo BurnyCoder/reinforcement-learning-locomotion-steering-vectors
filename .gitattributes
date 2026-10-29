@@ -5,6 +5,9 @@
 *.json text eol=lf
 *.toml text eol=lf
 *.lock text eol=lf
+site/*.js text eol=lf
+site/*.html text eol=lf
+site/*.css text eol=lf
 *.pdf binary
 *.npz binary
 *.png binary

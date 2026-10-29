@@ -1,8 +1,9 @@
 {
   "schema_version": 1,
-  "recorded_utc": "2026-10-29T00:48:54.363165+00:00",
+  "recorded_utc": "2026-10-29T00:53:51.815148+00:00",
+  "release_status": "complete",
   "scope": "Existing Ant evidence publication; no scientific rollouts/training/retuning",
-  "git_commit_when_recorded": "22c812a9d86db043bf03773b5827c06bf2178512",
+  "git_commit_when_recorded": "d8c18ebf367ca41ca02d89a4a7f913d38db26252",
   "core_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/18",
   "verification_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/19",
   "core_merge_commit": "4c7c19f98c67bc49d3001d1739a7cc1bd56197bd",
@@ -126,10 +127,19 @@
     "live_receipt": "live-site-verification.json"
   },
   "deployed_bytes": {
-    "status": "pending"
+    "checked_utc": "2026-10-29T00:52:19.913471+00:00",
+    "url": "https://burnycoder.github.io/reinforcement-learning-locomotion-steering-vectors/",
+    "local_revision": "d8c18ebf367ca41ca02d89a4a7f913d38db26252",
+    "files": 351,
+    "all_hashes_match": true,
+    "bytes": 51404111
   },
   "final_deployment": {
-    "status": "pending"
+    "conclusion": "success",
+    "headSha": "d8c18ebf367ca41ca02d89a4a7f913d38db26252",
+    "status": "completed",
+    "updatedAt": "2026-10-29T00:50:42Z",
+    "url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/actions/runs/40796624363"
   },
   "ui": {
     "local_and_live_flows": [
