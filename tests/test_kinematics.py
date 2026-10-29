@@ -53,3 +53,41 @@ def test_sidestep_and_common_horizon():
     assert result["common_steps"] == 500  # Steps 100–599 exist in both arms.
     assert result["delta_mean_yaw_deg"] == pytest.approx(0.0, abs=1e-9)  # No torso rotation.
     assert result["delta_gait_lateral_velocity"] == pytest.approx(6.0 * np.sin(np.radians(3.0)), abs=1e-9)  # Pure sidestep relative to the gait axis.
+
+
+@pytest.mark.parametrize("window", [50, 100, 200])
+def test_heading_trend_units_do_not_depend_on_window_size(window):
+    """A known heading ramp has the same degrees-per-100-steps slope at every resolution."""
+    heading = np.radians(np.arange(1000) * 0.01)
+    result = pair_kinematics(_episode(np.zeros(1000), np.zeros(1000)), _episode(heading, heading), window=window)
+    assert result["yaw_slope_deg_per_100_steps"] == pytest.approx(1.0)
+
+
+def test_travel_direction_difference_wraps_the_branch_cut():
+    """Two almost identical backward paths differ by two degrees, not a full revolution."""
+    left, right = np.full(300, np.radians(179)), np.full(300, np.radians(-179))
+    result = pair_kinematics(_episode(left, left), _episode(right, right))
+    assert result["delta_travel_angle_deg"] == pytest.approx(2.0)
+
+
+def test_single_window_does_not_claim_a_zero_heading_trend():
+    """One observed window cannot identify a slope."""
+    heading = np.radians(np.arange(200) * 0.01)
+    result = pair_kinematics(_episode(np.zeros(200), np.zeros(200)), _episode(heading, heading))
+    assert result["yaw_slope_deg_per_100_steps"] is None
+
+
+@pytest.mark.parametrize("dt", [0.04, 0, float("nan")])
+def test_paired_step_horizons_require_equal_positive_timesteps(dt):
+    """Step alignment is not time alignment when recorded simulator timesteps differ."""
+    episode = _episode(np.zeros(300), np.zeros(300))
+    with pytest.raises(ValueError, match="timestep"):
+        pair_kinematics(episode, {**episode, "dt": dt})
+
+
+@pytest.mark.parametrize("warmup, window", [(-1, 100), (100, 0), (100, -1)])
+def test_kinematic_windows_require_valid_step_counts(warmup, window):
+    """Invalid spans must fail explicitly rather than become fabricated summaries."""
+    episode = _episode(np.zeros(300), np.zeros(300))
+    with pytest.raises(ValueError, match="warmup.*window"):
+        pair_kinematics(episode, episode, warmup=warmup, window=window)

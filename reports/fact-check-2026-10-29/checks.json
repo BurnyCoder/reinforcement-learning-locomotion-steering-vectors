@@ -448,5 +448,106 @@
     "Frame-to-state movie correspondence is attributed to preserved receipts and saved-array equality, not independently established for every frame.",
     "Historical screenshots and plots are preserved; corrected interpretations are in report.md.",
     "Publication upload/deployment verification is recorded separately after the source PR is merged."
-  ]
+  ],
+  "followup_2026_10_29": {
+    "completed_utc": "2026-10-29T05:54:44.309022+00:00",
+    "source_base": "9e2ac1f449e9bff4691829e953886e78f3b8a1c1",
+    "scope": "Numerical boundary cases, claim wording and saved-data publication; no models, simulator episodes or replays.",
+    "commands": [
+      {
+        "command": ".venv/Scripts/python.exe -m pytest tests/test_kinematics.py tests/test_analysis.py tests/test_storage.py tests/test_saved_claims.py -q",
+        "exit_code": 0,
+        "output": "......................................................                   [100%]\n54 passed in 26.88s\n",
+        "log_sha256": "7c460804097cfa913806529e14693c4eacc22d9fb45b6b565548d274303b725b"
+      },
+      {
+        "command": ".venv/Scripts/python.exe -m pytest tests/test_ant_publication.py tests/test_ant_publication_documents.py tests/test_ant_document_publication.py tests/test_publication_audit.py tests/test_build_paper.py tests/test_ant_site.py -q",
+        "exit_code": 0,
+        "output": "...............................................................          [100%]\n63 passed in 16.09s\n",
+        "log_sha256": "e4661b6e960864f62952cc51ac709f9146ad7b0ea1541c76ab26d83f2e97725c"
+      },
+      {
+        "command": ".venv/Scripts/python.exe scripts/build_publication.py",
+        "exit_code": 0,
+        "output": "2026-10-29 05:43:21,089Z INFO Verified 9611 immutable files\n2026-10-29 05:43:32,508Z INFO Checked hc-running-002 validation: 120 conditions\n2026-10-29 05:43:35,479Z INFO Checked hc-height-speed-003 validation: 40 conditions\n2026-10-29 05:43:40,810Z INFO Checked hc-height-speed-004 validation: 72 conditions\n2026-10-29 05:43:42,279Z INFO Checked hc-height-speed-004 confirmation: 6 conditions\n2026-10-29 05:43:52,281Z INFO Checked ant-classic-005 validation: 88 conditions\n2026-10-29 05:43:54,239Z INFO Checked ant-classic-005 confirmation: 6 conditions\n2026-10-29 05:44:46,698Z INFO Checked audit: 250 arms, 124 directions, 20 resets\n2026-10-29 05:44:51,521Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-classic-001\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-classic-001\\report.pdf\n2026-10-29 05:44:53,580Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-running-002\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-running-002\\report.pdf\n2026-10-29 05:44:54,308Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-height-speed-003\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-height-speed-003\\report.pdf\n2026-10-29 05:44:55,169Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-height-speed-004\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\hc-height-speed-004\\report.pdf\n2026-10-29 05:44:56,497Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-classic-005\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-classic-005\\report.pdf\n2026-10-29 05:45:34,967Z INFO Verified 6595 exact input files\n2026-10-29 05:45:46,457Z INFO Assembled validation: 89 conditions, 10 seeds\n2026-10-29 05:45:48,876Z INFO Assembled confirmation: 7 conditions, 30 seeds\n2026-10-29 05:46:49,339Z INFO Assembled fresh_audit: 251 conditions, 20 seeds\n2026-10-29 05:46:56,325Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\paper.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\paper.pdf\n2026-10-29 05:46:56,716Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-classic-005-independent-audit.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\ant-classic-005-independent-audit.pdf\n2026-10-29 05:48:42,639Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\fact-check-2026-10-29\\report.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\reports\\fact-check-2026-10-29\\report.pdf\n2026-10-29 05:48:42,641Z INFO Built 389 publication outputs; no models or simulation\n",
+        "log_sha256": "9cdb53b82df9604c45494a64ceccbdc09e5b443a5eb0c43dab161a1c38be8d35"
+      },
+      {
+        "command": ".venv/Scripts/python.exe scripts/build_publication.py --check",
+        "exit_code": 0,
+        "output": "2026-10-29 05:49:24,661Z INFO Verified 9611 immutable files\n2026-10-29 05:49:38,367Z INFO Checked hc-running-002 validation: 120 conditions\n2026-10-29 05:49:41,666Z INFO Checked hc-height-speed-003 validation: 40 conditions\n2026-10-29 05:49:47,386Z INFO Checked hc-height-speed-004 validation: 72 conditions\n2026-10-29 05:49:48,871Z INFO Checked hc-height-speed-004 confirmation: 6 conditions\n2026-10-29 05:49:59,092Z INFO Checked ant-classic-005 validation: 88 conditions\n2026-10-29 05:50:01,115Z INFO Checked ant-classic-005 confirmation: 6 conditions\n2026-10-29 05:50:57,178Z INFO Checked audit: 250 arms, 124 directions, 20 resets\n2026-10-29 05:51:01,629Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-classic-001\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-classic-001\\report.pdf\n2026-10-29 05:51:03,678Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-running-002\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-running-002\\report.pdf\n2026-10-29 05:51:04,317Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-height-speed-003\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-height-speed-003\\report.pdf\n2026-10-29 05:51:05,179Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-height-speed-004\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\hc-height-speed-004\\report.pdf\n2026-10-29 05:51:06,342Z INFO Wrote experiment reports: C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\ant-classic-005\\report.md and C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\ant-classic-005\\report.pdf\n2026-10-29 05:51:40,317Z INFO Verified 6595 exact input files\n2026-10-29 05:51:48,327Z INFO Assembled validation: 89 conditions, 10 seeds\n2026-10-29 05:51:50,239Z INFO Assembled confirmation: 7 conditions, 30 seeds\n2026-10-29 05:52:39,669Z INFO Assembled fresh_audit: 251 conditions, 20 seeds\n2026-10-29 05:52:45,176Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\paper.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\paper.pdf\n2026-10-29 05:52:45,526Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\ant-classic-005-independent-audit.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\ant-classic-005-independent-audit.pdf\n2026-10-29 05:54:17,029Z INFO Rendered paper source=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\fact-check-2026-10-29\\report.md output=C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\tmp\\publication-o965t3h6\\reports\\fact-check-2026-10-29\\report.pdf\n2026-10-29 05:54:18,012Z INFO Verified 389 deterministic publication outputs\n",
+        "log_sha256": "4766c561b4f1d0c8ca999f4b23da7a3b2e39cd0a7ad64b5c35a5ad313836c0c4"
+      }
+    ],
+    "tests_passed": 117,
+    "immutable_evidence": {
+      "changed": [],
+      "files": 9611
+    },
+    "kinematics_compatibility": {
+      "absolute_tolerance": 1e-10,
+      "cohorts": [
+        {
+          "cohort": "original confirmation",
+          "maximum_absolute_difference": 0.0,
+          "mean_fields_checked": 24,
+          "pairs_checked": 30,
+          "retained_pairs": 27
+        },
+        {
+          "cohort": "primary_minus",
+          "maximum_absolute_difference": 0.0,
+          "mean_fields_checked": 24,
+          "pairs_checked": 20,
+          "retained_pairs": 20
+        },
+        {
+          "cohort": "heading_parallel_minus",
+          "maximum_absolute_difference": 0.0,
+          "mean_fields_checked": 24,
+          "pairs_checked": 20,
+          "retained_pairs": 20
+        },
+        {
+          "cohort": "perception_minus_delta",
+          "maximum_absolute_difference": 0.0,
+          "mean_fields_checked": 24,
+          "pairs_checked": 20,
+          "retained_pairs": 20
+        }
+      ],
+      "comparison": "Current numerical helper versus saved published means and denominators",
+      "date": "2026-10-29",
+      "model_execution": false
+    },
+    "local_links": {
+      "checked": 155,
+      "failures": []
+    },
+    "pdfs": [
+      {
+        "path": "reports/paper.pdf",
+        "sha256": "c5d6e6e13d2f0056e81f7de2012cf88fd5c1ec3cb7eed8bff0ad9ffb72a2b4f0",
+        "pages": 11
+      },
+      {
+        "path": "reports/ant-classic-005-independent-audit.pdf",
+        "sha256": "8bf1861cb8e2586559b95aa793407a762aac447eaa4efbc5e4ea72c03408ecb2",
+        "pages": 5
+      },
+      {
+        "path": "reports/fact-check-2026-10-29/report.pdf",
+        "sha256": "d29aa8e37f1b7383298820bcb605cade140d6207b39632cfa8852b6701ded041",
+        "pages": 3
+      }
+    ],
+    "visual_review": "All 19 pages rendered and viewed in contact sheets; paper page 3 and independent-audit page 5 additionally inspected at full page resolution. No clipping or unreadable inserted text found.",
+    "review": "One substantive source/diff review of numerical units, angle wrapping, missing-trend handling, timestep checks, saved-value compatibility, source attribution, raw-evidence preservation and publication scope. No additional blocking findings.",
+    "resolved_failures": [
+      "Before the implementation fix: 10 new boundary assertions failed, 5 passed (current-session pytest output).",
+      "Before regenerating the revised publication: 42 tests passed and one document-equality assertion failed on stale generated prose; final regenerated tests passed.",
+      "Scratch PDF-inspection helper initially decoded pdfinfo output as Windows cp1252; explicit UTF-8 resolved the UnicodeDecodeError."
+    ],
+    "site_and_figures": "Unchanged; browser and video behavior was not rerun for this wording/numerical-helper follow-up."
+  }
 }

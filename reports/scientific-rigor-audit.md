@@ -17,21 +17,21 @@ The [audit script](../scripts/audit_scientific_rigor.py) runs named phases over 
 
 ## Verdict
 
-**No methodological error invalidates the recorded numerical results or statuses.**
-- The featured Ant effect is real for the tested policy and robust to estimator choice.
-- Splits are disjoint, selection preceded confirmation, and failed episodes remain counted.
+**Saved-data checks reproduce the recorded reductions and statuses; they do not establish that every methodological assumption is valid.**
+- The recorded Ant effect is positive under the evaluated estimators; this does not cover every possible estimand.
+- Original experimental splits are disjoint, logged selection preceded confirmation, and failed episodes remain counted. The later audit consumed a reserved application cohort, as disclosed in the current provenance ledger.
 
 **Three interpretations need correction:**
-1. The label-shuffled control is **not a label-free null**. By construction it shares the primary's dominant activation subspace.
-2. The speed gate counts **generic degradation** as a useful speed change. Every HalfCheetah "speed effect" is a slowdown that a reward-trained policy shows under almost any perturbation.
-3. The Ant lateral effect is only **partly specific** to the contrast vector. Its three norm-matched isotropic random directions produce 35–112% of its sign-dependent lateral response at |α| ≤ 0.1. (*Later correction*, [fact-check](fact-check-2026-10-22.md): across all six isotropic draws the range is −13% to 112%, with mixed signs.)
+1. The label-shuffled control is **not a label-free null**. Its activation alignment must be considered; shared span does not imply confinement to the dominant principal components.
+2. The mean-based speed gate can accept slowdowns without establishing bidirectional control, temporal persistence, or a particular degradation mechanism. The tested grid does not describe arbitrary perturbations.
+3. Random-control comparisons do not establish calibrated label specificity. The original three norm-matched isotropic directions produce 35–112% of the primary's sign-dependent lateral response at |α| ≤ 0.1. (*Later correction*, [fact-check](fact-check-2026-10-22.md): across all six isotropic draws the range is −13% to 112%, with mixed signs.)
 
 The methodology's stated hypothesis is that contrast directions beat generic perturbations. The evidence for it:
 
 | Comparison | Result |
 | --- | --- |
 | Ant lateral vs the three tested isotropic random directions and the action bias, same seeds | Primary is larger. This is partial support from only three random draws. Six draws give rank p = 1/7 at \|α\| = 0.1, and the turning contrast vector is stronger ([later audit](ant-classic-005-y-shift-audit.md)). |
-| Ant lateral vs the shuffled-label direction | Not testable, because the two directions are aligned. |
+| Ant lateral vs the shuffled-label direction | Their measured effects can be compared. Alignment limits interpretation as a distinct mechanism or label-free null; it does not make the comparison untestable. |
 | HalfCheetah speed vs any control | Not supported. Primaries and controls share the same sign-independent slowdown. |
 
 ## 1. What holds
@@ -54,7 +54,7 @@ The first check was **production recomputation**. Every validation/confirmation 
 | Mean torso-heading change | +0.0914 rad (+5.23°), 29 pairs | Consistent with the documented heading involvement |
 | Mean squared action ratio | 1.1784 | Unchanged from the findings |
 
-Validation estimated +0.54501 m/s for the same condition. Confirmation shrank it by 26%, as expected when the largest of several validation effects is selected (the winner's curse). The fresh confirmation estimate, not the validation estimate, is the unbiased one.
+The recorded confirmation estimate is lower than the validation estimate. Selection on noisy validation measurements can inflate selected effects, but this single decrease does not identify its cause or establish that confirmation is unbiased. Independence from selection, representative reset sampling and a specified estimand are required for that inference. See [Cawley and Talbot's analysis of model-selection bias](https://jmlr.csail.mit.edu/papers/volume11/cawley10a/cawley10a.pdf). Original measured effects and frozen selection remain in the linked results.
 
 ## 2. Specificity against the tested controls
 
@@ -70,7 +70,7 @@ The selected controls ran on the same 30 seeds, so each can be compared directly
 
 What this shows:
 - The primary moves the Ant further toward +Y than every isotropic random control and the constant action bias. The comparison includes random 1 at the same strength.
-- Three random draws are not a null distribution. These intervals are nominal and not multiplicity-adjusted.
+- Three random draws describe only a small control ensemble; a calibrated null comparison requires an explicit exchangeability assumption. These intervals are nominal and not multiplicity-adjusted.
 - At |α| = 0.05 the random directions' sign-dependent lateral responses (−0.146 to −0.160 m/s) match the primary's (−0.143). At |α| = 0.1 they are 35–52% of it, in validation.
 - All three random directions, and the shuffled one, have the primary's sign of odd response. Chance alone gives 1 in 8 for three independent draws. This is unexplained and is not counted as evidence.
 - *Later resolution* ([world-Y specificity audit](ant-classic-005-y-shift-audit.md)): the turning family's three isotropic draws, on the same seeds, have mixed odd signs. Four of all six agree with the primary, which is consistent with chance. The same audit finds that the turning contrast vector moves world Y *more* than the lateral one, so the effect is not specific to the lateral label.
@@ -89,8 +89,8 @@ What this shows:
 
 Why this happens:
 - Isotropic 256-dimensional directions have cosine SD 1/√256 = 0.0625.
-- Shuffled contrasts are differences between random subsets of fitting windows. They therefore lie in the dominant directions of window-mean activation variation. That variation is low-dimensional: the participation ratio, (Σλ)²/Σλ², is 7.45 for Ant and 3.30 for HalfCheetah.
-- The primary contrast lies in the same subspace, so large overlap is the expected outcome, not an accident.
+- Shuffled contrasts lie in the span of centered window means, as does the primary. The saved covariance participation ratios, (Σλ)²/Σλ², are 7.45 for Ant and 3.30 for HalfCheetah. These describe variance concentration, not matrix rank or guaranteed confinement to leading principal components. Small nonzero eigenvalues can coexist with a small participation ratio; [numerical rank](https://numpy.org/doc/1.26/reference/generated/numpy.linalg.matrix_rank.html) is a different quantity.
+- The reported reshuffle experiment measures substantial overlap for these families. Sharing a span alone does not guarantee large overlap with the primary.
 
 Consequences:
 - The shuffled Ant direction's larger effect (+0.890 m/s, 9/30 failures, at twice the primary's strength) partly re-tests a direction with cosine 0.60 to the primary.
