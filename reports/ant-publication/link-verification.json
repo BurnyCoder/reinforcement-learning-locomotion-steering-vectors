@@ -1,0 +1,150 @@
+{
+  "checked_utc": "2026-10-29T00:23:10.411479+00:00",
+  "scope": "External URLs displayed by site/index.html and site/data/ant005.json; additional Hugging Face resolve URL verifies downloadable bytes without a full download. No link targets were edited.",
+  "evidence_sha256": "90b86d27cb0fafb87d884a52493e103c96a6fd202c06cdc9f8f4ce8b667e60c6",
+  "evidence_release_revision": null,
+  "privacy": "Unauthenticated requests. Final URL query strings/fragments and server error bodies are omitted.",
+  "links": [
+    {
+      "label": "Original numerical results",
+      "url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005/results.json",
+      "role": "explorer source",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005/results.json",
+          "content_type": "text/html",
+          "content_length": null
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005/results.json",
+      "content_type": "text/html",
+      "content_length": null,
+      "status": "ok"
+    },
+    {
+      "label": "Independent audit and preregistration",
+      "url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md",
+      "role": "explorer source",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md",
+          "content_type": "text/html",
+          "content_length": null
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md",
+      "content_type": "text/html",
+      "content_length": null,
+      "status": "ok"
+    },
+    {
+      "label": "Pinned steering vectors",
+      "url": "https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz",
+      "role": "explorer source",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz",
+          "content_type": "text/html",
+          "content_length": "93010"
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz",
+      "content_type": "text/html",
+      "content_length": "93010",
+      "status": "ok"
+    },
+    {
+      "label": "Fixed-camera paired video",
+      "url": "https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a",
+      "role": "explorer source",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://github-production-user-asset-6210df.s3.amazonaws.com/34103661/647542566-9e0719a6-c15b-474e-b74e-3c5e70954e2a.mp4",
+          "content_type": "video/mp4",
+          "content_length": "794115"
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://github-production-user-asset-6210df.s3.amazonaws.com/34103661/647542566-9e0719a6-c15b-474e-b74e-3c5e70954e2a.mp4",
+      "content_type": "video/mp4",
+      "content_length": "794115",
+      "status": "ok"
+    },
+    {
+      "label": "a href",
+      "url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/tree/main/reports",
+      "role": "HTML link",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/tree/main/reports",
+          "content_type": "text/html",
+          "content_length": null
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/tree/main/reports",
+      "content_type": "text/html",
+      "content_length": null,
+      "status": "ok"
+    },
+    {
+      "label": "a href",
+      "url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors",
+      "role": "HTML link",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors",
+          "content_type": "text/html",
+          "content_length": null
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors",
+      "content_type": "text/html",
+      "content_length": null,
+      "status": "ok"
+    },
+    {
+      "label": "Pinned steering vectors direct download",
+      "url": "https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz",
+      "role": "download verification",
+      "attempts": [
+        {
+          "method": "HEAD",
+          "http_status": 200,
+          "final_url": "https://us.aws.cdn.hf.co/xet-bridge-us/6a9f43ad17932216ec8d680f/bdb745a696a12dfd4505bd2db28cc0e2cad3cc83f78bde6e5fbab7da0ba1a826",
+          "content_type": "application/octet-stream",
+          "content_length": "12190"
+        }
+      ],
+      "method": "HEAD",
+      "http_status": 200,
+      "final_url": "https://us.aws.cdn.hf.co/xet-bridge-us/6a9f43ad17932216ec8d680f/bdb745a696a12dfd4505bd2db28cc0e2cad3cc83f78bde6e5fbab7da0ba1a826",
+      "content_type": "application/octet-stream",
+      "content_length": "12190",
+      "status": "ok"
+    }
+  ],
+  "all_ok": true
+}

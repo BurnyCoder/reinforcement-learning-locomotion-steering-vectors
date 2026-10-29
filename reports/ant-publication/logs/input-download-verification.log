@@ -1,0 +1,42 @@
+2026-10-29 00:17:19,177Z INFO HTTP Request: GET https://huggingface.co/api/models/BurnyCoder/rl-locomotion-steering-vectors/revision/b262002001df6af2fd87dce82cc385f6b132e184 "HTTP/1.1 200 OK"
+2026-10-29 00:17:19,466Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520000.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,495Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520005.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,504Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520001.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,505Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520003.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,524Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520002.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,526Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520004.npz "HTTP/1.1 302 Found"
+2026-10-29 00:17:19,623Z INFO HTTP Request: HEAD https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/resolve/b262002001df6af2fd87dce82cc385f6b132e184/experiments/ant-classic-005/episodes/confirmation/baseline/520006.npz "HTTP/1.1 302 Found"
+Traceback (most recent call last):
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\publish_ant_evidence.py", line 109, in <module>
+    verify(args.verify)
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\publish_ant_evidence.py", line 91, in verify
+    checks = list(pool.map(check, manifest["files"]))
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 619, in result_iterator
+    yield _result_or_cancel(fs.pop())
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 317, in _result_or_cancel
+    return fut.result(timeout)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 456, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\_base.py", line 401, in __get_result
+    raise self._exception
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.cache\python\cpython-3.12-windows-x86_64-none\Lib\concurrent\futures\thread.py", line 59, in run
+    result = self.fn(*self.args, **self.kwargs)
+             ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\scripts\publish_ant_evidence.py", line 82, in check
+    downloaded = Path(hf_hub_download(REPO, row["hub_path"], revision=resolved,
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\huggingface_hub\utils\_validators.py", line 88, in _inner_fn
+    return fn(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\huggingface_hub\file_download.py", line 1028, in hf_hub_download
+    return _hf_hub_download_to_cache_dir(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "C:\Users\Happy\Documents\projects\rl-locomotion-steering-vectors\.venv\Lib\site-packages\huggingface_hub\file_download.py", line 1206, in _hf_hub_download_to_cache_dir
+    os.makedirs(os.path.dirname(pointer_path), exist_ok=True)
+  File "<frozen os>", line 215, in makedirs
+  File "<frozen os>", line 225, in makedirs
+FileNotFoundError: [WinError 206] The filename or extension is too long: 'C:\\Users\\Happy\\Documents\\projects\\rl-locomotion-steering-vectors\\.cache\\ant-publication-verification\\models--BurnyCoder--rl-locomotion-steering-vectors\\snapshots\\b262002001df6af2fd87dce82cc385f6b132e184\\experiments\\ant-classic-005\\episodes\\confirmation'

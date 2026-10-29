@@ -1,0 +1,16 @@
+{
+  "checked_utc": "2026-10-29T00:40:16.052308+00:00",
+  "path": "reports/ant-classic-005-independent-audit.pdf",
+  "sha256": "88a3fcdfe1020bcf0cb9f8bfb3eeac91d4d363bab8250531d49fefd0dbe0b9a8",
+  "pages": 5,
+  "visually_inspected_pages": [
+    1,
+    2,
+    3,
+    4,
+    5
+  ],
+  "render": "pdftoppm -jpeg -r 110 reports/ant-classic-005-independent-audit.pdf tmp/ant-audit-pdf/final-page",
+  "author": "Libor “Burny” Burian",
+  "result": "All pages inspected. No cropped text/tables/axes; Delta and alpha notation visible after portable-name fix."
+}

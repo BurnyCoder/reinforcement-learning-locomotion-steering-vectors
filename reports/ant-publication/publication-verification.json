@@ -1,0 +1,74 @@
+{
+  "schema_version": 1,
+  "recorded_utc": "2026-10-29T00:40:16.054832+00:00",
+  "scope": "Existing Ant evidence publication; no scientific rollouts/training/retuning",
+  "git_commit_when_recorded": "4c7c19f98c67bc49d3001d1739a7cc1bd56197bd",
+  "core_pull_request": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/pull/18",
+  "core_merge_commit": "4c7c19f98c67bc49d3001d1739a7cc1bd56197bd",
+  "tests": {
+    "command": "uv run --locked --no-sync pytest -q",
+    "passed": 190,
+    "log": "logs/tests-release.log"
+  },
+  "build": {
+    "command": "uv run --locked --no-sync python scripts/build_ant_publication.py",
+    "log": "logs/build-integrated.log",
+    "check_log": "logs/build-check-final.log"
+  },
+  "inputs": {
+    "receipt": "input-upload-verification.json",
+    "remote_path_receipt": "remote-path-verification.json",
+    "revision": "b262002001df6af2fd87dce82cc385f6b132e184",
+    "all_hashes_match": true
+  },
+  "fresh_restore_receipt": "clean-reproduction-verification.json",
+  "fresh_restore": {
+    "status": "pending"
+  },
+  "documents": {
+    "status": "pending"
+  },
+  "pdfs": [
+    "paper-visual-verification.json",
+    "audit-pdf-visual-verification.json"
+  ],
+  "collection": {
+    "url": "https://huggingface.co/collections/BurnyCoder/ant-locomotion-steering-evidence-6ae2900bb110a4be69bbfb0b",
+    "receipt": "collection-verification.json",
+    "items": [
+      "BurnyCoder/rl-locomotion-steering-vectors",
+      "farama-minari/Ant-v5-SAC-medium"
+    ]
+  },
+  "pages": {
+    "url": "https://burnycoder.github.io/reinforcement-learning-locomotion-steering-vectors/",
+    "initial_run": "https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/actions/runs/40794705389",
+    "initial_conclusion": "success",
+    "live_receipt": "live-site-verification.json"
+  },
+  "ui": {
+    "local_and_live_flows": [
+      "original confirmation and pre-onset failure",
+      "validation cross-label strength sweep",
+      "audit projection ablation signs",
+      "random directions filter",
+      "observation rotation units",
+      "seed trajectories and evaluation rewards"
+    ],
+    "mobile_viewport": {
+      "width": 390,
+      "height": 844,
+      "observed_document_scroll_width": 375
+    },
+    "application_console_errors_observed": [],
+    "download": "same-origin download attribute added; browser download event unavailable; HTTP bytes checked separately"
+  },
+  "review_and_repairs": "verification.md",
+  "limitations": [
+    "Original confirmation_failed retained",
+    "No new scientific collection",
+    "Historical preregistration timing unrepairable",
+    "Baukit/full checkpoint licensing unresolved",
+    "No formal replication, training-seed generalization, unique heading mechanism or practical-control claim"
+  ]
+}
