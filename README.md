@@ -8,11 +8,21 @@ The method adapts [contrastive activation addition](https://arxiv.org/abs/2312.0
 
 ![Saved Ant ground-plane trajectories comparing baseline, primary, controls and ablations in separate validation and audit cohorts](reports/ant-publication/figures/trajectories.png)
 
-The figure uses predetermined episodes with equal world-X/world-Y distance scales; crosses mark failed endpoints. The **fixed-camera movie below replays the figure's historical validation example**. Baseline is left, steering right; both panels share a stationary world frame. Grid, rings and trails are visual annotations. Neither example is new confirmation or application evidence.
+The figure uses predetermined episodes with equal world-X/world-Y distance scales; crosses mark failed endpoints. **All movies below replay the same historical validation episode shown in the figure**, with baseline on the left and steering on the right. These visualizations are not new confirmation or application evidence.
+
+**Fixed, far-away camera:** both panels share a stationary world frame and scale. Grid, rings and trails are visual annotations.
 
 https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a
 
-[Other camera views and pinned reproduction commands](docs/ant-videos.md) · [Replay integrity audit](reports/ant-classic-005-causal-audit.md#camera-and-video-integrity) · [Interactive evidence explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/)
+**Top-down tracking camera:** see the gait and direction from above.
+
+https://github.com/user-attachments/assets/17286e19-c5a2-4ab9-96ab-f50444d494ca
+
+**Original tracking camera:** inspect the locomotion more closely.
+
+https://github.com/user-attachments/assets/676ef6c8-ade4-4f85-a0b7-01d7fcdb86c9
+
+[Video downloads and pinned reproduction commands](docs/ant-videos.md) · [Replay integrity audit](reports/ant-classic-005-causal-audit.md#camera-and-video-integrity) · [Interactive evidence explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/)
 
 <!-- BEGIN GENERATED README RESULTS -->
 
