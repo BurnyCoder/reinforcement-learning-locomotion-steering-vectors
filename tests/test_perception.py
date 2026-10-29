@@ -66,8 +66,8 @@ def test_rotation_is_invertible_and_batched():
     assert rotate_ant_observation(batch, 0.0) is not batch  # Callers never receive an aliased input array.
 
 
-def test_rotation_equals_rotated_physical_ant_state():
-    """Local: compare with MuJoCo. Global: prove the layout, velocity frames and force frames are right."""
+def test_rotation_equals_rotated_physical_ant_state_for_unsaturated_wrenches():
+    """Local: compare unsaturated channels with MuJoCo. Global: verify frames without asserting equivalence after force clipping."""
     with gym.make("Ant-v5") as env:  # Unmodified environment defines the true observation.
         env.reset(seed=7)  # Reproducible starting state.
         env.action_space.seed(7)  # Reproducible random actions (Gymnasium spaces keep their own RNG).
@@ -99,7 +99,22 @@ def test_rotation_equals_rotated_physical_ant_state():
     scale = 2 * max(1.0, float(np.abs(original_obs[27:]).max()))  # Keep rotated forces inside the clip range for an exact comparison.
     original_obs[27:] /= scale  # Uniform scaling commutes with rotation.
     rotated_obs[27:] /= scale  # Same scaling on the physical rotated state.
-    np.testing.assert_allclose(rotate_ant_observation(original_obs, delta), rotated_obs, atol=1e-6)  # Observation rotation equals rotated physics.
+    np.testing.assert_allclose(rotate_ant_observation(original_obs, delta), rotated_obs, atol=1e-6)  # Local: compare only the deliberately unsaturated case; global: validate coordinate frames, not saturated-observation equivalence.
+
+
+def test_saturated_wrench_rotation_is_not_exact_physical_state_rotation():
+    """Local: expose noncommuting clip and rotation. Global: preserve the historical comparator while bounding its interpretation."""
+    observation = np.zeros(105)  # Local: isolate one planar contact-wrench block; global: this algebraic fixture is not a locomotion episode.
+    observation[1] = 1.0  # Local: valid identity quaternion; global: keep orientation well defined.
+    raw_wrench = np.array([2.0, 1.0])  # Local: one pre-observation component exceeds Ant's clip range; global: represent information the recorded observation loses.
+    observation[27:29] = np.clip(raw_wrench, -1, 1)  # Local: apply Gymnasium's observed clipping; global: give the comparator its actual input contract.
+    delta = np.pi / 4  # Local: use an analytically simple planar rotation; global: avoid a tolerance-only counterexample.
+    transformed = rotate_ant_observation(observation, delta)  # Local: preserve clip(R clip(f)); global: test the unchanged historical intervention.
+    c, s = np.cos(delta), np.sin(delta)  # Local: construct physical yaw rotation; global: compare operation order independently.
+    physical = np.clip(np.array([[c, -s], [s, c]]) @ raw_wrench, -1, 1)  # Local: physical-state observation is clip(R f); global: show why raw forces would be needed for exact equivalence.
+    np.testing.assert_allclose(transformed[27:29], [0.0, 1.0], atol=1e-12)  # Local: expected historical transform; global: guard its numerical semantics.
+    np.testing.assert_allclose(physical, [np.sqrt(0.5), 1.0])  # Local: independently known different result; global: make the limitation falsifiable.
+    assert not np.allclose(transformed[27:29], physical)  # Local: demonstrate the non-equivalence; global: prevent universal physical-rotation claims.
 
 
 class _RecordingModel:

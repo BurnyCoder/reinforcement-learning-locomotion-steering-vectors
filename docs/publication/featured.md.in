@@ -1,0 +1,15 @@
+## Featured experiment: Ant's ground path shifts toward world +Y
+
+Adding the saved **{{hidden_dim}}-dimensional lateral vector at strength {{alpha}}** after the frozen Ant actor's first ReLU increases mean **world-Y ground-plane velocity by {{effect}} m/s**, with a paired bootstrap 95% interval **{{ci}}**, on **{{n}} confirmation pairs**. Mean forward-speed retention is **{{retention}}%**. These are equal-episode summaries of available post-onset motion; they do not establish body-relative sidestepping. [Saved results]({{git}}reports/ant-classic-005/results.json) · [current findings]({{git}}reports/ant-classic-005-findings.md).
+
+**The original outcome remains `{{status}}`.** Baseline and treated arms each have {{baseline_failures}}/{{n}} failures, on partly different seeds. A shared episode ends before steering begins and triggers the strict prefix criterion. Mean squared action rises {{effort_change}}%, and mean post-onset environment reward decreases from {{baseline_reward}} to {{treated_reward}} per step. Equal failure counts do not establish equal safety on every reset.
+
+{{original_table}}
+
+Each control uses its own validation-selected strength. The intervals above use the original paired percentile bootstrap; the baseline is shared. Larger target effects do not erase physical failures. Full per-seed trajectories and all validation settings are available in the [interactive evidence explorer]({{site}}).
+
+**Later audit, separate cohort.** On {{fresh_n}} further resets, the locked vector produces **{{fresh_effect}} m/s {{fresh_ci}}** (BCa 95% interval), with {{fresh_positive}}/{{fresh_n}} positive pairs. Failures rise from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}. Against {{random_n}} norm-matched random directions its sign-dependent response ranks at **p = {{random_p}}**; label specificity is unsupported. This audit consumed a previously reserved application cohort and is not the formal replication split. [Audit and ablations]({{git}}reports/ant-classic-005-independent-audit.md).
+
+**Mechanism is qualified.** Projection ablations and a specified observation transformation support a heading-related account for this checkpoint. The transformation rotates already-clipped contact-force channels and clips again: `clip(R clip(f))` generally differs from physical rotation's `clip(R f)`. It does not establish exact physical-heading equivalence or a unique semantic mediator. The original activation-steering result is unchanged.
+
+Regenerate the current Ant publication from saved data with `uv run --locked --no-sync python scripts/build_ant_publication.py`; add `--check` to verify generated outputs. No policy loading or new episode collection is needed. [Reproduction and completion ledger]({{git}}docs/ant-publication.md) · [paper]({{git}}reports/paper.md) · [PDF]({{git}}reports/paper.pdf).

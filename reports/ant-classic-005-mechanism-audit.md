@@ -1,10 +1,12 @@
 # Ant 005 path shift: estimand, mechanism wording and shared-baseline inference
 
+**Historical saved-data audit.** The [original narrative snapshot](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf6337e92fbbe0fba9746671e0afd55b8149c/reports/ant-classic-005-mechanism-audit.md) and numerical artifacts are retained. The [current generated findings](ant-classic-005-findings.md) include later evidence and bounded interpretation. Use [saved-evidence publication](../docs/methodology.md#saved-evidence-publication) for regeneration without replay. The later observation intervention has the [clipped-wrench limitation](../docs/methodology.md#calibration-controls-and-fresh-evaluation); neither this descriptive kinematics audit nor that comparator establishes a sole semantic mediator.
+
 Audit date: 2026-10-16 UTC. Scope: a second rigor check of the featured claim. The claim is that the saved lateral vector at α = −0.1, added to the frozen Ant-v5 SAC actor's first ReLU, shifts the ground path toward world +Y. It is a post hoc analysis of saved data only: no policy inference, simulation, new seeds, selection changes or gate changes. The recorded status `confirmation_failed` is unchanged.
 
 Four audits came before this one: [causal](ant-classic-005-causal-audit.md), [documentation](documentation-audit.md), [scientific-rigor](scientific-rigor-audit.md) and [world-Y specificity](ant-classic-005-y-shift-audit.md). This audit re-reads their scripts and asks which of their inferential steps were not themselves tested.
 
-Reproduce from the project root, with the original `runs/` directories present:
+The historical saved-data audit command, run from the project root with its recorded source/dependency revisions and original `runs/` directories, is:
 
 ```powershell
 uv run --no-sync python scripts/audit_ant005_path_mechanism.py
@@ -25,13 +27,13 @@ A trial run before that commit gave identical numbers and was deleted.
 
 ## Verdict
 
-**No error invalidates the claim.** The locked intervention shifts the ground path toward world +Y on fresh held-out resets for this policy.
+**No invalidating error was found in these checks.** The recorded locked intervention shifts the ground path toward world +Y on held-out resets for this policy.
 
-A matched-horizon estimand compares the two arms only over steps both recorded, so termination timing cannot enter. It gives **+0.392 m/s [+0.299, +0.477]**, with 28 of 29 pairs positive, against the recorded +0.402 m/s.
+A matched-horizon estimand compares the two arms only over steps both recorded. It gives **+0.392 m/s [+0.299, +0.477]**, with 28 of 29 pairs positive, against the recorded +0.402 m/s. Termination still determines the common window's length, so this is not a fixed-horizon effect after an episode ends.
 
 **Four statements made by the [world-Y specificity audit](ant-classic-005-y-shift-audit.md) and the [scientific-rigor audit](scientific-rigor-audit.md) need correcting:**
 1. **The "rigid rotation predicts 18.0 m of 17.4 m" check is arithmetic, not evidence.** A pure sidestep passes it equally well.
-2. **The gait is not rigidly rotated.** Torso heading turns +5.23° but the path only +3.84°. Seen from the torso, travel direction shifts −1.39° [−2.03, −0.85]. This still rules out +Y sidestepping.
+2. **The averaged kinematics are inconsistent with a rigid rotation.** Torso heading turns +5.23° but the path only +3.84°. Seen from the torso, travel direction shifts −1.39° [−2.03, −0.85]. This does not support increased body-relative sideways motion toward +Y on this aggregate measure.
 3. **"Even part positive in 17 of 18 entries" counts one shared baseline 18 times.** Resampling seeds jointly, the evidence for a generic +Y drift is absent at |α| = 0.05 and marginal at 0.1.
 4. **Pairing does not remove reset variability for this outcome.** Arms decorrelate after onset (median r = −0.04). Intervals remain valid. The sign-flip test needs its weak-null reading, under which the result still holds.
 
@@ -46,7 +48,7 @@ The phase `rotation_check_discrimination` makes this concrete on the 23 pairs wh
 | Real treated arms | +3.94° | 20.06 m | 19.51 m |
 | Synthetic pure sidestep | +3.82° | 19.47 m | 19.51 m by construction |
 
-The sidestep matches at least as well as the real data. A unit test ([test_rigor_audit.py](../tests/test_rigor_audit.py), `test_displacement_rotation_check_cannot_distinguish_rotation_from_sidestep`) demonstrates the same on synthetic gaits. Only the torso-heading measurement separates the two mechanisms.
+The sidestep matches at least as well as the real data. A unit test ([test_rigor_audit.py](../tests/test_rigor_audit.py), `test_displacement_rotation_check_cannot_distinguish_rotation_from_sidestep`) demonstrates the same on synthetic gaits. Torso-heading measurements distinguish these two constructed explanations; the displacement identity alone does not.
 
 ## 2. The torso turns more than the path
 
@@ -60,13 +62,13 @@ The phase `heading_vs_travel` uses the 29 confirmation pairs with post-onset dat
 | Torso heading (circular mean) | +5.23 | [+4.33, +6.09] | 28/29 | 5×10⁻⁶ (floor) |
 | Travel relative to torso | **−1.39** | **[−2.03, −0.85]** | 6/29 | 2.5×10⁻⁵ |
 
-"Floor" marks the smallest p attainable with 200,000 Monte Carlo sign flips, 1/200,001: no flip was as extreme, so the exact p is smaller.
+"Floor" marks the smallest estimated p attainable with 200,000 Monte Carlo sign flips, 1/200,001: no sampled flip was as extreme. This finite-sampling estimate is not an upper bound on the exact p-value.
 
 About 73% of the torso-heading change appears as path rotation. The rest is a small change in the direction of travel *relative to the body*, toward the side opposite +Y.
 
-The falsifier of rigid rotation was an interval excluding zero, and this one does. Both "the gait is rotated rather than converted into sidestepping" and "a rigid rotation" therefore overstate the case. The supported reading is narrower: the world +Y shift comes from a heading change, partly offset by a body-relative change in travel direction. It is not body-frame sidestepping toward +Y.
+The descriptive check of rigid rotation used whether the interval excluded zero, and this one does. Both "the gait is rotated rather than converted into sidestepping" and "a rigid rotation" therefore overstate the case. The supported reading is narrower: the world +Y shift accompanies a heading change, with an opposite change in travel direction relative to the body. These averaged measurements do not establish a sole causal mediator or a complete gait-level explanation.
 
-Both angles average each arm's available post-onset steps. Heading is time-weighted, while travel direction is weighted by displacement. At nearly constant speed (96.8% retention) the two weightings almost coincide, but they are not identical.
+Both angles use each arm's available post-onset steps. Heading is time-weighted, while travel direction depends on displacement. The 96.8% mean-speed retention does not itself establish constant within-episode speed or equivalence of those weightings.
 
 ## 3. A shared baseline makes 18 even parts look like 18 pieces of evidence
 
@@ -98,13 +100,13 @@ The phase `arm_correlation` correlates each reset's baseline and treated episode
 | Confirmation, locked lateral −0.1 | −0.40 | +0.26 |
 | Confirmation, five locked controls | −0.08 to +0.18 | −0.34 to −0.03 |
 
-A shared onset state does not keep the 900 post-onset steps aligned. A perturbation of the closed loop sends the trajectory down a different path, so each episode mean behaves as an independent draw. Common random numbers are guaranteed to reduce variance only when outputs respond monotonically and continuously to the shared inputs ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)). Chaotic contact dynamics give no such guarantee.
+A shared onset state does not keep the 900 post-onset steps aligned. A perturbation of the closed loop sends the trajectory down a different path; the measured correlations show that pairing need not reduce variance, without implying statistical independence. Monotonicity and continuity conditions can provide sufficient guarantees for common-random-number variance reduction ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)); those conditions have not been established here.
 
 For the locked primary, over the 29 pairs with post-onset data, the paired-difference SD is 0.249 m/s. Two independent arms would give √(0.122² + 0.173²) = 0.212. With all 30 pairs, the values are 0.256 and 0.237. Two consequences follow.
 
-**What stays valid.** The paired bootstrap resamples whole pairs, so the recorded interval is still a valid interval for the mean effect; it is simply not narrowed by pairing. The rigor audit's reason for comparing controls on shared seeds, "pairing removes reset variability", is wrong for these outcomes. Its other reason still holds: comparing separate intervals for overlap is not a test.
+**What stays appropriate.** The paired bootstrap resamples whole reset pairs and therefore preserves observed within-pair dependence; it does not guarantee exact finite-sample coverage. The measured pairing correlation does not justify claiming that pairing narrowed this interval. The rigor audit's reason for comparing controls on shared seeds, "pairing removes reset variability", is unsupported for these outcomes. Its other reason still holds: comparing separate intervals for overlap is not a test of the difference.
 
-**Which null the sign-flip test addresses.** The test is exact under the sharp null that a pair's two outcomes are interchangeable. In this chaotic loop, any nonzero perturbation changes every trajectory, so that null is false even for a direction with zero average effect. The relevant null is the weak null of zero mean difference. For that null the sign-change test of the mean is only asymptotically valid (Romano 1990, *JASA* 85:686–692; reviewed by [Ritzwoller, Romano & Shaikh 2024](https://arxiv.org/abs/2406.09521)). Studentizing the statistic is the standard robustness device ([Chung & Romano 2013](https://arxiv.org/abs/1304.5939)).
+**Which null the sign-flip test addresses.** Exact sign-flip calibration requires symmetry/exchangeability under the sign changes, not merely a zero mean. A perturbation can change trajectories while having zero average effect; chaotic divergence does not prove or disprove that distributional assumption. For a weak zero-mean null without symmetry, validity is asymptotic under the relevant regularity conditions (Romano 1990, *JASA* 85:686–692; reviewed by [Ritzwoller, Romano & Shaikh 2024](https://arxiv.org/abs/2406.09521)). Studentizing is a robustness device ([Chung & Romano 2013](https://arxiv.org/abs/1304.5939)), not a finite-sample guarantee for this dataset.
 
 `sign_flip_pvalue(..., studentized=True)` gives p at its floor of 1/200,001 for the recorded effect (t = 8.61) and for the matched-horizon effect (t = 8.60). The conclusion does not change.
 
@@ -135,7 +137,7 @@ Each is a short qualifying edit that links here. No data, thresholds or statuses
 - **Even parts.** Writing the even part as ½(T₊ + T₋) − B showed the common −B term. Averaging within seed, then bootstrapping seeds, is the simplest analysis that propagates it. The alternative, a mixed model with a direction random effect, would add assumptions and code for ten seeds.
 - **Pairing.** The confirmation paired SD (0.256 over 30 pairs, as in the y-shift audit's power section) exceeds the baseline SD (0.124 over 30 pairs; 0.122 over 29) by more than √2. That prompted the arm correlation, and it also changed which null the sign-flip test addresses.
 
-**Not done.** No new rollouts. A fresh-seed test would still be needed to settle specificity and the even part, as specified in the [y-shift audit](ant-classic-005-y-shift-audit.md#limitations). It should also report heading-relative travel change and arm correlations.
+**Not done in this audit.** No new rollouts. The [y-shift audit's follow-up proposal](ant-classic-005-y-shift-audit.md#limitations) called for fresh-seed specificity and even-part tests, with heading-relative travel and arm correlations. The later independent audit supplied additional evidence; the current findings describe its scope and the remaining limitations.
 
 ## Limitations
 

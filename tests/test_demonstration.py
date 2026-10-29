@@ -42,7 +42,7 @@ def test_single_physical_failure_disqualifies_application_even_at_target():
 
 def test_seed_check_includes_source_manifest_evaluation_splits():
     """Local: check current and inherited seed partitions. Global: keep application data fresh after a retargeted experiment."""
-    manifest = {"config": {"seed_offset": 200000}, "seed_splits": {"fit": [101000], "replication": [230000]}}  # Local: represent a retargeted run; global: preserve the source fitting split.
+    manifest = {"model_key": "halfcheetah", "config": {"seed_offset": 200000}, "seed_splits": {"fit": [101000], "replication": [230000]}}  # Local: represent a retargeted run; global: preserve the source fitting split.
     assert fresh_application_seeds(manifest) == list(range(240000, 240010))  # Local: reserve the fixed ten application seeds; global: make reproduction deterministic.
     source = {"seed_splits": {"confirmation": [240007]}}  # Local: introduce an upstream collision; global: test more than current-run disjointness.
     with pytest.raises(ValueError, match="240007"):  # Local: require a precise overlap error; global: prevent accidental reuse of observed outcomes.
@@ -87,11 +87,11 @@ def test_lateral_targets_accept_signed_velocity_and_retain_zero_failure_gate(tar
 @pytest.mark.parametrize("behavior, expected_gate", [("lateral", True), ("speed", False)])
 def test_application_locks_behavior_rules_and_retains_baseline_failures(tmp_path, monkeypatch, behavior, expected_gate):
     """Local: mock only simulator/media work; global: preserve the speed rule and register lateral baseline handling before new outcomes."""
-    config = Config(seed_offset=500000)  # Local: reserve application seeds 540000 through 540009; global: match the new Ant cohort convention.
+    config = Config(seed_offset=900000)  # Local: use a synthetic cohort outside published Ant reservations; global: test mechanics without borrowing consumed scientific resets.
     vector = np.arange(256, dtype=np.float32)  # Local: create a fixed imported treatment; global: detect any application-time vector modification.
     chosen = dict(vector=behavior, behavior=behavior, alpha=-.1, direction=1 if behavior == "lateral" else -1, role="candidate")  # Local: supply an already replicated condition; global: avoid application-time selection from unconfirmed candidates.
     target, reference = (-.1, -.6) if behavior == "lateral" else (10., 12.)  # Local: use a signed lateral target or the existing positive-speed case; global: test both acceptance specifications.
-    manifest = dict(model_key="ant" if behavior == "lateral" else "halfcheetah", config=config.as_dict(), provenance={"parameter_sha256": "frozen"}, seed_splits={"replication": [530000]})  # Local: preserve policy and seed identities; global: retain the normal application contract.
+    manifest = dict(model_key="ant" if behavior == "lateral" else "halfcheetah", config=config.as_dict(), provenance={"parameter_sha256": "frozen"}, seed_splits={"replication": [930000]})  # Local: preserve policy and seed identities; global: retain the normal application contract.
     save_json(tmp_path / "manifest.json", manifest)  # Local: establish the completed run identity; global: exercise real artifact loading.
     save_json(tmp_path / "results.json", {"replicated": [chosen], "validation": [dict(chosen, effect={"treated_mean": target, "baseline_mean": reference})]})  # Local: provide validation-only calibration; global: prohibit target fitting on fresh episodes.
     save_arrays(tmp_path / "vectors.npz", {behavior: vector})  # Local: retain exact numerical directions; global: make this an application of an existing vector.
@@ -101,7 +101,7 @@ def test_application_locks_behavior_rules_and_retains_baseline_failures(tmp_path
 
     def collect(actual_model, model_key, run_dir, phase, seeds, config, **kwargs):
         """Local: supply prespecified paired measurements; global: assert registration precedes the first application outcome."""
-        assert actual_model is model and seeds == list(range(540000, 540010))  # Local: preserve policy/cohort identity; global: prohibit application retuning or reset reuse.
+        assert actual_model is model and seeds == list(range(940000, 940010))  # Local: preserve policy/cohort identity; global: prohibit application retuning or reset reuse.
         spec = load_json(run_dir / "application_spec.json")  # Local: require a real saved contract before collection; global: make the chronological boundary testable.
         assert spec["behavior"] == behavior and spec["baseline_failure_rule"]  # Local: freeze the behavior-specific rule; global: prevent after-the-fact baseline exclusions.
         assert spec["tolerance_rule"] == ("fixed 0.2 m/s" if behavior == "lateral" else "5% of validation baseline speed")  # Local: compare the registered band definition; global: retain the unchanged speed application.
@@ -114,7 +114,7 @@ def test_application_locks_behavior_rules_and_retains_baseline_failures(tmp_path
     monkeypatch.setattr(demonstration, "collect_episodes", collect)  # Local: prevent any real fresh application simulation in software tests; global: keep scientific holdouts untouched.
     monkeypatch.setattr(demonstration, "_media", lambda *args: {"videos_complete": True, "policy_function_restored": True})  # Local: avoid rendering fake measurements; global: retain the existing media boundary unchanged.
     result = demonstration.demonstrate(tmp_path)  # Local: run the normal application wrapper; global: test the actual selection/specification/acceptance data flow.
-    assert result["baseline_failed_episode_seeds"] == [540000]  # Local: report the baseline failure even when lateral application qualifies; global: prohibit survivor filtering.
+    assert result["baseline_failed_episode_seeds"] == [940000]  # Local: report the baseline failure even when lateral application qualifies; global: prohibit survivor filtering.
     assert result["paired_effect"]["gate"] and result["gate"] == expected_gate  # Local: retain the common paired usefulness gate while preserving the stricter historical speed baseline rule.
     assert result["failed_episode_seeds"] == []  # Local: require zero treated physical failures; global: enforce the same practical competence criterion for both behaviors.
     spec = load_json(tmp_path / "application_spec.json")  # Local: inspect the original locked rule; global: make resumption identity concrete.

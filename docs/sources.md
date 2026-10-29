@@ -1,12 +1,14 @@
 # Sources and reuse audit
 
-Audited September 2026, with additions on 2026-10-16 and corrections from the 2026-10-22 [fact-check](../reports/fact-check-2026-10-22.md). Links below distinguish what the source establishes from this project's adaptation. Runtime compatibility claims require actual local checks; a generic API signature alone is insufficient. The [documentation audit](../reports/documentation-audit.md) records the checked claims, corrections, and verification limits.
+Audited September 2026, with additions on 2026-10-16, corrections from the 2026-10-22 [fact-check](../reports/fact-check-2026-10-22.md), and an Ant-only source/interpretation update on 2026-10-29. Links below distinguish what the source establishes from this project's adaptation. Runtime compatibility claims require actual local checks; a generic API signature alone is insufficient. The [documentation audit](../reports/documentation-audit.md) records the checked claims, corrections, and verification limits.
 
 ## Scientific method and RL policies
 
 | Source | Reused or established | Project-specific adaptation |
 | --- | --- | --- |
 | [Contrastive activation addition](https://arxiv.org/abs/2312.06681) | Difference-of-activation-means steering methodology for language models | Locomotion descriptors, episode weighting, physical effects, and causal evaluation |
+| [Mini et al., Understanding and Controlling a Maze-Solving Policy Network](https://arxiv.org/abs/2310.08043) | Earlier activation interventions partially control a pretrained RL navigation policy | Continuous-action Ant locomotion, measured world-Y velocity and physical-quality costs; this project does not originate RL activation steering |
+| [Turner, Grietzer and Thiergart, top-right steering vector](https://turntrout.com/top-right-steering-vector) and [the original maze investigation](https://turntrout.com/understanding-and-controlling-a-maze-solving-policy-network) | Signed activation additions, transfer across mazes, composability, and testing perception versus motivation explanations | Compare both signs and use observation interventions/ablations; the maze findings do not establish locomotion efficacy or the Ant vector's semantics |
 | [HalfCheetah TQC medium checkpoint](https://huggingface.co/farama-minari/HalfCheetah-v5-TQC-medium/tree/b4ce04da6f246f06ae4c4258b8ab39624e6600b4) and [Minari provenance](https://minari.farama.org/datasets/mujoco/halfcheetah/medium-v0/) | An upstream RL checkpoint and the authors' description of its training context | Frozen-policy experiments, without using demonstrations to fit actions |
 | [Ant SAC medium checkpoint](https://huggingface.co/farama-minari/Ant-v5-SAC-medium/tree/de5978d34b0118341df2b0a30232c5d2bfcb148e) and [Minari provenance](https://minari.farama.org/datasets/mujoco/ant/medium-v0/) | A pretrained SAC policy; the dataset page states SB3 SAC trained for 10⁷ steps | Directional locomotion interventions |
 | [Stable-Baselines3 SAC](https://stable-baselines3.readthedocs.io/en/v2.4.1/modules/sac.html) and [TQC](https://sb3-contrib.readthedocs.io/en/v2.4.0/modules/tqc.html) | Loading and ordinary policy inference | Choosing an actor activation as the injection site |
@@ -62,9 +64,9 @@ The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the pr
   - Sample size uses the paired normal approximation n = ((z₁₋α/₂ + z_power)·σ_d/δ)², following the [CBU statistics wiki](https://imaging.mrc-cbu.cam.ac.uk/statswiki/FAQ/power/onesamp). It slightly underestimates exact paired-t sample sizes. Quantiles come from Python's [`NormalDist.inv_cdf`](https://docs.python.org/3.12/library/statistics.html#statistics.NormalDist.inv_cdf).
   - Heading time courses use [`numpy.unwrap`](https://numpy.org/doc/1.26/reference/generated/numpy.unwrap.html).
 - **Weak-null reading of the sign-flip test and shared-seed variance** (used by the [path-mechanism audit](../reports/ant-classic-005-mechanism-audit.md)).
-  - The sign-flip test is exact only under the sharp null. For a zero-mean null the sign-change test of the mean is asymptotically valid (Romano 1990, *JASA* 85:686–692, as reviewed by [Ritzwoller, Romano & Shaikh](https://arxiv.org/abs/2406.09521)).
+  - Exact sign-flip calibration requires symmetry/exchangeability under the sign changes; a zero-mean null alone is insufficient. Without that symmetry, the mean-based test has an asymptotic weak-null interpretation under the relevant regularity conditions (Romano 1990, *JASA* 85:686–692, as reviewed by [Ritzwoller, Romano & Shaikh](https://arxiv.org/abs/2406.09521)). This does not establish finite-sample exactness for Ant.
   - `sign_flip_pvalue(..., studentized=True)` divides each relabeled mean by its own standard error, following [Chung & Romano 2013](https://arxiv.org/abs/1304.5939).
-  - Common random numbers guarantee variance reduction only for outputs monotone and continuous in the shared inputs ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)). The audit therefore measures the baseline–treated correlation instead of assuming one.
+  - Monotonicity and continuity conditions can give sufficient guarantees for common-random-number variance reduction ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)); they are not necessary conditions, and they have not been established for this experiment. The audit measures the baseline–treated correlation instead of assuming a gain, without equating weak correlation with independence.
 - **Second-order optimality conditions.** At a local maximizer the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). This motivates the audit's post hoc reward-optimality hypothesis. It is not evidence for that hypothesis.
 
 The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) adds a perception intervention and pinned SciPy statistics.
@@ -73,7 +75,7 @@ The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) add
   - MuJoCo's ["c"-quantities](https://mujoco.readthedocs.io/en/3.1.5/computation/index.html) are expressed "in a global frame centered at the subtree center of mass".
   - [`mjData`](https://mujoco.readthedocs.io/en/3.1.5/APIreference/APItypes.html) lists `cfrc_ext` in rotation:translation order.
   - The free joint's linear velocity is world-frame and its angular velocity body-frame. `tests/test_perception.py` establishes this with [`mj_objectVelocity`](https://mujoco.readthedocs.io/en/3.1.5/APIreference/APIfunctions.html#mj-objectvelocity). The pages consulted during the audit did not state it, but the [MuJoCo 3.1.5 overview](https://mujoco.readthedocs.io/en/3.1.5/overview.html#floating-objects) does: linear free-joint velocities are global-frame and rotational ones local-frame.
-  - The same test shows that the observation rotation equals the observation of a physically rotated state.
+  - The physical-state comparison deliberately scales contact wrenches below clipping; it verifies the coordinate frames in that regime. Actual Ant observations have already lost saturated wrench values. The historical comparator computes `clip(R clip(f))`, whereas a physically yaw-rotated state's observation would contain `clip(R f)`. These are generally unequal, as the saturated-wrench regression test demonstrates. Quaternion and world-linear-velocity rotations remain exact. Keep the measured observation-intervention outcomes, but interpret the alignment and ablations as support for a heading-related perceptual account, not exact physical-state equivalence or a sole semantic mediator. See the [implementation and tests](../tests/test_perception.py), which preserve the original transform.
 - **Statistics.**
   - SciPy 1.14.1 [`bootstrap`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.bootstrap.html) supplies the BCa and percentile intervals.
   - [`permutation_test`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.permutation_test.html) with one sample flips signs.
@@ -81,6 +83,14 @@ The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) add
   - Rank p-values follow [Phipson & Smyth 2010](https://doi.org/10.2202/1544-6115.1585).
   - Family-wise control uses [Holm 1979](https://www.jstor.org/stable/4615733).
 - **Rendering.** The paper renderer draws Greek letters with ReportLab's standard Symbol font and exponents with `<super>` [paragraph markup](https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/).
+
+## Ant licensing and reuse limits
+
+The maze papers and reports above are cited as prior ideas; no implementation code, weights, or illustrations were copied from them. Existing integration uses library APIs rather than vendoring their implementations. The pinned [Baukit package metadata](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/setup.cfg) declares an MIT license classifier; that declaration is distinct from independently verifying a complete license grant for every artifact.
+
+At the evaluated Ant checkpoint revision, the [Hub metadata and file inventory](https://huggingface.co/api/models/farama-minari/Ant-v5-SAC-medium/revision/de5978d34b0118341df2b0a30232c5d2bfcb148e) supplied no model-card license field or license file when checked on 2026-10-29. Checkpoint redistribution terms therefore remain unverified. Library licenses do not establish the weights' license. This project references the original checkpoint and publishes its own steering arrays, measurements and provenance; it does not repackage the upstream weights or assert a newly verified permission to redistribute them.
+
+The [Ant seed-cohort ledger](../src/rl_locomotion_steering_vectors/seed_cohorts.json) is a project provenance repair, based on the original manifest and the recorded application-cohort collision. Its shared guard uses Python's [package-resource reader](https://docs.python.org/3.12/library/importlib.resources.html#importlib.resources.files) and set intersection. It protects application allocation and exact historical audit replay against these recorded reservations; it is not a complete registry of every project or future cohort.
 
 ## Related work reserved for later experiments
 

@@ -1,10 +1,12 @@
 # Ant 005 world-Y shift: label specificity, generic drift and mechanism
 
+**Historical saved-data audit.** The [original narrative snapshot](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf6337e92fbbe0fba9746671e0afd55b8149c/reports/ant-classic-005-y-shift-audit.md) preserves the earlier wording; its numerical artifacts are unchanged. The [current generated findings](ant-classic-005-findings.md) incorporate later evidence and interpretation corrections. For regeneration without replay, use [saved-evidence publication](../docs/methodology.md#saved-evidence-publication). The later observation comparator also has a [clipped-wrench limitation](../docs/methodology.md#calibration-controls-and-fresh-evaluation); no exact physical-state equivalence or sole semantic mediator is established.
+
 Audit date: 2026-10-16 UTC. Scope: whether the featured claim survives a scientific-rigor check. The claim is that adding the saved lateral vector at α = −0.1 to the frozen Ant-v5 SAC actor's first ReLU shifts the ground path toward world +Y. This is a post hoc analysis of saved data only: no policy inference, simulation, new seeds, selection changes or gate changes. The recorded status `confirmation_failed` is unchanged.
 
-The [causal audit](ant-classic-005-causal-audit.md), [documentation audit](documentation-audit.md) and [scientific-rigor audit](scientific-rigor-audit.md) already reproduce every recorded number. None of them compared vector families, or looked at how the effect develops over the episode. This audit does both.
+The [causal audit](ant-classic-005-causal-audit.md), [documentation audit](documentation-audit.md) and [scientific-rigor audit](scientific-rigor-audit.md) reproduced the quantities within their stated scopes. This audit adds cross-family comparisons and time-course analysis.
 
-Reproduce from the project root, with the original `runs/` directories present:
+The historical saved-data audit command, run from the project root with its recorded source/dependency revisions and original `runs/` directories, is:
 
 ```powershell
 uv run --no-sync python scripts/audit_ant005_specificity.py
@@ -19,7 +21,7 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
 
 ## Verdict
 
-**No methodological error invalidates the claim.** The claim holds as a causal, held-out, world-frame effect for this one frozen policy. The supporting checks:
+**No invalidating methodological error was found in these checks.** The measured result supports a causal, held-out, world-frame effect for this one frozen policy. The supporting checks:
 - **Pairing.** Arms share onset-state hashes, use deterministic actions and have identical prefixes.
 - **Order of steps.** Selection was locked before confirmation, and the seed splits are disjoint.
 - **Statistics.** The sign-flip p-value is 5×10⁻⁶, the floor of its 200,000 Monte Carlo flips, and 28 of 30 pairs are positive.
@@ -27,13 +29,13 @@ The [audit script](../scripts/audit_ant005_specificity.py) runs three named phas
 - **Figures and movies.** The top-down movie camera uses azimuth 90 and elevation −90 ([render_topdown.py:47](../scripts/render_topdown.py#L47)), so +X is right and +Y is up. The last frame of the fixed-camera movie shows the steered trail rising toward +Y while the baseline stays level. The XY plot uses equal axes.
 
 **Three readings need correcting:**
-1. **The lateral label is not what produces the +Y shift.**
+1. **The world-Y response is not specific to the lateral label.**
    - The *turning* vector was fitted on yaw-rate labels and is nearly orthogonal to the lateral vector (cosine +0.114). It moves world Y more than the lateral vector at every |α| ≤ 0.2.
    - At −0.1 it would pass the lateral gate: +0.625 m/s, 94.4% speed retention, failures 1→1.
    - The isotropic-random comparison supports specificity only weakly: rank 1 of 7 at |α| = 0.1, p = 1/7.
-2. **About a quarter of the selected shift is sign-independent.** Almost every perturbation, including random directions and the constant action bias, pushes the Ant toward +Y at either sign.
+2. **The selected validation shift has an uncertain sign-independent component.** The original sign-count argument for a generic drift was invalid because directions share one baseline; the correction below supersedes it.
    - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): every one of these even parts shares a single baseline, so they are not separate pieces of evidence. Resampled jointly, the generic drift is +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] at 0.1. The quarter (26%) has an interval of about [8%, 39%].
-3. **The mechanism is a bounded heading offset.** On average the direction of travel rotates by +3.84°. It is not a sustained turn and not body-frame sidestepping. Individual paths still wander, as the seed-510000 movie shows.
+3. **The measured path change accompanies a bounded heading offset.** On average the direction of travel rotates by +3.84°. The time course does not show a continuing turn, and the aggregate body-relative comparison does not support sidestepping toward +Y. Individual paths still wander, as the seed-510000 movie shows.
    - *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2): the torso turns +5.23°, more than the path does, so the rotation is not rigid. Seen from the torso, the direction of travel shifts −1.39° [−2.03, −0.85].
 
 ## 1. The turning contrast moves world Y more than the lateral contrast
@@ -59,7 +61,7 @@ Its yaw-rate response is negligible: the recorded turning effect at −0.1 is +0
 What this means:
 - Two nearly orthogonal contrast directions, fitted on different labels, both shift world Y. The one fitted on the *wrong* label shifts it more.
 - So the effect does not identify a lateral-specific direction. At |α| = 0.1 all four contrast-derived directions (two primaries, two shuffles) have larger |odd| world-Y responses (0.338–0.596 m/s) than every isotropic draw (at most 0.209). They lie in the dominant activation subspace, whose participation ratio the rigor audit measured at 7.45.
-- This sharpens the rigor audit's "partly specific" verdict. The vector beats isotropic noise, but not other directions built the same way.
+- This sharpens the rigor audit's "partly specific" verdict. At the selected magnitude the vector exceeds the six measured isotropic draws, but not other contrast-derived directions; that small reference set does not establish a population-level specificity claim.
 
 **Falsifier.** The specificity reading would have been strengthened if other-label contrast directions had responded less than the primary. They responded more.
 
@@ -76,11 +78,11 @@ Treating the six as exchangeable reference directions gives a rank test on |odd|
 | 0.2 | 0.520 | 0.411 | 0.143 |
 | 0.5 | 0.211 | 0.423 | 0.286 |
 
-With six reference directions, p cannot fall below 1/7. Reaching p ≤ 0.05 needs at least 19 (`design_power`). The saved design therefore cannot test specificity against isotropic noise, even in principle. At |α| = 0.05 the primary is indistinguishable from random directions.
+With six reference directions, p cannot fall below 1/7. Reaching p ≤ 0.05 needs at least 19 (`design_power`). This rank test therefore cannot reject at that threshold with the saved reference set. At |α| = 0.05 it does not distinguish the primary from these random directions; absence of a rejection is not an equivalence result.
 
 ## 3. A sign-independent drift toward +Y
 
-The even part is positive in **17 of 18** non-shuffled entries at |α| ≤ 0.1. Those entries cover both primaries, the six isotropic directions and the action bias. The single exception is the lateral primary at 0.05 (−0.005). Many individual even intervals include zero; the evidence is the consistent sign across directions, not any one interval. Perturbing this policy in almost any direction therefore tends to move it toward +Y, at either sign.
+The even part is positive in **17 of 18** non-shuffled entries at |α| ≤ 0.1. Those entries cover both primaries, the six isotropic directions and the action bias. The single exception is the lateral primary at 0.05 (−0.005). Many individual even intervals include zero. The original inference of a generic drift from this sign count was incorrect because the entries share a baseline; the joint-seed analysis below supersedes that inference.
 
 *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §3): consistency of sign across directions is not independent evidence. All 18 entries subtract the same ten baseline episodes, whose mean (+0.125 m/s) is below the confirmation baseline (+0.181 m/s). Averaging within seed and resampling seeds jointly gives +0.074 [−0.027, +0.164] m/s at |α| = 0.05 and +0.108 [+0.020, +0.187] m/s at 0.1. The generic drift is therefore unsupported at 0.05 and marginal at 0.1.
 
@@ -107,20 +109,20 @@ What the table shows:
 
 The direction of net post-onset travel rotates by **+3.84°** [+3.01, +4.58]: median +3.75°, 28 of 29 pairs positive, sign-flip p = 5×10⁻⁶ (the 200,000-flip floor). This is the most direct summary of the path shift, because it needs no torso-orientation convention.
 
-A rigid rotation of the baseline path by that angle predicts the observed lateral shift. Baseline travels 267.6 m forward after onset; tan(3.84°) × 267.6 m = 18.0 m, against a measured world-Y displacement change of +17.4 m. The yaw-aligned side-velocity change, +0.059 m/s in the causal audit, is small. Together these say the *gait* is rotated rather than converted into sidestepping. Gait patterns themselves were not measured.
+The original displacement calculation used a rigid rotation of the baseline path: baseline travels 267.6 m forward after onset; tan(3.84°) × 267.6 m = 18.0 m, against a measured world-Y displacement change of +17.4 m. The yaw-aligned side-velocity change, +0.059 m/s in the causal audit, is smaller. These arithmetic relationships do not identify a gait mechanism, as the correction below explains. Gait patterns themselves were not measured.
 
 *Later correction* ([mechanism audit](ant-classic-005-mechanism-audit.md) §1–2):
 - The distances above are 30-pair means that include zero for seed 520025, while the angle uses 29 pairs. On those 29 pairs the figures are 276.8 m, 18.6 m predicted and 18.0 m measured ([fact-check](fact-check-2026-10-22.md)).
 - The 18.0-vs-17.4 m agreement follows from defining travel angle by displacement. A synthetic pure sidestep matches equally well, so the agreement is not evidence of rotation.
 - The torso turns +5.23° while the path turns +3.84°. Travel direction relative to the torso changes by −1.39° [−2.03, −0.85], so the gait is not rigidly rotated.
-- What remains supported: the +Y shift comes from a heading change, partly offset by a body-relative change in travel direction, not from sidestepping toward +Y.
+- What remains supported: the +Y shift accompanies a heading change, while the direction of travel relative to the torso changes in the opposite direction. These averaged kinematics do not establish a sole internal mediator.
 
 **Heading conventions.** The mean torso-heading change depends on how unequal episode durations are handled (`heading_change_deg_by_convention`, 29 pairs):
 - +5.23°: circular mean over each arm's own steps, the rigor audit's convention;
 - +5.68°: unwrapped mean over each arm's own steps;
 - +5.37°: unwrapped mean over the steps both arms recorded.
 
-Treated seed 520010 ends at step 193 after 21.5% inverted steps; while the Ant is inverted, torso yaw is ill-defined. The travel-angle estimand avoids both issues.
+Treated seed 520010 ends at step 193 after 21.5% inverted steps; while the Ant is inverted, torso yaw is ill-defined. Travel angle avoids that torso-orientation ambiguity, but still describes the displacement over the available episode duration.
 
 ## 5. Design power
 
@@ -164,7 +166,7 @@ The time course was added because a world-Y velocity effect is ambiguous on its 
 - One pretrained policy.
 - The heading mechanism is descriptive. No internal variable was shown to mediate it.
 
-**Next experiment.** A prespecified fresh-seed test would settle specificity. It should use new seeds, not the reserved replication seeds 530000–530029, and include:
+**Historical follow-up proposal.** A prespecified fresh-seed test could better assess specificity. The later independent audit implemented part of this proposal; remaining untested generalization is reported in the current findings. The proposal called for new seeds, not the reserved replication seeds 530000–530029, and included:
 - the lateral and turning vectors;
 - at least 19 isotropic and at least 19 activation-covariance-shaped random directions, each orthogonalized to the primary;
 - every direction at ±0.1;
