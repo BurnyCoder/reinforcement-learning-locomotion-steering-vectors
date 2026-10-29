@@ -1,5 +1,7 @@
 # Documentation fact-check and evidence ledger
 
+**Historical record:** The [2026-10-29 independent check](fact-check-2026-10-29/report.md) starts again from raw saved arrays and source history. Test counts, HTTP checks and runtime assertions below are dated records, not checks repeated in that task. New interpretation corrections and remaining evidence gaps are listed there.
+
 Publication-record completion: 2026-09-26. The checks below retain their original 2026-09-08 timestamps; publishing their final receipts does not constitute a new experimental or test run.
 
 Audit revision: 2026-09-08. Baseline documentation: Git commit [`d0cd2c07e3641531c39037223eb98e309f44c4dc`](https://github.com/BurnyCoder/rl-locomotion-steering-vectors/tree/d0cd2c07e3641531c39037223eb98e309f44c4dc). This is a documentation and saved-data audit, not another locomotion experiment. The measured outcomes, vectors, thresholds, selections, episode files, and original generated experiment reports are preserved. Corrected narrative reports and the paper supersede their earlier prose; Git and Hugging Face revisions retain publication history.

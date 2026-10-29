@@ -1,5 +1,7 @@
 # RL locomotion steering vectors
 
+[Independent saved-data fact-check and corrections](reports/fact-check-2026-10-29/report.md) · [claim ledger](reports/fact-check-2026-10-29/claims.json). Rebuild all publications with `uv run --locked --no-sync python scripts/build_publication.py`; add `--check` for deterministic verification without models.
+
 Can a small change inside a frozen reinforcement-learning policy change how it moves, without retraining it? This project extracts a direction from contrasting hidden activations in unsteered rollouts, adds that direction during inference, and tests locomotion against baselines and controls. It uses **no behavioral cloning** and never updates the evaluated policy's weights.
 
 The method adapts [contrastive activation addition](https://arxiv.org/abs/2312.06681) to continuous control, building on [earlier interventions in RL maze policies](https://arxiv.org/abs/2310.08043). The contribution is a reproducible locomotion experiment and its evidence, not the invention of activation steering. The Python pipeline combines PyTorch, Stable-Baselines3, Baukit, Gymnasium and MuJoCo with saved-data reporting and an interactive evidence explorer. [Sources and adaptation boundaries](docs/sources.md).
@@ -8,7 +10,7 @@ The method adapts [contrastive activation addition](https://arxiv.org/abs/2312.0
 
 ![Saved Ant ground-plane trajectories comparing baseline, primary, controls and ablations in separate validation and audit cohorts](reports/ant-publication/figures/trajectories.png)
 
-The figure uses predetermined episodes with equal world-X/world-Y distance scales; crosses mark failed endpoints. **All movies below replay the same historical validation episode shown in the figure**, with baseline on the left and steering on the right. These visualizations are not new confirmation or application evidence.
+The figure uses predetermined episodes with equal world-X/world-Y distance scales; crosses mark failed endpoints. **The saved media records identify all movies below with the same historical validation episode shown in the figure**, with baseline on the left and steering on the right. Their replay correspondence is historical evidence; the current no-model audit checks saved metadata without independently replaying them. These visualizations are not new confirmation or application evidence.
 
 **Fixed, far-away camera:** both panels share a stationary world frame and scale. Grid, rings and trails are visual annotations.
 
@@ -44,7 +46,7 @@ Adding the saved **256-dimensional lateral vector at strength -0.1** increases m
 | lateral_random2 (-0.05) | +0.155 | [0.089, 0.219] | 96.31% | -6.22% | 4/30 → 9/30 | fail |
 | lateral_shuffled (-0.2) | +0.890 | [0.771, 0.980] | 88.31% | +14.12% | 4/30 → 9/30 | fail |
 
-Every confirmed primary/control arm is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
+Every primary/control arm evaluated in confirmation is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
 
 ![Original confirmation effects and uncertainty, including unsuccessful controls](reports/ant-publication/figures/confirmation.png)
 
@@ -52,7 +54,9 @@ In plain language, the primary's measured mean shift is larger than the action b
 
 ### Later audit and component ablations
 
-On a **separate cohort of 20 resets**, the locked primary produces **+0.462 m/s [0.343, 0.587]** (paired BCa 95% interval). Failures increase from 0/20 to 2/20. Its sign-dependent response ranks at **p = 0.05** against 99 norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
+On a **separate cohort of 20 resets**, the locked primary produces **+0.462 m/s [0.343, 0.587]** (paired BCa 95% interval). Failures increase from 0/20 to 2/20. Its sign-dependent response has **Monte Carlo comparison rank 0.05** against 99 norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
+
+These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/methodology.md#statistical-assumptions-and-rank-interpretation).
 
 | Audit arm | Δ world-Y m/s | 95% interval | Forward speed retained | Squared-action change | Failures |
 | --- | --- | --- | --- | --- | --- |

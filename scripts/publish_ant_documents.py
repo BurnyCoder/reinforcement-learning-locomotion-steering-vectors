@@ -46,9 +46,17 @@ def document_files(root: Path = ROOT) -> list[tuple[Path, str]]:
         "ant-classic-005-mechanism-audit.md", "ant-classic-005-preregistration.md",
         "ant-classic-005-y-shift-audit.md", "experiments.md", "ant-publication-completion.md",
         "fact-check-2026-10-22.md",
+        "scientific-rigor-audit.md", "documentation-audit.md", "hc-classic-001-diagnostics.md",
+        "hc-running-002-findings.md", "hc-running-002-validation-inspection.md",
+        "hc-height-speed-003-findings.md", "hc-height-speed-004-findings.md",
     )
     files.extend((f"reports/{name}", f"documentation/experiments/{name}") for name in reports)
-    files.extend((f"docs/{name}", f"documentation/{name}") for name in ("methodology.md", "sources.md", "ant-publication.md"))
+    files.extend((f"docs/{name}", f"documentation/{name}") for name in ("methodology.md", "sources.md", "ant-publication.md", "ant-videos.md", "pgs-adaptation.md", "fact-check-scope.json"))
+    for name in ("inputs.json", "verification.json", "provenance.json", "claims.json", "report.md", "report.pdf", "checks.json", "media.json"):
+        files.append((f"reports/fact-check-2026-10-29/{name}", f"documentation/fact-check-2026-10-29/{name}"))
+    for run, plots in (("hc-classic-001",0),("hc-running-002",3),("hc-height-speed-003",1),("hc-height-speed-004",1),("ant-classic-005",2)):
+        for name in ("report.md", "report.pdf", *(f"strength_response_{i}.png" for i in range(1,plots+1))):
+            files.append((f"reports/{run}/{name}",f"experiments/{run}/{name}"))
     files.extend((f"reports/ant-publication/{name}.json", f"publication/{name}.json") for name in ("inputs", "evidence"))
     figures = ("confirmation", "ablations", "strength-response", "specificity", "reward", "trajectories", "architecture")
     files.extend((f"reports/ant-publication/figures/{name}.png", f"paper/ant-publication/figures/{name}.png") for name in figures)

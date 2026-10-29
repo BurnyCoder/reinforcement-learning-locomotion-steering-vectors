@@ -129,6 +129,7 @@ def source_context(root: Path, evidence: dict) -> dict:
         replication_first=min(manifest["seed_splits"]["replication"]), replication_last=max(manifest["seed_splits"]["replication"]),
         source_revision=read("reports/ant-publication/inputs.json")["revision"],
         clipping_table="", fresh_table="",
+        rank_qualification=("These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](" + GIT + "docs/methodology.md#statistical-assumptions-and-rank-interpretation)."),
     )
     context["cohort_table"] = markdown_table(["Cohort", "Seeds", "Role"], [
         [name, f"{min(seeds)}–{max(seeds)}", "unused reservation" if name == "replication" else "observed"]
@@ -143,10 +144,10 @@ def source_context(root: Path, evidence: dict) -> dict:
          " / ".join(str(x) for x in fresh["directions"][key]["failures"])] for key in named])
     context["hypothesis_table"] = markdown_table(["Test", "Saved statistic", "Interpretation"], [
         ["P1: locked arm", f"{context['fresh_effect']} {context['fresh_ci']} m/s", "effect reproduced; physical gate fails"],
-        ["P2: isotropic specificity", f"rank p = {context['random_p']}", "at decision boundary"],
-        ["S1: label specificity", f"shuffle rank p = {context['shuffle_p']}", "not supported; turning is stronger"],
+        ["P2: isotropic comparison", f"comparison rank = {context['random_p']}", "descriptive ensemble ranking"],
+        ["S1: label specificity", f"shuffle rank = {context['shuffle_p']}", "not supported; turning is stronger"],
         ["S2: generic drift", f"{number(fresh['S2']['random_even']['mean'], 3, True)} {interval(fresh['S2']['random_even']['ci'])} m/s", "interval includes zero"],
-        ["M1: component ablation", f"orthogonal norm-matched rank p = {number(fresh['M1']['orthogonal_renorm_rank_p'], 2)}", "original falsification criterion not met"],
+        ["M1: component ablation", f"orthogonal norm-matched comparison rank = {number(fresh['M1']['orthogonal_renorm_rank_p'], 2)}", "original falsification criterion not met"],
         ["M2: observation transform", f"{context['perception_effect']} {context['perception_ci']} m/s at negative rotation", "specified transform produces a shift; not exact physical-heading equivalence"],
     ])
     context["kinematics_table"] = markdown_table(["Arm", "Pairs", "Δ world-Y m/s", "Δ travel angle degrees", "Δ torso yaw degrees"], [
@@ -186,6 +187,8 @@ def render_documents(root: Path, evidence: dict, output_root: Path | None = None
     """Render generated sections into the requested tree; --check uses a temporary output tree."""
     destination = output_root or root
     context = source_context(root, evidence)
+    from .halfcheetah import context as halfcheetah_context
+    context.update(halfcheetah_context(root))
     template_root = root / "docs/publication"
     template = lambda name: interpolate((template_root / name).read_text(encoding="utf-8"), context)
     read = lambda path: (root / path).read_text(encoding="utf-8")
@@ -199,6 +202,7 @@ def render_documents(root: Path, evidence: dict, output_root: Path | None = None
     outputs["reports/ant-publication-completion.md"] = template("completion.md.in")
     paper = read("reports/paper.md").replace("Author: Libor Burian", "Author: Libor “Burny” Burian")
     paper = replace_section(paper, "## Abstract", "## 1. Research question", template("abstract.md.in"))
+    paper = replace_section(paper, "## 4. HalfCheetah:", "## 5. Ant:", template("paper-halfcheetah.md.in"))
     paper = replace_section(paper, "## 5. Ant:", "## 9. Reproducibility", template("paper-ant.md.in"))
     # Match the historical and generated wording so every build restores evidence-derived reference counts.
     paper = re.sub(r"Integrity rebuild, [\d,]+ (?:fresh-seed|audit) episodes, a rank test against [\d,]+ random directions", f"Integrity rebuild, {context['audit_episodes']:,} audit episodes, a rank test against {context['random_n']} random directions", paper)

@@ -1,5 +1,7 @@
 # Ant005 causal and implementation audit
 
+**Verification boundary, 2026-10-29:** This is a historical execution record. The [new audit](fact-check-2026-10-29/report.md) checks source history and saved arithmetic without loading policies or running simulation. Its results do not independently repeat the model/replay claims below. Preserve the clipped-contact qualification in current [methodology](../docs/methodology.md).
+
 **Historical audit.** The [original narrative snapshot](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/fc8cf6337e92fbbe0fba9746671e0afd55b8149c/reports/ant-classic-005-causal-audit.md) and numerical artifacts remain available. Current interpretation and generated comparisons are in the [Ant findings](ant-classic-005-findings.md). The [saved-evidence publication command](../docs/methodology.md#saved-evidence-publication) regenerates that publication without replay; full runtime audits below require their original pinned revisions and do not constitute new checks in this update.
 
 Audit date: 2026-09-08 UTC. Scope: the existing `ant-classic-005` lateral vector, its validation and confirmation artifacts, and the published rendering path. This audit did not change the vector, strengths, environment, outcomes, selection, or success criteria. The only simulator work was replaying existing actions from an already measured validation seed; no new experimental seeds were consumed.

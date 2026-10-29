@@ -54,7 +54,7 @@ The random1 control's effect was **−0.85519 m/s**, interval **[−0.96866, −
 The comparison does not support unique usefulness of the contrastive primary direction. It also does not show that no steering vector can be useful: random and shuffled directions retain measured effects. The action-bias comparator failed the practical speed-effect threshold for its locked setting; that result is limited to this fitted comparator and calibration procedure.
 
 **Later qualification ([scientific-rigor audit](scientific-rigor-audit.md)).** The recorded outcome is unchanged, but two readings above need correcting.
-- **These slowdowns are degradation, not steerable speed control.** At every grid magnitude the primary's forward-speed response is dominated by a component that slows the policy at both signs: for example, at |α| = 0.04 the even part is −28.2% against an odd part of +16.3%. No 004 condition raised speed by more than about 0.4% (maximum +0.40%, action bias −0.035).
+- **These slowdowns do not establish bidirectional speed control.** At every grid magnitude the primary's forward-speed response is dominated by a component that slows the policy at both signs: for example, at |α| = 0.04 the even part is −28.2% against an odd part of +16.3%. No 004 condition raised speed by more than about 0.4% (maximum +0.40%, action bias −0.035). Physical failures are observed, but this decomposition does not prove near-optimality or a unique degradation mechanism.
 - **The passing shuffled control re-tests the primary.** Its cosine with the primary is +0.58, so it is not a label-free control. The cleaner generic-perturbation evidence is the random1 pass, which only marginally exceeds the 5% speed threshold (−5.09%).
 
 ## Conclusion and evidence boundary

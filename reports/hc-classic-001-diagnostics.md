@@ -1,5 +1,7 @@
 # HalfCheetah classic-vector fitting diagnostics
 
+**Verification boundary, 2026-10-29:** The [new audit](fact-check-2026-10-29/report.md) reconstructs fitting windows, original vectors, split halves and half-median sensitivity from saved activations. Historical diagnostic narration and runtime assertions beyond those named checks remain attributed observations. No new model execution is implied.
+
 Inspected on 2026-09-08 before reviewing validation or confirmation outcomes. This report analyzes existing `runs/hc-classic-001/episodes/{diagnostic,fit}/baseline/*.npz` files; no policy rollouts were rerun. The checkpoint is the pinned HalfCheetah TQC policy recorded in this run's manifest.
 
 The [manifest](hc-classic-001/manifest.json) records revision `6fb6381` retrospectively. Its [commit timestamp](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/commit/6fb638125edb71625c13dc4d11130bdc4c239e98), 22:57:14 UTC, falls within the logged 22:55:57–22:57:33 run. It is not an independently verified invocation-time source pin. The [documentation audit](documentation-audit.md) records this provenance limit and the terminology corrections below.

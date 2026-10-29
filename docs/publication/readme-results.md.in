@@ -8,7 +8,7 @@ Adding the saved **{{hidden_dim}}-dimensional lateral vector at strength {{alpha
 
 {{readme_confirmation_table}}
 
-Every confirmed primary/control arm is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
+Every primary/control arm evaluated in confirmation is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
 
 ![Original confirmation effects and uncertainty, including unsuccessful controls](reports/ant-publication/figures/confirmation.png)
 
@@ -16,7 +16,9 @@ In plain language, the primary's measured mean shift is larger than the action b
 
 ### Later audit and component ablations
 
-On a **separate cohort of {{fresh_n}} resets**, the locked primary produces **{{fresh_effect}} m/s {{fresh_ci}}** (paired BCa 95% interval). Failures increase from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}. Its sign-dependent response ranks at **p = {{random_p}}** against {{random_n}} norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
+On a **separate cohort of {{fresh_n}} resets**, the locked primary produces **{{fresh_effect}} m/s {{fresh_ci}}** (paired BCa 95% interval). Failures increase from {{fresh_baseline_failures}}/{{fresh_n}} to {{fresh_failures}}/{{fresh_n}}. Its sign-dependent response has **Monte Carlo comparison rank {{random_p}}** against {{random_n}} norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
+
+{{rank_qualification}}
 
 {{readme_audit_table}}
 

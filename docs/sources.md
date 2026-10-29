@@ -67,7 +67,7 @@ The [scientific-rigor audit](../reports/scientific-rigor-audit.md) reuses the pr
   - Exact sign-flip calibration requires symmetry/exchangeability under the sign changes; a zero-mean null alone is insufficient. Without that symmetry, the mean-based test has an asymptotic weak-null interpretation under the relevant regularity conditions (Romano 1990, *JASA* 85:686–692, as reviewed by [Ritzwoller, Romano & Shaikh](https://arxiv.org/abs/2406.09521)). This does not establish finite-sample exactness for Ant.
   - `sign_flip_pvalue(..., studentized=True)` divides each relabeled mean by its own standard error, following [Chung & Romano 2013](https://arxiv.org/abs/1304.5939).
   - Monotonicity and continuity conditions can give sufficient guarantees for common-random-number variance reduction ([Glasserman & Yao 1992](https://doi.org/10.1287/mnsc.38.6.884)); they are not necessary conditions, and they have not been established for this experiment. The audit measures the baseline–treated correlation instead of assuming a gain, without equating weak correlation with independence.
-- **Second-order optimality conditions.** At a local maximizer the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). This motivates the audit's post hoc reward-optimality hypothesis. It is not evidence for that hypothesis.
+- **Second-order optimality conditions.** At an interior local maximizer of a twice-differentiable unconstrained objective, the gradient is zero and the Hessian is negative semidefinite ([lecture notes](https://ee.iitm.ac.in/uday/notes/opt/uo.html); Nocedal & Wright, *Numerical Optimization*, 2nd ed., ch. 2). Applying this to an activation offset requires a local maximum along that intervention path. A trained return objective does not establish local optimality of deterministic evaluation velocity. This motivates a post hoc hypothesis, not evidence for it.
 
 The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) adds a perception intervention and pinned SciPy statistics.
 - **Observation layout.** [Gymnasium Ant-v5 `_get_obs`](https://github.com/Farama-Foundation/Gymnasium/blob/v1.0.0/gymnasium/envs/mujoco/ant_v5.py) concatenates `qpos[2:]`, `qvel` and `cfrc_ext[1:]` clipped to the contact-force range. That puts the torso quaternion at obs[1:5], free-joint velocities at obs[13:19] and 13 × 6 contact wrenches at obs[27:105].
@@ -80,8 +80,8 @@ The [independent Ant audit](../reports/ant-classic-005-independent-audit.md) add
   - SciPy 1.14.1 [`bootstrap`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.bootstrap.html) supplies the BCa and percentile intervals.
   - [`permutation_test`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.permutation_test.html) with one sample flips signs.
   - [`wilcoxon`](https://docs.scipy.org/doc/scipy-1.14.1/reference/generated/scipy.stats.wilcoxon.html) gives the signed-rank test.
-  - Rank p-values follow [Phipson & Smyth 2010](https://doi.org/10.2202/1544-6115.1585).
-  - Family-wise control uses [Holm 1979](https://www.jstor.org/stable/4615733).
+  - The rank arithmetic follows [Phipson & Smyth 2010](https://doi.org/10.2202/1544-6115.1585); calibration additionally requires a justified null and exchangeability. Norm matching a selected contrast against random directions does not establish that assumption. [Project interpretation](methodology.md#statistical-assumptions-and-rank-interpretation).
+  - The adjustment uses [Holm 1979](https://www.jstor.org/stable/4615733); its family-wise guarantee requires valid input p-values.
 - **Rendering.** The paper renderer draws Greek letters with ReportLab's standard Symbol font and exponents with `<super>` [paragraph markup](https://docs.reportlab.com/reportlab/userguide/ch6_paragraphs/).
 
 ## Ant licensing and reuse limits

@@ -32,7 +32,9 @@ The locked primary and perception-arm intervals are the saved paired BCa interva
 
 {{hypothesis_table}}
 
-For P1 the saved Monte Carlo estimate is **p = {{fresh_p}}**, at the procedure's floor with {{fresh_resamples}} sampled sign patterns. A floor estimate is not an upper confidence bound on the exact randomization p-value. The original decisions are unchanged. P2 is at its decision boundary; it is weak evidence of specificity, not a general superiority guarantee. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity.
+For P1 the saved Monte Carlo estimate is **p = {{fresh_p}}**, at the procedure's floor with {{fresh_resamples}} sampled sign patterns. A floor estimate is not an upper confidence bound on the exact randomization p-value. Exact sign-flip calibration additionally requires symmetry under the sign changes; a zero mean alone is insufficient. The original decisions are unchanged. P2 describes the recorded random ensemble; it does not establish lateral-label specificity. The stronger turning-label vector and shuffled redraws also do not support that claim.
+
+{{rank_qualification}}
 
 ![Fresh-cohort effect intervals and physical failures.](ant-publication/figures/ablations.png)
 

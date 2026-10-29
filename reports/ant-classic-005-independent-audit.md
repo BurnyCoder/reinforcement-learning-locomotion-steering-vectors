@@ -61,13 +61,15 @@ The locked primary and perception-arm intervals are the saved paired BCa interva
 | Test | Saved statistic | Interpretation |
 | --- | --- | --- |
 | P1: locked arm | +0.462 [0.343, 0.587] m/s | effect reproduced; physical gate fails |
-| P2: isotropic specificity | rank p = 0.05 | at decision boundary |
-| S1: label specificity | shuffle rank p = 0.40 | not supported; turning is stronger |
+| P2: isotropic comparison | comparison rank = 0.05 | descriptive ensemble ranking |
+| S1: label specificity | shuffle rank = 0.40 | not supported; turning is stronger |
 | S2: generic drift | +0.034 [-0.032, 0.104] m/s | interval includes zero |
-| M1: component ablation | orthogonal norm-matched rank p = 0.21 | original falsification criterion not met |
+| M1: component ablation | orthogonal norm-matched comparison rank = 0.21 | original falsification criterion not met |
 | M2: observation transform | +0.903 [0.816, 0.998] m/s at negative rotation | specified transform produces a shift; not exact physical-heading equivalence |
 
-For P1 the saved Monte Carlo estimate is **p = 0.00019998**, at the procedure's floor with 10000 sampled sign patterns. A floor estimate is not an upper confidence bound on the exact randomization p-value. The original decisions are unchanged. P2 is at its decision boundary; it is weak evidence of specificity, not a general superiority guarantee. The stronger turning-label vector and shuffled redraws do not support lateral-label specificity.
+For P1 the saved Monte Carlo estimate is **p = 0.00019998**, at the procedure's floor with 10000 sampled sign patterns. A floor estimate is not an upper confidence bound on the exact randomization p-value. Exact sign-flip calibration additionally requires symmetry under the sign changes; a zero mean alone is insufficient. The original decisions are unchanged. P2 describes the recorded random ensemble; it does not establish lateral-label specificity. The stronger turning-label vector and shuffled redraws also do not support that claim.
+
+These ranks describe comparisons with the specified control ensembles. Treating them as calibrated p-values requires exchangeability under an explicit null; norm matching alone does not make a label-derived, selected primary exchangeable with random directions. See [statistical assumptions](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/methodology.md#statistical-assumptions-and-rank-interpretation).
 
 ![Fresh-cohort effect intervals and physical failures.](ant-publication/figures/ablations.png)
 
