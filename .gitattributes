@@ -18,3 +18,5 @@ reports/ant-classic-005/*.log -text -whitespace
 reports/ant-classic-005-independent-audit/*.log -text -whitespace
 reports/ant-classic-005-mechanism-audit/*.log -text -whitespace
 reports/ant-classic-005-y-shift-audit/*.log -text -whitespace
+# The publication's evidence includes this registry's raw SHA256, so retain its original bytes too.
+reports/ant-publication/inputs.json -text -whitespace
