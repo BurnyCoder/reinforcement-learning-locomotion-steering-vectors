@@ -1,17 +1,32 @@
 # RL locomotion steering vectors
 
-This project tests whether adding a constant vector to a frozen reinforcement-learning policy's hidden activations can produce useful changes in locomotion. The first implementation collects unsteered rollouts, extracts contrasting activation means, selects intervention strengths on validation episodes, and checks them on fresh paired episodes. It uses **no behavioral cloning** and does not update the pretrained policy's weights.
+Can a small change inside a frozen reinforcement-learning policy change how it moves, without retraining it? This project extracts a direction from contrasting hidden activations in unsteered rollouts, adds that direction during inference, and tests locomotion against baselines and controls. It uses **no behavioral cloning** and never updates the evaluated policy's weights.
 
-The scientific objective is a useful, repeatable causal effect, rather than a particular speed change. HalfCheetah candidates concern speed, torso height, and action effort; Ant candidates concern lateral movement and turning. A nearly constant behavior is an extraction diagnostic, not proof that hidden-state steering is impossible. See [the experiment protocol](docs/methodology.md) for the contrast rules, controls, usefulness thresholds, and limitations. [The experiment register](reports/experiments.md) records measured progress; planned capabilities are not results.
+The method adapts [contrastive activation addition](https://arxiv.org/abs/2312.06681) to continuous control, building on [earlier interventions in RL maze policies](https://arxiv.org/abs/2310.08043). The contribution is a reproducible locomotion experiment and its evidence, not the invention of activation steering. The Python pipeline combines PyTorch, Stable-Baselines3, Baukit, Gymnasium and MuJoCo with saved-data reporting and an interactive evidence explorer. [Sources and adaptation boundaries](docs/sources.md).
 
-## Featured experiment: Ant's ground path shifts toward world +Y
+**What we found:** Ant's ground path can shift toward world +Y, with costs to effort, reward or physical reliability. Its original confirmation failed the full acceptance gate. HalfCheetah attempts exposed unstable extraction, failed validation, and failed confirmation; no primary method has completed successful confirmation and replication. Some controls passed pilot gates. These results support measured intervention effects, not reliable semantic control or generalization across trained policies. [Complete experiment register](reports/experiments.md).
 
-Adding the saved **256-dimensional lateral vector at strength -0.1** after the frozen Ant actor's first ReLU increases mean **world-Y ground-plane velocity by +0.402 m/s**, with a paired bootstrap 95% interval **[0.308, 0.491]**, on **30 confirmation pairs**. Mean forward-speed retention is **96.83%**. These are equal-episode summaries of available post-onset motion; they do not establish body-relative sidestepping. [Saved results](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005/results.json) · [current findings](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-findings.md).
+![Saved Ant ground-plane trajectories comparing baseline, primary, controls and ablations in separate validation and audit cohorts](reports/ant-publication/figures/trajectories.png)
 
-**The original outcome remains `confirmation_failed`.** Baseline and treated arms each have 4/30 failures, on partly different seeds. A shared episode ends before steering begins and triggers the strict prefix criterion. Mean squared action rises +17.84%, and mean post-onset environment reward decreases from 6.239 to 5.864 per step. Equal failure counts do not establish equal safety on every reset.
+The figure uses predetermined episodes with equal world-X/world-Y distance scales; crosses mark failed endpoints. The **fixed-camera movie below replays the figure's historical validation example**. Baseline is left, steering right; both panels share a stationary world frame. Grid, rings and trails are visual annotations. Neither example is new confirmation or application evidence.
+
+https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a
+
+[Other camera views and pinned reproduction commands](docs/ant-videos.md) · [Replay integrity audit](reports/ant-classic-005-causal-audit.md#camera-and-video-integrity) · [Interactive evidence explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/)
+
+<!-- BEGIN GENERATED README RESULTS -->
+
+## Results and limitations
+
+### Original Ant confirmation
+
+Adding the saved **256-dimensional lateral vector at strength -0.1** increases mean **world-Y ground-plane velocity by +0.402 m/s**, with a paired bootstrap 95% interval **[0.308, 0.491]**, across **30 confirmation pairs**. Forward-speed retention is **96.83%**. These are equal-episode means over available post-onset motion, not body-relative sidestepping or distance retention. [Saved results](reports/ant-classic-005/results.json).
+
+**The original outcome remains `confirmation_failed`.** Baseline and treated arms each fail on 4/30 episodes, on partly different seeds. A shared episode ends before steering begins and triggers the strict prefix criterion. Squared action rises +17.84%, while mean post-onset reward falls from 6.239 to 5.864 per recorded step. Equal failure counts do not establish equal safety on each reset.
 
 | Condition (strength) | Δ world-Y m/s | 95% interval | Forward speed retained | Squared-action change | Failures baseline → treated | Full gate |
 | --- | --- | --- | --- | --- | --- | --- |
+| unsteered baseline | +0.000 | reference | 100.00% | +0.00% | 4/30 (reference) | reference |
 | lateral (-0.1) | +0.402 | [0.308, 0.491] | 96.83% | +17.84% | 4/30 → 4/30 | fail |
 | lateral_bias (+0.5) | +0.134 | [0.076, 0.197] | 99.40% | +1.21% | 4/30 → 1/30 | fail |
 | lateral_random0 (-0.05) | +0.155 | [0.095, 0.217] | 97.90% | -4.58% | 4/30 → 3/30 | fail |
@@ -19,148 +34,115 @@ Adding the saved **256-dimensional lateral vector at strength -0.1** after the f
 | lateral_random2 (-0.05) | +0.155 | [0.089, 0.219] | 96.31% | -6.22% | 4/30 → 9/30 | fail |
 | lateral_shuffled (-0.2) | +0.890 | [0.771, 0.980] | 88.31% | +14.12% | 4/30 → 9/30 | fail |
 
-Each control uses its own validation-selected strength. The intervals above use the original paired percentile bootstrap; the baseline is shared. Larger target effects do not erase physical failures. Full per-seed trajectories and all validation settings are available in the [interactive evidence explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/).
+Every confirmed primary/control arm is shown at its own validation-selected strength. Intervals are the original paired percentile bootstrap intervals; all comparisons share the unsteered baseline. The baseline is a reference, without a comparison interval or success gate. A larger world-Y effect does not by itself mean better locomotion.
 
-**Later audit, separate cohort.** On 20 further resets, the locked vector produces **+0.462 m/s [0.343, 0.587]** (BCa 95% interval), with 19/20 positive pairs. Failures rise from 0/20 to 2/20. Against 99 norm-matched random directions its sign-dependent response ranks at **p = 0.05**; label specificity is unsupported. This audit consumed a previously reserved application cohort and is not the formal replication split. [Audit and ablations](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-classic-005-independent-audit.md).
+![Original confirmation effects and uncertainty, including unsuccessful controls](reports/ant-publication/figures/confirmation.png)
 
-**Mechanism is qualified.** Projection ablations and a specified observation transformation support a heading-related account for this checkpoint. The transformation rotates already-clipped contact-force channels and clips again: `clip(R clip(f))` generally differs from physical rotation's `clip(R f)`. It does not establish exact physical-heading equivalence or a unique semantic mediator. The original activation-steering result is unchanged.
+In plain language, the primary's measured mean shift is larger than the action bias and the displayed random controls, but it increases action effort. The shuffled-label direction has a still larger mean shift while sacrificing forward speed and increasing failures. None passes the full confirmation gate. These are descriptive comparisons, not tests of superiority between directions. See [the findings](reports/ant-classic-005-findings.md) for the physical-quality criteria.
 
-Regenerate the current Ant publication from saved data with `uv run --locked --no-sync python scripts/build_ant_publication.py`; add `--check` to verify generated outputs. No policy loading or new episode collection is needed. [Reproduction and completion ledger](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/ant-publication.md) · [paper](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/paper.md) · [PDF](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/paper.pdf).
+### Later audit and component ablations
 
-### Watch the same episode from three cameras
+On a **separate cohort of 20 resets**, the locked primary produces **+0.462 m/s [0.343, 0.587]** (paired BCa 95% interval). Failures increase from 0/20 to 2/20. Its sign-dependent response ranks at **p = 0.05** against 99 norm-matched random directions. **Lateral-label specificity is unsupported:** the turning-derived direction has a stronger response. This audit consumed a previously reserved application cohort; it is not the formal replication split.
 
-Baseline is on the left and steering is on the right. All three movies show the **same predetermined validation seed 510000**, replaying the saved trajectories exactly, as checked by the [media and physics audit](reports/ant-classic-005-causal-audit.md#camera-and-video-integrity). They illustrate the effect; they are not fresh confirmation or application evidence.
+| Audit arm | Δ world-Y m/s | 95% interval | Forward speed retained | Squared-action change | Failures |
+| --- | --- | --- | --- | --- | --- |
+| baseline | +0.000 | reference | 100.00% | +0.00% | 0/20 |
+| lateral -0.1000 | +0.462 | [0.343, 0.587] | 96.40% | +17.40% | 2/20 |
+| turning -0.1000 | +0.568 | [0.438, 0.684] | 96.50% | +6.83% | 1/20 |
+| heading_parallel -0.1000 | +0.570 | [0.485, 0.666] | 98.55% | +1.60% | 4/20 |
+| heading_orthogonal -0.1000 | +0.010 | [-0.098, 0.116] | 98.76% | +16.62% | 2/20 |
+| heading_orthogonal_renorm -0.1000 | -0.131 | [-0.311, 0.062] | 81.44% | +47.09% | 8/20 |
+| heading_axis_renorm -0.1000 | +0.551 | [0.444, 0.654] | 98.79% | +0.80% | 2/20 |
+| perceived_heading -0.160876rad | +0.903 | [0.816, 0.998] | 97.50% | +0.24% | 0/20 |
 
-**Fixed, far-away camera:** both panels share a stationary world frame and scale. The 20 m ground grid, position rings, and past-path trails are visual annotations; the robot's geometry and physics are unchanged. [Camera configuration and replay checks](docs/ant-videos.md) record the measured extent and rendering setup.
+For compactness, this table shows the baseline and **every negative-strength named arm**, including all heading-component ablations and the negative observation transformation; rows were not chosen by effect size. The primary and observation-transform intervals are saved paired BCa intervals. The remaining comparison intervals are descriptive paired percentile intervals, unadjusted for multiple comparisons. The [complete signed audit](reports/ant-classic-005-independent-audit.md), [control alignment audit](reports/scientific-rigor-audit.md), and [explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/) include both signs, random/shuffled ensembles, control cosines and odd/even responses. The baseline has no comparison interval.
 
-https://github.com/user-attachments/assets/9e0719a6-c15b-474e-b74e-3c5e70954e2a
+![Ant heading-component ablations and observation intervention with paired uncertainty](reports/ant-publication/figures/ablations.png)
 
-**Top-down tracking camera:** see the gait and direction from above.
+Removing the heading-aligned component changes the response. Its norm-matched remainder still shifts behavior at the opposite, positive sign, with severe locomotion costs (see the complete signed audit); the negative arm above has an interval containing zero. Projection ablations and the observation intervention support **heading involvement**, without establishing exact physical-heading equivalence or a unique semantic mediator. The historical transformation rotates and reclips already-clipped contact wrenches: `clip(R clip(f))` generally differs from physical rotation's `clip(R f)`. No historical treatment or result is changed by this qualification.
 
-https://github.com/user-attachments/assets/17286e19-c5a2-4ab9-96ab-f50444d494ca
+![Evaluation reward over recorded transitions with available-episode counts, separated by cohort](reports/ant-publication/figures/reward.png)
 
-**Original tracking camera:** inspect the actual locomotion more closely.
+These are **evaluation rewards**, averaged over observed segments and accompanied by available-episode counts; failed episodes remain included and curves stop at termination. Training-loss curves are unavailable for the evaluated frozen upstream checkpoints. Generalization across independently trained policies, new domains or real robots has not been established. [Estimators, provenance and full-precision evidence](reports/ant-publication/evidence.json) · [All experiments, including HalfCheetah's negative results](reports/experiments.md).
 
-https://github.com/user-attachments/assets/676ef6c8-ade4-4f85-a0b7-01d7fcdb86c9
+<!-- END GENERATED README RESULTS -->
 
-![Ground-plane trajectories of the same validation episode; both axes are metres on the ground](reports/paper_assets/ant-topdown-validation.png)
+## Method and architecture
 
-Download the [steering vector on Hugging Face](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/blob/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005/vectors.npz), together with its [manifest, scaling diagnostics, and locked selection](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors/tree/1cd00cfcce13bcb86f1c370a71889ce6d34c278e/experiments/ant-classic-005). The published vector was downloaded back and its SHA256 matched the local artifact exactly. [Video and vector reproduction instructions](docs/ant-videos.md) include pinned downloads and commands.
+The evaluated policies are the revision-pinned Farama-Minari [HalfCheetah TQC](https://huggingface.co/farama-minari/HalfCheetah-v5-TQC-medium/tree/b4ce04da6f246f06ae4c4258b8ab39624e6600b4) and [Ant SAC](https://huggingface.co/farama-minari/Ant-v5-SAC-medium/tree/de5978d34b0118341df2b0a30232c5d2bfcb148e) checkpoints. Upstream sources attribute them to online RL; this project verifies checkpoint bytes and inference, rather than independently reconstructing their training history. The evaluated weights remain frozen.
 
-## Install and run
+Healthy fitting windows define high/low behavior groups. Their episode-weighted activation-mean difference is scaled to the fitting activations' centered RMS. A [Baukit forward hook](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py) adds `alpha * direction` after the actor's first ReLU; ordinary policy prediction computes the actions. Fitting data, validation data and held-out evaluation have separate roles.
 
-Install [uv](https://docs.astral.sh/uv/getting-started/installation/) and Git, clone this repository, and run these commands from its root. The project uses Python 3.12 and a local `.venv`; `uv` resolves the interpreter and installs the dependencies specified by `uv.lock`. Both pinned policies and the Baukit intervention have been exercised on native Windows with CPU inference, and an Ant rollout video has been checked. Other operating systems require their own runtime verification.
+Paired validation sweeps compare activation vectors, norm-matched random directions, shuffled-label directions and constant action biases. Selection is saved before confirmation. Eligible confirmed candidates proceed to fresh-reset replication using the same checkpoint; only replicated candidates can enter the application workflow. Failed evaluation episodes stay in the analysis. See [methodology](docs/methodology.md) for exact weighting, filtering, physical-quality gates and inference limits.
+
+```mermaid
+flowchart TD
+    CONFIG[CLI, .env and pinned checkpoint] --> SPLITS[Manifest and seed partitions]
+    SPLITS --> FIT[Unsteered diagnosis and fitting rollouts]
+    FIT --> VECTORS[Activation contrasts and controls]
+    VECTORS --> VALIDATE[Paired validation and action-bias comparison]
+    VALIDATE --> LOCK[Lock selection]
+    LOCK --> CONFIRM[Held-out confirmation]
+    CONFIRM --> GATE{Pass full gate?}
+    GATE -->|Yes| REPLICATE[Fresh-reset replication]
+    GATE -->|No| NEGATIVE[Retain failed result]
+    REPLICATE --> RESULTS[Saved evidence and provenance]
+    NEGATIVE --> RESULTS
+    RESULTS --> REPORT[Plots, tables, Markdown, PDF and explorer]
+```
+
+The thin CLI coordinates runtime, analysis, storage and reporting modules. Saved-data publication reads evidence independently of the simulator. A failed gate is a completed research outcome, not a successful steering application.
+
+## Install and reproduce
+
+Install [Git](https://git-scm.com/downloads) and [uv](https://docs.astral.sh/uv/getting-started/installation/), then run this PowerShell quickstart. `uv` uses the project's Python requirement, local `.venv`, and committed lockfile.
 
 ```powershell
 git clone https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors.git
 cd reinforcement-learning-locomotion-steering-vectors
 uv sync --locked
-Copy-Item .env.example .env
-uv run locomotion-steering run --model halfcheetah --run-dir runs/halfcheetah-classic-001
-uv run locomotion-steering report --run-dir runs/halfcheetah-classic-001
+if (-not (Test-Path .env)) { Copy-Item .env.example .env }
 ```
 
-The first run downloads the pinned public checkpoint, so internet access is required. Local experiment settings and episode counts are in `.env`; `.env.example` is the configuration reference. Current defaults include four rollout workers and a fitting speed floor of half the healthy fitting-window median. Rollout workers always use one Torch thread; `STEERING_TORCH_THREADS` sets the main process's threads, including `replay` and `demonstrate`. `STEERING_SEED_OFFSET` reserves fresh partitions for a new hypothesis. Keep secrets out of both tracked configuration and logs. A run performs actual simulator rollouts, including evaluation of available random and shuffled-label controls, so it takes longer than a single policy demonstration.
-
-The `run` command writes numerical evidence under the supplied run directory. The separate `report` command renders `report.md`, `report.pdf`, and validation strength curves from that evidence. A completed run can legitimately report no eligible vectors or a failed confirmation. These outcomes are research findings, not useful steering successes.
+**Rebuild the published evidence first:**
 
 ```powershell
-uv run locomotion-steering run --model ant --run-dir runs/ant-classic-001
-uv run locomotion-steering replay --run-dir runs/halfcheetah-classic-001 --vector speed --alpha 0.1
-uv run locomotion-steering replay --run-dir runs/halfcheetah-classic-001 --vector speed --alpha 0.1 --off-at 700
-uv run locomotion-steering report --run-dir runs/halfcheetah-classic-001
-uv run pytest
+uv run --locked --no-sync python scripts/build_ant_publication.py
+uv run --locked --no-sync python scripts/build_ant_publication.py --check
 ```
 
-Replay requires the named activation vector to have been extracted; inspect `vectors.npz` and `vector_diagnostics.json` or the report before choosing one. The example strength `0.1` is a demonstration argument, not a recommendation or a claim that it improves locomotion. Replay writes an MP4 and matching numerical NPZ under `videos/`; `--off-at` removes steering later in the episode, and `--seed` chooses the reset (default `40000`). For a run with seed offset 0, seeds 40000–40009 are the cohort `demonstrate` reserves for application, so pick a seed outside every reserved cohort when the run may still be applied. Action-bias comparators are evaluated by the research pipeline and are not activation-vector replay inputs.
+The build restores missing evidence from a pinned public Hugging Face revision, verifies hashes, and regenerates the empirical tables and figures shown here, current Ant reports/PDFs, and explorer data. A present input with a wrong hash is rejected. `--check` compares temporary regenerated outputs without modifying publications or restoring missing inputs. Neither command loads a policy or collects simulator episodes. Internet access is needed for missing downloads; no API key is required. [Full publication instructions](docs/ant-publication.md).
 
-Re-run the same `run` command to resume completed episode artifacts under the saved model, configuration, and seed splits. Use a new run directory when changing the protocol. `--stop-after diagnose`, `extract`, `calibrate`, or `confirm` provides an inspection boundary. Report regeneration reads saved evidence without changing selection or running new evaluations.
-
-To test an existing direction against a different behavioral outcome, use `retarget` with a separate run directory and a fresh `STEERING_SEED_OFFSET` in `.env`. For example, experiment 003 uses offset `200000` and the following command:
+**Run a new experiment:** first register its hypothesis, metrics and analysis plan, choose a new run directory, and set a seed offset in `.env` that avoids every reserved or consumed cohort. Review the [seed guidance](docs/usage.md#seed-allocation-and-configuration) and [configuration reference](.env.example) before collecting evidence.
 
 ```powershell
-uv run locomotion-steering retarget --source-run runs/hc-running-002 --run-dir runs/hc-height-speed-003 --vector height --behavior speed
+uv run --locked --no-sync locomotion-steering run --model halfcheetah --run-dir runs/my-halfcheetah-experiment
+uv run --locked --no-sync locomotion-steering report --run-dir runs/my-halfcheetah-experiment
+uv run --locked --no-sync pytest -q
 ```
 
-This reuses the exact source vector, its complete random/shuffled control family, and source fitting evidence. It recalibrates the new outcome on fresh episodes, preserving the source mapping in `retarget.json`. In the new bundle, vector keys use the target name: `speed` here identifies the imported height direction. Keep the source run's fitting trajectories available because shortlisted candidates require them for action-bias comparison. The [experiment register](reports/experiments.md) links the actual outcomes and the uploaded 002 evidence.
+Use `--model ant` for Ant. `run` downloads the pinned policy when needed, performs simulator rollouts and saves numerical evidence; `report` reads that run to produce Markdown, PDF and plots. No eligible vector or a failed confirmation is a valid result. The measured stack uses CPU inference and has been exercised on native Windows; other platforms require runtime verification. Keep the [pinned dependencies](uv.lock) when reproducing these results.
 
-After a speed or lateral candidate has passed confirmation and replication, `uv run locomotion-steering demonstrate --run-dir runs/your-replicated-run` tests its fixed, validation-derived target on ten new episodes. It restores the saved configuration, records numerical targeting and physical-quality checks, and renders the first three paired videos plus an off/on/off example. The command rejects runs without a supported replicated candidate. No completed experiment through 005 qualifies yet; this is an implemented workflow, not an application result. Exact acceptance rules are in [methodology](docs/methodology.md#fixed-speed-application).
+[Usage guide](docs/usage.md): resume and stop boundaries, replay, retargeting, application eligibility, configuration, logs and artifact provenance. [Published Ant vector and movie reproduction](docs/ant-videos.md) provides the concrete download/replay workflow.
 
-## What happens during a run
+## Features and technologies
 
-```mermaid
-flowchart TD
-    CLI[CLI and .env configuration] --> PLAN[Manifest and disjoint seed splits]
-    PLAN --> LOAD[Pinned pretrained RL checkpoint]
-    LOAD --> BASE[Unsteered diagnostic and fitting episodes]
-    BASE --> FIT[Eligible behavior windows and contrastive mean vectors]
-    FIT --> CONTROLS[Norm-matched random and shuffled-label vectors]
-    CONTROLS --> VALIDATE[Paired validation strength sweep]
-    VALIDATE --> BIAS[Fit and calibrate constant action-bias comparators]
-    BIAS --> LOCK[Saved selection before confirmation]
-    LOCK --> CONFIRM[Fresh paired confirmation episodes]
-    CONFIRM --> REPLICATE[Fresh episode replication]
-    REPLICATE --> RESULTS[Saved numerical results]
-    RESULTS --> REPORT[Explicit report command: plots, Markdown and PDF]
-    SOURCE[Saved family and source fitting evidence] --> RETARGET[Retarget: new outcome and fresh seed partitions]
-    RETARGET --> VALIDATE
-    REPLICATE --> DEMO[Demonstrate: fixed velocity target on fresh episodes]
-    DEMO --> MEDIA[Application measurements and paired videos]
-    BASE --> STORE[Compressed episode artifacts and timestamped logs]
-    VALIDATE --> STORE
-    CONFIRM --> STORE
-    REPLICATE --> STORE
-```
-
-The thin pipeline coordinates reusable configuration, checkpoint/rollout, analysis, storage, and reporting modules. The first actor ReLU receives the intervention through the existing [Baukit tracing utility](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py). Ordinary Stable-Baselines3 prediction continues to handle action inference. The intervention is removed after use, and tests check that the original policy function is restored.
-
-## Technologies
-
-Versions are those locked in `uv.lock`; `pyproject.toml` pins the simulation and policy stack exactly.
-
-| Technology | Version | Role in this project |
-| --- | --- | --- |
-| [Python](https://docs.python.org/3.12/) and [uv](https://docs.astral.sh/uv/guides/projects/) | 3.12 | Interpreter, local `.venv`, locked install, and the `locomotion-steering` entry point |
-| [PyTorch](https://docs.pytorch.org/docs/2.5/) and [Torchvision](https://docs.pytorch.org/vision/0.20/) | 2.5.1, 0.20.1 | Actor inference on CPU wheels from the PyTorch CPU index; Torchvision is required because Baukit imports it |
-| [Stable-Baselines3](https://stable-baselines3.readthedocs.io/en/v2.4.1/) and [SB3-Contrib](https://sb3-contrib.readthedocs.io/en/v2.4.0/modules/tqc.html) | 2.4.1, 2.4.0 | Load the Ant SAC and HalfCheetah TQC checkpoints and run ordinary prediction |
-| [cloudpickle](https://github.com/cloudpipe/cloudpickle) | 3.1.0 | Serializer for non-JSON objects in [SB3 checkpoints](https://github.com/DLR-RM/stable-baselines3/blob/v2.4.1/stable_baselines3/common/save_util.py) |
-| [Gymnasium](https://gymnasium.farama.org/v1.0.0/environments/mujoco/) and [MuJoCo](https://mujoco.readthedocs.io/en/3.1.5/python.html) | 1.0.0, 3.1.5 | `HalfCheetah-v5` and `Ant-v5` simulation, simulator-state hashing, and video rendering |
-| [Baukit](https://github.com/davidbau/baukit/blob/9d51abd51ebf29769aecc38c4cbef459b731a36e/baukit/nethook.py) | Git commit `9d51abd` | `Trace` forward hook that adds a vector to the first actor ReLU and is removed afterwards |
-| [Hugging Face Hub](https://huggingface.co/docs/huggingface_hub/v1.30.0/en/package_reference/file_download) | 1.30.0 | Revision-pinned checkpoint download with `hf_hub_download`; the Hub also hosts the published vectors |
-| [NumPy](https://numpy.org/doc/1.26/) | 1.26.4 | Arrays, compressed NPZ artifacts, seeded random draws, and the paired bootstrap |
-| [SciPy](https://docs.scipy.org/doc/scipy-1.14.1/reference/stats.html) | 1.14.1 | Bootstrap intervals, sign-flip permutation tests, and Wilcoxon tests in the audits |
-| [Matplotlib](https://matplotlib.org/stable/) | 3.11.1 | Strength-response and trajectory plots |
-| [ReportLab](https://docs.reportlab.com/) | 4.5.1 | Run-report and paper PDFs |
-| [ImageIO](https://imageio.readthedocs.io/en/stable/) with [imageio-ffmpeg](https://github.com/imageio/imageio-ffmpeg), and [Pillow](https://pillow.readthedocs.io/en/stable/) | 2.37.4, 0.6.0, 12.3.0 | H.264 MP4 encoding and frame labels for replay and demonstration videos; Pillow arrives as a transitive dependency |
-| [python-dotenv](https://github.com/theskumar/python-dotenv) | 1.2.3 | `.env` configuration |
-| [pytest](https://docs.pytest.org/en/stable/) | 8.4.2 | Test suite, in the `dev` dependency group |
-| Python standard library: [`logging`](https://docs.python.org/3.12/library/logging.html), [`concurrent.futures`](https://docs.python.org/3.12/library/concurrent.futures.html), [`hashlib`](https://docs.python.org/3.12/library/hashlib.html) | 3.12 | Timestamped logs, spawned rollout workers, and artifact and source hashes |
-
-[Sources and reuse decisions](docs/sources.md) explain why each library was chosen and how this project adapts it.
-
-## Reproduce and inspect
-
-| Artifact | Purpose |
+| Capability | Implementation |
 | --- | --- |
-| `manifest.json` | Model revision/hash, software, configuration, seed splits, and research decisions |
-| `episodes/` | Compressed per-episode measurements and fitting activations |
-| `vectors.npz`, `vector_diagnostics.json` | Actual vectors, extraction diagnostics, and control provenance |
-| `retarget.json` | Imported-family source mapping and hashes, when testing a new outcome |
-| `action_biases.npz` | Constant action-space comparators, when candidates reach calibration |
-| `selection.json` | Validation choices recorded before confirmation |
-| `results.json` | Stage results, paired effects, confidence intervals, and quality checks |
-| `report.md`, `report.pdf`, `strength_response_*.png` | Human-readable evidence rendered from saved results |
-| `*.log` | One timestamp-named log per invocation, with complete logged messages |
-| `videos/` | Replay MP4s and matching numerical episodes |
-| `application_spec.json`, `application.json`, `application-media/` | Fixed-target application contract, complete outcomes, and audited videos/plots, when a supported replicated candidate exists |
+| Frozen-policy inference and activation intervention | [PyTorch](https://pytorch.org/), [Stable-Baselines3](https://stable-baselines3.readthedocs.io/en/v2.4.1/), [SB3-Contrib TQC](https://sb3-contrib.readthedocs.io/en/v2.4.0/modules/tqc.html), [Baukit](https://github.com/davidbau/baukit) |
+| Locomotion simulation and audited replay | [Gymnasium](https://gymnasium.farama.org/), [MuJoCo](https://mujoco.readthedocs.io/en/3.1.5/python.html), ImageIO/FFmpeg |
+| Contrasts, controls, paired estimates and audits | NumPy, SciPy; saved arrays and explicit selection artifacts |
+| Reproducible setup and checkpoint downloads | [uv](https://docs.astral.sh/uv/guides/projects/), python-dotenv, [Hugging Face Hub](https://huggingface.co/docs/huggingface_hub/) |
+| Figures, papers and interactive exploration | Matplotlib, ReportLab, static HTML/CSS/JavaScript on GitHub Pages |
+| Mechanics and reproducibility checks | pytest, artifact hashes, timestamped invocation logs |
 
-Preserve the run directory together with the exact Git commit and lockfile when sharing an experiment. New manifests automatically record the Git revision and normalized SHA256 hashes of owned source and dependency files; each resumed invocation logs its current code identity. Experiments 001–005 predate this field: their `code_commit` values were written into the manifests after creation, as each bundle README notes. These fingerprints exclude `.env`. Compare the saved checkpoint hash and configuration before interpreting a rerun. Episode replication reuses the same frozen checkpoint with fresh resets; it does not establish generalization across independently trained models.
+Exact packages and versions are in [pyproject.toml](pyproject.toml) and [uv.lock](uv.lock); [source and license notes](docs/sources.md) distinguish library APIs, project adaptations and unresolved upstream-weight redistribution terms. Upstream policy weights are referenced, not repackaged. The [alternative-method prototype](docs/pgs-adaptation.md) remains paused and has not produced an experiment result.
 
-The project currently implements classic activation-difference extraction on pretrained policies. Command-conditioned RL training, gradient-based extraction, and additional environments are research extensions to implement when diagnostics justify them. Local experimental compute has no overall time limit; each experiment still has a declared protocol and review point. One training seed per attempted policy is permitted.
+## Research records
 
-## References and project records
-
-[Sources and reuse decisions](docs/sources.md) distinguish upstream library behavior from this project's experimental adaptations. [AGENTS.md](AGENTS.md) contains contributor guidance. The [experiment register](reports/experiments.md) defines terms and links individual run reports, including negative outcomes. The [documentation fact-check and claim ledger](reports/documentation-audit.md) connects substantive claims to artifacts, pinned sources, calculation procedures, corrections, and remaining provenance limits. It preserves the original outcomes and all recorded test attempts. The [scientific-rigor audit](reports/scientific-rigor-audit.md) checks whether the interpretations follow from the design. It covers estimator robustness, control specificity and alignment, and sign-dependent versus sign-independent responses. Run it with `uv run --no-sync python scripts/audit_scientific_rigor.py`. The [independent fact-check](reports/fact-check-2026-10-22.md) recomputed the documented numbers from raw episodes and lists every correction; reproduce it with `uv run --no-sync python scripts/factcheck_2026_10_22.py`. The [independent Ant audit](reports/ant-classic-005-independent-audit.md) adds three reusable modules:
-- `perception`: applies the specified yaw-like observation transform. Physical-frame equivalence was checked for unsaturated contact channels; already-clipped channels do not generally preserve that equivalence ([mechanism boundary](reports/ant-classic-005-independent-audit.md)).
-- `specificity`: rank tests, odd/even parts and SciPy bootstrap/sign-flip statistics.
-- `kinematics`: travel angle, torso yaw and gait-axis velocity.
+- [Experiment register and glossary](reports/experiments.md): every completed experiment, unsuccessful outcomes, policy inventory and lessons.
+- [Paper](reports/paper.md) and [PDF](reports/paper.pdf): technical results and limitations; [current Ant findings](reports/ant-classic-005-findings.md) and [independent audit](reports/ant-classic-005-independent-audit.md) provide detailed comparisons.
+- Recorded protocols: [smaller-strength HalfCheetah](reports/hc-height-speed-004-preregistration.md), [original Ant](reports/ant-classic-005-preregistration.md), and [later Ant audit](reports/ant-classic-005-independent-audit-preregistration.md). The original Ant protocol entered Git after diagnostics/fitting began; the [chronology ledger](reports/ant-publication-completion.md) preserves this limitation. These links do not imply retrospective preregistration compliance.
+- [Scientific-rigor audit](reports/scientific-rigor-audit.md), [documentation audit](reports/documentation-audit.md), and [source audit](docs/sources.md): evidence behind claims, corrections and verification scope.
+- [Published steering artifacts](https://huggingface.co/BurnyCoder/rl-locomotion-steering-vectors), [interactive explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/), and [publication reproduction](docs/ant-publication.md).
+- [Contributor guidance](AGENTS.md): research and development constraints.

@@ -56,7 +56,8 @@ def test_missing_public_file_is_a_safe_error_row(tmp_path, monkeypatch):
     assert "PRIVATE" not in json.dumps(result) and "signature=" not in json.dumps(result)  # The output must exclude raw exception content.
 
 
-def test_media_checks_continue_after_missing_attachment_and_pin_the_readme(monkeypatch):
+@pytest.mark.parametrize("featured_count", [1, 3])
+def test_media_checks_continue_after_missing_attachment_and_pin_the_readme(monkeypatch, featured_count):
     """Local: retain one missing video. Global: still identify the exact public README that was inspected."""
     class Response(BytesIO):
         """Local: emulate public response metadata. Global: avoid a live GitHub dependency in the test."""
@@ -71,29 +72,73 @@ def test_media_checks_continue_after_missing_attachment_and_pin_the_readme(monke
             raise HTTPError("https://cdn.example?signature=PRIVATE", 404, "PRIVATE", {}, None)  # One failed attachment must not abort the remaining checks.
         if "/commits/" in url:
             return Response(json.dumps({"sha": "c" * 40}).encode())  # Resolve the requested branch once.
-        return Response(b"<video></video>" * 3)  # The pinned tree page contains three rendered players.
+        if "raw.githubusercontent.com" in url:
+            featured = "\r\n".join(f"https://github.com/user-attachments/assets/{asset}" for asset in audit.MEDIA[:featured_count])
+            return Response((featured + f"\r\n[Other camera](https://github.com/user-attachments/assets/{audit.MEDIA[1]})\r\n").encode())  # Ordinary links do not promise embedded players.
+        return Response(b"<video></video>" * featured_count)  # Current and historical README layouts may feature different counts.
     monkeypatch.setattr(audit, "urlopen", fetch)  # All external reads remain simulated.
     result = audit.verify_media("main")  # The verifier must inspect a resolved revision rather than the moving repository root.
     assert len(result["videos"]) == 3 and result["videos"][0]["status"] == "error"  # Retain the missing attachment and both independent later checks.
-    assert result["readme"]["git_revision"] == "c" * 40 and result["readme_video_players"] == 3  # Keep successful rendering evidence despite the earlier failure.
+    assert result["readme"]["git_revision"] == "c" * 40 and result["readme_video_players"] == featured_count  # Keep successful rendering evidence despite the earlier failure.
+    assert result["readme_expected_video_players"] == featured_count
+    assert f"https://raw.githubusercontent.com/{audit.REPO}/{'c' * 40}/README.md" in requested  # Expectations and rendering must use the same resolved commit.
     assert requested[-1].endswith("/tree/" + "c" * 40) and "PRIVATE" not in json.dumps(result)  # The rendered page is pinned and signed URLs remain absent.
 
 
-@pytest.mark.parametrize("copies", [[], [{"status": "ok", "unchanged_from_git": True, "public_copy_matches": True}, {"status": "error", "error_type": "HTTPError", "http_status": 404}]])
-def test_failed_or_empty_inventory_is_saved_before_command_fails(tmp_path, monkeypatch, copies):
-    """Local: reject incomplete checks. Global: preserve all collected evidence even on command failure."""
+def test_missing_raw_readme_is_a_safe_error(monkeypatch):
+    """Local: retain a missing pinned README. Global: do not infer its promised media from rendered HTML."""
+    class Response(BytesIO):
+        status = 200
+        headers = SimpleNamespace(get_content_type=lambda: "video/mp4")
+    def fetch(request, **kwargs):
+        url = request.full_url if hasattr(request, "full_url") else request
+        if "raw.githubusercontent.com" in url:
+            raise HTTPError("https://cdn.example?signature=PRIVATE", 404, "PRIVATE", {}, None)
+        return Response(json.dumps({"sha": "c" * 40}).encode() if "/commits/" in url else b"<video></video>")
+    monkeypatch.setattr(audit, "urlopen", fetch)
+    result = audit.verify_media()
+    assert result["readme"]["status"] == "error" and result["readme"]["http_status"] == 404
+    assert result["readme_expected_video_players"] is None and result["readme_video_players"] is None
+    assert len(result["videos"]) == len(audit.MEDIA) and "PRIVATE" not in json.dumps(result)
+
+
+@pytest.fixture
+def publication_command(tmp_path, monkeypatch):
+    """Local: isolate CLI dependencies. Global: test acceptance without public reads or evidence changes."""
     monkeypatch.chdir(tmp_path)  # Keep the output beneath a temporary project root.
     output = tmp_path / "audit.json"  # The same JSON remains inspectable after RuntimeError.
     monkeypatch.setattr(audit.sys, "argv", ["verify_documentation_publication.py", "--output", str(output)])  # Exercise the public command's ordinary arguments.
     monkeypatch.setattr(audit, "start_logging", lambda *args: None)  # Avoid replacing pytest's logging handlers.
     monkeypatch.setattr(audit.subprocess, "check_output", lambda *args, **kwargs: "b" * 40)  # Supply the current local Git revision.
     monkeypatch.setattr(audit, "HfApi", lambda **kwargs: SimpleNamespace(model_info=lambda *args, **kwargs: SimpleNamespace(sha="a" * 40, private=False, siblings=[])))  # Metadata says public but cannot make an empty inventory pass.
-    monkeypatch.setattr(audit, "original_files", lambda: list(range(len(copies))))  # Each row represents a completed independent file check.
-    monkeypatch.setattr(audit, "verify_copy", lambda number, revision: copies[number])  # Include a successful check before the missing file.
-    monkeypatch.setattr(audit, "verify_media", lambda *args: {"videos": [{"status": "ok", "http_status": 200, "content_type": "video/mp4"}] * 3, "readme_video_players": 3, "readme": {"status": "ok", "git_revision": "c" * 40}})  # Isolate inventory acceptance from unrelated media availability.
+    monkeypatch.setattr(audit, "original_files", lambda: ["artifact.json"])
+    monkeypatch.setattr(audit, "verify_copy", lambda *args: {"status": "ok", "unchanged_from_git": True, "public_copy_matches": True})
+    monkeypatch.setattr(audit, "verify_media", lambda *args: {"videos": [{"status": "ok", "http_status": 200, "content_type": "video/mp4"}] * 3, "readme_video_players": 3, "readme_expected_video_players": 3, "readme": {"status": "ok", "git_revision": "c" * 40}})
+    return output
+
+
+@pytest.mark.parametrize("copies", [[], [{"status": "ok", "unchanged_from_git": True, "public_copy_matches": True}, {"status": "error", "error_type": "HTTPError", "http_status": 404}]])
+def test_failed_or_empty_inventory_is_saved_before_command_fails(publication_command, monkeypatch, copies):
+    """Local: reject incomplete checks. Global: preserve all collected evidence even on command failure."""
+    output = publication_command
+    monkeypatch.setattr(audit, "original_files", lambda: list(range(len(copies))))
+    monkeypatch.setattr(audit, "verify_copy", lambda number, revision: copies[number])
     with pytest.raises(RuntimeError):
         audit.main()  # Explicit exceptions must guard acceptance even when Python assertions are disabled.
     saved = json.loads(output.read_text(encoding="utf-8"))  # Read the result after command failure.
     assert saved["copies"] == copies and saved["git_revision"] == "b" * 40  # Neither failures nor successful rows may disappear.
     assert saved["readme_git_revision"] == "c" * 40 and saved["hf_revision"] == "a" * 40  # Different publication systems need separate immutable identities.
     assert saved["command"] and len(saved["script_sha256"]) == 64  # The verifier invocation and actual script must remain identifiable.
+
+
+@pytest.mark.parametrize("expected,actual,status,passes", [(1, 1, "ok", True), (3, 3, "ok", True), (1, 3, "ok", False), (3, 1, "ok", False), (0, 0, "ok", False), (None, 1, "error", False)])
+def test_media_acceptance_matches_positive_readme_expectation(publication_command, monkeypatch, expected, actual, status, passes):
+    """Local: compare promised and rendered players. Global: never accept missing, empty or mismatched README evidence."""
+    media = {"videos": [{"status": "ok", "http_status": 200, "content_type": "video/mp4"}] * len(audit.MEDIA), "readme_video_players": actual, "readme_expected_video_players": expected, "readme": {"status": status, "git_revision": "c" * 40}}
+    monkeypatch.setattr(audit, "verify_media", lambda *args: media)
+    if passes:
+        audit.main()
+    else:
+        with pytest.raises(RuntimeError):
+            audit.main()
+    assert json.loads(publication_command.read_text(encoding="utf-8"))["media"] == media
