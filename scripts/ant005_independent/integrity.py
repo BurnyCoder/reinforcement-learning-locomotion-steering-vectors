@@ -14,6 +14,7 @@ from datetime import datetime, timezone  # Compare file and log chronology in UT
 import numpy as np  # Array comparisons.
 
 from rl_locomotion_steering_vectors.analysis import fit_vectors, window_table  # Production extraction, rerun on saved fitting data.
+from rl_locomotion_steering_vectors.cohorts import assert_available_cohort  # Local: verify the exact historical cohort; global: acknowledge its superseded application reservation.
 from rl_locomotion_steering_vectors.perception import first_relu  # Offline first-ReLU evaluation.
 from rl_locomotion_steering_vectors.runtime import ActivationIntervention, actor_layer, parameter_hash, run_episode  # Production runtime as the oracle.
 from rl_locomotion_steering_vectors.storage import load_arrays, load_json  # Safe artifact readers.
@@ -25,7 +26,9 @@ def _seed_splits() -> dict:
     """Local: check that all recorded and audit splits are disjoint. Global: exclude seed leakage between phases."""
     splits = dict(load_json(SOURCE_RUN / "manifest.json")["seed_splits"], audit=list(FRESH_SEEDS))  # Recorded splits plus the audit's fresh seeds.
     seeds = [seed for group in splits.values() for seed in group]  # Flatten.
-    return {"disjoint": len(seeds) == len(set(seeds)), "ranges": {name: [min(group), max(group), len(group)] for name, group in splits.items()}}  # Evidence.
+    registry = assert_available_cohort("ant", FRESH_SEEDS, resume_cohort="ant-005-independent-audit:audit")  # Local: permit only this complete recorded replay; global: reject a changed audit cohort.
+    return {"disjoint": len(seeds) == len(set(seeds)), "ranges": {name: [min(group), max(group), len(group)] for name, group in splits.items()},
+            "registry": registry, "disjoint_scope": "recorded manifest splits only; registry lists the historical application overlap"}  # Local: preserve the old field's meaning; global: stop implying that it covered every reservation.
 
 
 def _independent_lateral(fit: list[dict], minimum_speed_fraction: float = 0.5) -> np.ndarray:

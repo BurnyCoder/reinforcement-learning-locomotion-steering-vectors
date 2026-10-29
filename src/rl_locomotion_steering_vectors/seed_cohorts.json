@@ -1,0 +1,13 @@
+{
+  "schema": 1,
+  "scope": "Backfilled Ant 005 reservations and independent audit; stop is exclusive. This ledger is a guard, not a claim that other project cohorts are enumerated.",
+  "cohorts": [
+    {"id": "ant-classic-005:diagnostic", "model_key": "ant", "start": 500000, "stop": 500016, "status": "consumed", "source": "reports/ant-classic-005/manifest.json"},
+    {"id": "ant-classic-005:fit", "model_key": "ant", "start": 501000, "stop": 501064, "status": "consumed", "source": "reports/ant-classic-005/manifest.json"},
+    {"id": "ant-classic-005:validation", "model_key": "ant", "start": 510000, "stop": 510010, "status": "consumed", "source": "reports/ant-classic-005/manifest.json"},
+    {"id": "ant-classic-005:confirmation", "model_key": "ant", "start": 520000, "stop": 520030, "status": "consumed", "source": "reports/ant-classic-005/manifest.json"},
+    {"id": "ant-classic-005:replication", "model_key": "ant", "start": 530000, "stop": 530030, "status": "reserved", "source": "reports/ant-classic-005/manifest.json"},
+    {"id": "ant-classic-005:application", "model_key": "ant", "start": 540000, "stop": 540010, "status": "superseded", "superseded_by": "ant-005-independent-audit:audit", "source": "reports/fact-check-2026-10-22.md"},
+    {"id": "ant-005-independent-audit:audit", "model_key": "ant", "start": 540000, "stop": 540020, "status": "consumed", "source": "reports/ant-classic-005-independent-audit-preregistration.md"}
+  ]
+}

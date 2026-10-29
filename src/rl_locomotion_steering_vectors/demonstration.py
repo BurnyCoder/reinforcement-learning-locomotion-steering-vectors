@@ -26,6 +26,7 @@ from matplotlib import pyplot as plt  # Local: reuse standard scientific plottin
 
 from .analysis import _summary, paired_effect  # Local: reuse episode-level physical failure and paired inference; global: avoid a competing health definition.
 from .config import Config  # Local: restore the immutable run protocol; global: avoid current .env settings changing a completed experiment.
+from .cohorts import assert_available_cohort  # Local: check manifest-omitted Ant reservations; global: prevent reusing the independent audit's consumed application seeds.
 from .execution import collect_episodes, summaries  # Local: reuse identity-checked resumable collection; global: preserve every application episode.
 from .experiment import condition_name  # Local: reuse condition directory naming; global: keep artifacts consistent across phases.
 from .runtime import prepare_model, run_episode  # Local: use the verified frozen actor and simulator path; global: retain intervention semantics.
@@ -40,6 +41,7 @@ def fresh_application_seeds(manifest: dict, source_manifests=()) -> list[int]:
     overlap = sorted(set(seeds) & used)  # Local: identify reused reset identities; global: reject observed episodes as application evidence.
     if overlap:  # Local: handle a collision before collection; global: prevent accidental leakage.
         raise ValueError(f"Application seeds overlap earlier phases: {overlap}")  # Local: report exact offending resets; global: make the protocol defect actionable.
+    assert_available_cohort(manifest["model_key"], seeds)  # Local: include the committed cross-run ledger; global: reject the historically consumed Ant application cohort.
     return seeds  # Local: expose the locked cohort; global: let specification persistence precede simulation.
 
 
