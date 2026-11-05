@@ -248,7 +248,7 @@ The original confirmation estimator averages available post-onset values within 
 
 The new seed registry records both reservations and consumption. It prevents a new application from reusing the later audit resets while allowing explicit historical audit verification. Historical cache identities are not migrated. The exact research dependencies remain pinned for reproduction; newer tooling is limited to publication. Source/license uncertainties for Baukit and upstream weights remain disclosed in the [source audit](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/sources.md).
 
-The [completion ledger](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/docs/ant-publication.md) records checks, failures, retries, receipts, and requirements that remain historically unmet or inapplicable. The [interactive explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/) exposes positive, null and failed conditions from the same evidence.
+The [completion ledger](https://github.com/BurnyCoder/reinforcement-learning-locomotion-steering-vectors/blob/main/reports/ant-publication-completion.md) records checks, failures, retries, receipts, and requirements that remain historically unmet or inapplicable. The [interactive explorer](https://BurnyCoder.github.io/reinforcement-learning-locomotion-steering-vectors/) exposes positive, null and failed conditions from the same evidence.
 
 ## Independent saved-data verification, 2026-10-29
 
